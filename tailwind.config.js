@@ -94,12 +94,15 @@ module.exports = {
             },
             height: {
                 600: '600px',
+                '600-content': 'min(600px, min-content)',
+                '100vh-content': 'min(100vh, min)',
             },
             minHeight: {
                 72: '18rem',
                 456: '456px',
                 454: '454px',
                 screen: '100vh',
+                content: 'max-content',
             },
             colors: {
                 gray: {
@@ -114,5 +117,5 @@ module.exports = {
         extend: {},
     },
     plugins: [],
-    important: true,
+    important: false,
 };
