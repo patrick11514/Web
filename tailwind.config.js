@@ -58,6 +58,7 @@ module.exports = {
                 '23/24': '95.833333333333%',
                 '24/24': '100%',
                 72: '18rem',
+                screen: '100vw',
             },
             width: {
                 '1/24': '4.1666666666667%',
@@ -84,6 +85,7 @@ module.exports = {
                 '22/24': '91.666666666667%',
                 '23/24': '95.833333333333%',
                 '24/24': '100%',
+                'min-calc': 'calc(100% + 2rem)',
             },
             minWidth: {
                 72: '18rem',
@@ -94,15 +96,14 @@ module.exports = {
             },
             height: {
                 600: '600px',
-                '600-content': 'min(600px, min-content)',
-                '100vh-content': 'min(100vh, min)',
+                content: 'max-content',
             },
             minHeight: {
                 72: '18rem',
                 456: '456px',
                 454: '454px',
                 screen: '100vh',
-                content: 'max-content',
+                600: '600px',
             },
             colors: {
                 gray: {
@@ -110,6 +111,9 @@ module.exports = {
                     675: '#3d4654',
                     750: '#2b3645',
                 },
+            },
+            screens: {
+                mob: '250px',
             },
         },
     },
