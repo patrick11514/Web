@@ -1,0 +1,76 @@
+:root {
+    --primary: #2176ff;
+    --secondary: #226ce2;
+}
+
+.swal2-popup {
+    font-family: 'Roboto', 'sans-serif';
+    background: #111827 !important;
+    border-radius: 10px !important;
+    padding: 1rem !important;
+
+    .swal2-icon {
+        margin: 0em auto 0.6em !important;
+    }
+
+    .swal2-title {
+        color: #fff;
+        margin: 0;
+        margin-bottom: 10px;
+        font-size: 20px;
+        padding-top: 0 !important;
+    }
+
+    .swal2-html-container {
+        margin-top: 0px;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    label {
+        color: #fff;
+        margin-left: 0 !important;
+    }
+
+    .swal2-styled {
+        background-color: var(--primary) !important;
+        transition: background-color 0.3s !important;
+
+        &:hover {
+            background-color: var(--secondary) !important;
+        }
+    }
+
+    .swal2-input {
+        height: unset !important;
+        box-shadow: unset !important;
+        font-size: 16px !important;
+        padding: 10px !important;
+        border-radius: 5px !important;
+        outline: none !important;
+        border: 0 !important;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .swal2-validation-message {
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+        background: transparent !important;
+        color: #fff !important;
+        font-weight: 400 !important;
+    }
+
+    .swal2-actions {
+        margin-top: 0 !important;
+
+        button {
+            margin: 0 !important;
+            margin-right: 10px !important;
+
+            &:last-child {
+                margin-right: 0 !important;
+            }
+        }
+    }
+}
