@@ -29,8 +29,8 @@
         <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer" class="underline font-bold text-blue-500">TailWindCSS</a>.
     </span>
     <Technologies />
-    <Projects />
     <Contact />
+    <Projects />
 
     <span>&copy; Patrik Mintěl {getYear()}</span>
 </div>
