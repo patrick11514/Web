@@ -40,7 +40,7 @@
     ]
 
     function copyDiscord() {
-        navigator.clipboard.writeText('ᴘᴀᴛʀɪᴋ.#0001')
+        navigator.clipboard.writeText('ᴘᴀᴛʀɪᴋ.#1150')
 
         Swal.fire({
             toast: true,

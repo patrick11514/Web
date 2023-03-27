@@ -230,9 +230,12 @@
     <h2 class="mx-auto mb-2 w-max text-4xl font-bold">Moje projekty</h2>
     <div class="mx-auto p-2 w-2/4 bg-gray-700 rounded-t-lg">
         {#each tags as tag}
-            <button class={`m-1 min-w-24 min-h-8 rounded-md ${tag.color} font-bold` + (tag.name == selectedTag ? ' border-2 border-white' : '')} on:click={() => tagClick(tag.name)}
-                >{tag.name}</button
+            <button
+                class={`m-1 min-w-24 min-h-8 rounded-md ${tag.color} font-bold` + (tag.name == selectedTag ? ' border-2 border-white' : '')}
+                on:click={() => tagClick(tag.name)}
             >
+                {tag.name}
+            </button>
         {/each}
     </div>
     <div class="mx-auto w-23/24 p-4  bg-gray-700 rounded-xl duration-700">
