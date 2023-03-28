@@ -24,7 +24,7 @@
         <a href="https://www.vsb.cz/" target="_blank" rel="noreferrer" class="underline font-bold text-blue-500">Vysokou školu Báňskou v Ostravě</a>
         na oboru
         <a href="https://www.fei.vsb.cz/" target="_blank" rel="noreferrer" class="underline font-bold text-blue-500">Informatika</a>. Dělám převážně webové aplikace, či discord
-        boty, kdy ui webových aplikací převážně jejich funkčnost, nad designem. Většinu programuji v jazyku TypeScript, který je nadstavbou JavaScriptu. Když už dělám design,
+        boty, kdy UI webových aplikací převážně jejich funkčnost, nad designem. Většinu programuji v jazyku TypeScript, který je nadstavbou JavaScriptu. Když už dělám design,
         využívám framework
         <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer" class="underline font-bold text-blue-500">TailWindCSS</a>.
     </span>
