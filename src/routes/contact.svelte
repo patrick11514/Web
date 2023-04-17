@@ -3,7 +3,7 @@
 
     import Fa from 'svelte-fa'
 
-    import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+    import { faEnvelope, faServer } from '@fortawesome/free-solid-svg-icons'
     import { faInstagram, faGithub, faTwitch, faYoutube, faDiscord } from '@fortawesome/free-brands-svg-icons'
 
     let contacts = [
@@ -33,9 +33,14 @@
             icon: faEnvelope
         },
         {
-            name: 'Discord',
+            name: 'Discord Tag',
             function: true,
             icon: faDiscord
+        },
+        {
+            name: 'Discord Server',
+            link: 'https://discord.patrick115.eu',
+            icon: faServer
         }
     ]
 
