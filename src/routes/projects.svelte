@@ -32,6 +32,18 @@
         {
             name: 'Discord.js',
             color: 'bg-purple-500'
+        },
+        {
+            name: 'Svelte',
+            color: 'bg-red-300'
+        },
+        {
+            name: 'NextJS',
+            color: 'bg-blue-700'
+        },
+        {
+            name: 'Společně se Skypad6000',
+            color: 'bg-blue-800'
         }
     ]
 
@@ -48,7 +60,7 @@
             name: 'SurprisePlay.eu Info Panel',
             link: 'https://info.surpriseplay.eu',
             description: 'Panel pro zobrazení dat z Minecraft Serveru. Obsahoval Ticket systém, Todo list, nastavení účtu a další...',
-            tags: ['HTML', 'JS', 'PHP', 'SCSS'],
+            tags: ['HTML', 'JS', 'PHP', 'SCSS', 'Společně se Skypad6000'],
             folder: 'sp-infopanel',
             images: 1,
             date: 1589733265000
@@ -84,7 +96,7 @@
             name: 'Hostuj.eu',
             description:
                 'Web pro hosting serverů. Obsahuje kompletní systém od objednání, až po zaplacení serveru. Lze přes něho ovládat servery, procházet soubory na serveru. Server běží na Pterodactyl Panelu a a jsou ovládany přes API. V Panelu je také správa uživatelů, serverů a ticket systém.',
-            tags: ['HTML', 'TS', 'SCSS'],
+            tags: ['HTML', 'TS', 'SCSS', 'NextJS', 'Společně se Skypad6000'],
             folder: 'hostuj',
             images: 9,
             date: 1667602800000
@@ -119,7 +131,7 @@
         {
             name: 'Moje stránky',
             description: 'Moje stránky, kde se nachází tento projekt.',
-            tags: ['HTML', 'TS', 'TailWindCSS'],
+            tags: ['HTML', 'TS', 'TailWindCSS', 'Svelte'],
             folder: 'patrick115',
             images: 8,
             date: 1677271527000
@@ -231,7 +243,7 @@
     <div class="mx-auto p-2 w-2/4 bg-gray-700 rounded-t-lg">
         {#each tags as tag}
             <button
-                class={`m-1 min-w-24 min-h-8 rounded-md ${tag.color} font-bold` + (tag.name == selectedTag ? ' border-2 border-white' : '')}
+                class={`m-1 px-2 min-w-24 min-h-8 rounded-md ${tag.color} font-bold` + (tag.name == selectedTag ? ' border-2 border-white' : '')}
                 on:click={() => tagClick(tag.name)}
             >
                 {tag.name}
@@ -260,7 +272,7 @@
                                     return false
                                 }) as tag}
                                     <button
-                                        class={`m-1 min-w-max min-h-8 rounded-md ${tag.color} font-bold` + (tag.name == selectedTag ? ' border-2 border-white' : '')}
+                                        class={`m-1 px-2 min-w-max min-h-8 rounded-md ${tag.color} font-bold` + (tag.name == selectedTag ? ' border-2 border-white' : '')}
                                         on:click={() => tagClick(tag.name)}>{tag.name}</button
                                     >
                                 {/each}
