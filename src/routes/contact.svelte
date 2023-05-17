@@ -3,8 +3,8 @@
 
     import Fa from 'svelte-fa'
 
+    import { faDiscord, faGithub, faInstagram, faTwitch, faYoutube } from '@fortawesome/free-brands-svg-icons'
     import { faEnvelope, faServer } from '@fortawesome/free-solid-svg-icons'
-    import { faInstagram, faGithub, faTwitch, faYoutube, faDiscord } from '@fortawesome/free-brands-svg-icons'
 
     let contacts = [
         {
@@ -45,7 +45,7 @@
     ]
 
     function copyDiscord() {
-        navigator.clipboard.writeText('ᴘᴀᴛʀɪᴋ.#1150')
+        navigator.clipboard.writeText('patrick115#1400')
 
         Swal.fire({
             toast: true,
