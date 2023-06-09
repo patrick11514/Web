@@ -45,7 +45,7 @@
     ]
 
     function copyDiscord() {
-        navigator.clipboard.writeText('patrick115#1400')
+        navigator.clipboard.writeText('patrik.')
 
         Swal.fire({
             toast: true,
