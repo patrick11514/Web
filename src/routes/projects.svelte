@@ -305,7 +305,7 @@
         class="w-screen h-screen top-0 left-0 absolute bg-black bg-opacity-40 flex"
         tabIndex="0"
     >
-        <div class="my-8 mx-6 p-4 bg-slate-700 rounded-xl flex flex-col">
+        <div class="my-8 mx-6 p-4 w-full bg-slate-700 rounded-xl flex flex-col">
             <h2 class="mb-2 font-bold text-lg">Zavřete kliknutím mimo kartu</h2>
             <div class="mx-auto max-w-15/24 h-[70%] overflow-y-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-gray-500">
                 <img class="mx-auto" src={currentImages[currentIndex]} alt="Selected img" />
