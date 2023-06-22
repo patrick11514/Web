@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { browser } from '$app/environment'
-
     let tags = [
         {
             name: 'PHP',
@@ -247,8 +245,6 @@
             block: 'center'
         })
     }
-
-    if (browser) showGalery(9)
 </script>
 
 <div id="projects" class="mt-1 flex flex-col">
