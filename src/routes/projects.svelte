@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { browser } from '$app/environment'
+
     let tags = [
         {
             name: 'PHP',
@@ -245,6 +247,8 @@
             block: 'center'
         })
     }
+
+    if (browser) showGalery(9)
 </script>
 
 <div id="projects" class="mt-1 flex flex-col">
@@ -305,17 +309,24 @@
         class="w-screen h-screen top-0 left-0 absolute bg-black bg-opacity-40 flex"
         tabIndex="0"
     >
-        <div class="m-auto w-23/24 max-h-22/24 p-4 bg-slate-700 rounded-xl flex flex-col">
+        <div class="my-8 mx-6 p-4 bg-slate-700 rounded-xl flex flex-col">
             <h2 class="mb-2 font-bold text-lg">Zavřete kliknutím mimo kartu</h2>
-            <div class="mx-auto max-w-15/24 overflow-y-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-gray-500">
+            <div class="mx-auto max-w-15/24 h-[70%] overflow-y-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-gray-500">
                 <img class="mx-auto" src={currentImages[currentIndex]} alt="Selected img" />
             </div>
-            <div class="mt-4 overflow-x-scroll flex scrollbar scrollbar-track-transparent scrollbar-thumb-gray-500">
+            <div class="mt-4 overflow-x-scroll h-[30%] flex scrollbar scrollbar-track-transparent scrollbar-thumb-gray-500">
                 {#each currentImages as image, index}
                     {#if index == currentIndex}
-                        <img class="mx-2 max-h-72 border-4 border-black" src={image} alt="List" />
+                        <img class="mx-2 max-h-72 border-4 border-white" src={image} alt="List" />
                     {:else}
-                        <img class="mx-2 max-h-72" on:click={() => changeImage(index)} on:keypress={() => changeImage(index)} src={image} alt="List" tabIndex="0" />
+                        <img
+                            class="mx-2 max-h-72 border-4 border-transparent"
+                            on:click={() => changeImage(index)}
+                            on:keypress={() => changeImage(index)}
+                            src={image}
+                            alt="List"
+                            tabIndex="0"
+                        />
                     {/if}
                 {/each}
             </div>
