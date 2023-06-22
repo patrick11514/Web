@@ -135,6 +135,15 @@
             folder: 'patrick115',
             images: 8,
             date: 1677271527000
+        },
+        {
+            name: 'GameRealms.cz Wiki',
+            description: 'Wiki pro minecraftový server GameRealms.cz',
+            tags: ['HTML', 'CSS', 'TS', 'Svelte'],
+            link: 'https://gamerealms.cz/',
+            folder: 'gamerealms_wiki',
+            images: 15,
+            date: 1687397392000
         }
     ]
 
