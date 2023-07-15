@@ -65,7 +65,7 @@
                 {
                     name: 'VS Code',
                     link: 'https://code.visualstudio.com/',
-                    text: 'Jedná se o textový editor, který je mezi vývojáři velmi oblýbený, díky širokému výběru rozšíření, která umožňují tento editor využít na mnoho různých programovacích jazyků.'
+                    text: 'Jedná se o textový editor, který je mezi vývojáři velmi oblíbený, díky širokému výběru rozšíření, která umožňují tento editor využít na mnoho různých programovacích jazyků.'
                 }
             ]
         }
