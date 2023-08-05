@@ -109,16 +109,17 @@
         elem.classList.add('max-h-0', 'opacity-0', 'overflow-hidden')
         elem.classList.remove('max-h-50')
 
+        translating = true
+
         if (target.classList.contains('bg-gray-800')) {
             lastTarget = null
             target.classList.add('bg-gray-700')
             target.classList.remove('bg-gray-800')
             await sleep(700)
             currentTechnology = null
+            translating = false
             return
         }
-
-        translating = true
 
         if (lastTarget) {
             lastTarget.classList.add('bg-gray-700')
