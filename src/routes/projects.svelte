@@ -144,6 +144,15 @@
             folder: 'gamerealms_wiki',
             images: 15,
             date: 1687397392000
+        },
+        {
+            name: 'NowPlaying for OBS',
+            description: 'Widget, který zobrazuje aktuální písničku na spotify pro OBS, nebo další streamovací aplikace.',
+            tags: ['HTML', 'TailWindCSS', 'TS', 'SVELTE'],
+            link: 'https://nowplaying.patrick115.eu/',
+            folder: 'nowplaying',
+            images: ['1.png', '2.png', '3.png', '4.png', '5.gif'],
+            date: 1691256474000
         }
     ]
 
