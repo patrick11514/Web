@@ -45,7 +45,7 @@
                 {
                     name: 'Discord.js',
                     link: 'https://discord.js.org/#/',
-                    text: 'Jedná se o JavaScript knihovnu, která slouzí pro tvorbů botů na platformě Discord. Jedná se o nejpopulárnější knihovnu pro NodeJS'
+                    text: 'Jedná se o JavaScript knihovnu, která slouží pro tvorbů botů na platformě Discord. Jedná se o nejpopulárnější knihovnu pro NodeJS'
                 }
             ]
         },
@@ -169,7 +169,7 @@
     {/each}
 </div>
 
-<div id="data" class="mx-auto flex mt-4 mb-1 w-23/24 sm:w-3/4 h-max max-h-0 overflow-hidden opacity-0 p-4 flex-col bg-gray-700 rounded-xl duration-700 ">
+<div id="data" class="mx-auto flex mt-4 mb-1 w-23/24 sm:w-3/4 h-max max-h-0 overflow-hidden opacity-0 p-4 flex-col bg-gray-700 rounded-xl duration-700">
     {#if currentTechnology}
         {#if currentTechnology.link}
             <a
