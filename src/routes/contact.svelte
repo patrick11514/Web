@@ -1,6 +1,4 @@
 <script lang="ts">
-    import Swal from 'sweetalert2'
-
     import Fa from 'svelte-fa'
 
     import { faDiscord, faGithub, faInstagram, faTwitch, faYoutube } from '@fortawesome/free-brands-svg-icons'
@@ -34,7 +32,7 @@
         },
         {
             name: 'Discord Tag',
-            function: true,
+            link: 'https://discord.com/users/620266881227423745',
             icon: faDiscord
         },
         {
@@ -43,19 +41,6 @@
             icon: faServer
         }
     ]
-
-    function copyDiscord() {
-        navigator.clipboard.writeText('patrik.')
-
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'Discord tag byl úspěšně zkopírován!',
-            showConfirmButton: false,
-            timer: 3000
-        })
-    }
 </script>
 
 <h2 class="my-4 text-4xl font-bold">Kontakty a sociální sítě</h2>
@@ -66,10 +51,6 @@
                 <a href={contact.link} target="_blank" rel="noreferrer">
                     <Fa class="mt-7 mx-auto block" icon={contact.icon} size="4x" />
                 </a>
-            {:else}
-                <div on:click={() => copyDiscord()} on:keypress={() => copyDiscord} tabIndex="0">
-                    <Fa class="mt-7 mx-auto block" icon={contact.icon} size="4x" />
-                </div>
             {/if}
         </li>
     {/each}
