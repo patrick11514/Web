@@ -257,7 +257,7 @@
 </script>
 
 <div id="projects" class="mt-1 flex flex-col">
-    <h2 class="mx-auto mb-2 w-max text-4xl font-bold">Moje projekty</h2>
+    <h2 class="mx-auto mb-2 w-max text-4xl font-bold">Projekty na kterých jsem pracoval (Od nejnovějších po nejstarší)</h2>
     <div class="mx-auto p-2 w-2/4 bg-gray-700 rounded-t-lg">
         {#each tags as tag}
             <button
@@ -268,12 +268,12 @@
             </button>
         {/each}
     </div>
-    <div class="mx-auto w-23/24 p-4  bg-gray-700 rounded-xl duration-700">
+    <div class="mx-auto w-23/24 p-4 bg-gray-700 rounded-xl duration-700">
         {#if currentProjects.length == 0}
             <h1 class="text-2xl font-bold">Nenalezeny žádné projekty</h1>
         {:else}
             <div class="mx-auto w-full grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1">
-                {#each currentProjects as project, index}
+                {#each currentProjects.toReversed() as project, index}
                     <div>
                         <div class="m-1 p-4 rounded-xl bg-slate-800">
                             {#if project?.link}
@@ -302,7 +302,7 @@
                 {/each}
             </div>
         {/if}
-        <h2 class="my-2 font-bold text-2xl">Další moje projekty můžete najít například na githubu níže.</h2>
+        <h2 class="my-2 font-bold text-2xl">Další moje projekty můžete najít například na githubu výše.</h2>
     </div>
 </div>
 
