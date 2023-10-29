@@ -157,6 +157,7 @@
     ]
 
     let currentProjects = prepareImages(projects)
+    currentProjects.reverse()
     let selectedTag: string | null = null
 
     function prepareImages(proj: typeof projects) {
@@ -273,7 +274,7 @@
             <h1 class="text-2xl font-bold">Nenalezeny žádné projekty</h1>
         {:else}
             <div class="mx-auto w-full grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1">
-                {#each currentProjects.toReversed() as project, index}
+                {#each currentProjects as project, index}
                     <div>
                         <div class="m-1 p-4 rounded-xl bg-slate-800">
                             {#if project?.link}
