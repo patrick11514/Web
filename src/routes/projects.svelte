@@ -299,7 +299,7 @@
                 {/each}
             </div>
         {/if}
-        <h2 class="my-2 font-bold text-2xl">Další moje projekty můžete najít například na githubu níže.</h2>
+        <h2 class="my-2 font-bold text-2xl">Další moje projekty můžete najít například na githubu.</h2>
     </div>
 </div>
 
