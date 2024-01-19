@@ -254,7 +254,7 @@
 </script>
 
 <div id="projects" class="mt-1 flex flex-col">
-    <h2 class="mx-auto mb-2 w-max text-4xl font-bold">Moje projekty</h2>
+    <h2 class="mx-auto mb-2 w-max text-4xl font-bold">Projekty na kterých jsem pracoval (Od nejnovějších po nejstarší)</h2>
     <div class="mx-auto p-2 w-2/4 bg-gray-700 rounded-t-lg">
         {#each tags as tag}
             <button
@@ -265,7 +265,7 @@
             </button>
         {/each}
     </div>
-    <div class="mx-auto w-23/24 p-4  bg-gray-700 rounded-xl duration-700">
+    <div class="mx-auto w-23/24 p-4 bg-gray-700 rounded-xl duration-700">
         {#if currentProjects.length == 0}
             <h1 class="text-2xl font-bold">Nenalezeny žádné projekty</h1>
         {:else}
