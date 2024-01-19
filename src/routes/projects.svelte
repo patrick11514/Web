@@ -160,23 +160,25 @@
     let selectedTag: string | null = null
 
     function prepareImages(proj: typeof projects) {
-        return proj.map((p) => {
-            return {
-                name: p.name,
-                description: p.description,
-                link: p.link,
-                tags: p.tags,
-                //date to dd.MM.YYYY
-                date: new Date(p.date).toLocaleDateString('cs-CZ'),
-                preview: `/projects/${p.folder}/index.png`,
-                images:
-                    typeof p.images == 'number'
-                        ? Array.from({ length: p.images }, (_, i) => `/projects/${p.folder}/image${i + 1}.png`)
-                        : p.images.map((image) => {
-                              return `/projects/${p.folder}/${image}`
-                          })
-            }
-        })
+        return proj
+            .map((p) => {
+                return {
+                    name: p.name,
+                    description: p.description,
+                    link: p.link,
+                    tags: p.tags,
+                    //date to dd.MM.YYYY
+                    date: new Date(p.date).toLocaleDateString('cs-CZ'),
+                    preview: `/projects/${p.folder}/index.png`,
+                    images:
+                        typeof p.images == 'number'
+                            ? Array.from({ length: p.images }, (_, i) => `/projects/${p.folder}/image${i + 1}.png`)
+                            : p.images.map((image) => {
+                                  return `/projects/${p.folder}/${image}`
+                              })
+                }
+            })
+            .toReversed()
     }
 
     function tagClick(tag: string) {
@@ -190,12 +192,7 @@
 
         selectedTag = tag
 
-        currentProjects = prepareImages(
-            projects.filter((proj) => {
-                if (proj.tags.includes(tag)) return true
-                return false
-            })
-        )
+        currentProjects = prepareImages(projects.filter((proj) => proj.tags.includes(tag)))
     }
 
     let currentShowed: null | number = null
