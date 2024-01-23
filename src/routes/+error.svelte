@@ -1,6 +1,5 @@
 <script lang="ts">
     import Icon from '$/components/Icon.svelte'
-    import Navigation from '$/components/navigation.svelte'
     import { page } from '$app/stores'
 
     const texts = {
@@ -17,8 +16,6 @@
     <title>Error {status} | patrick115.eu</title>
     <meta name="description" content="Chybová stránka" />
 </svelte:head>
-
-<Navigation />
 
 <div class="m-auto">
     <h1 class="font-fira-sans text-4xl font-bold sm:text-5xl"><Icon name="bi-code-slash" /> {texts[status]?.title ?? 'Něco se pokazilo'}</h1>
