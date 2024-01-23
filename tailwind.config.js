@@ -17,6 +17,9 @@ export default {
                 primary: '#8fc4e3',
                 secondary: '#291f7b',
                 accent: '#6d37cd'
+            },
+            screens: {
+                '3xl': '1920px'
             }
         }
     },
