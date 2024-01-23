@@ -3,6 +3,6 @@
     import '../app.css'
 </script>
 
-<div class="flex h-full w-full flex-col bg-background text-text">
+<div class="min-w-screen flex h-full min-h-screen w-full flex-col bg-background text-text">
     <slot />
 </div>
