@@ -14,7 +14,6 @@
 
 <svelte:head>
     <title>Error {status} | patrick115.eu</title>
-    <meta name="description" content="Chybová stránka" />
 </svelte:head>
 
 <div class="m-auto">

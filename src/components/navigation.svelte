@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { BootstrapIcon } from '$/types/bootstrap_icons'
     import { page } from '$app/stores'
+    import { PUBLIC_ORIGIN } from '$env/static/public'
     import Icon from './Icon.svelte'
 
     type NavigationItem = {
@@ -38,9 +39,23 @@
     page.subscribe((value) => {
         currentNavItem = navigationData.find((item) => item.path == value.url.pathname) ?? null
     })
+
+    const description =
+        'Ahoj, jmenuji se Patrik Mintěl a jsem frontent a backend programátor v TypeScriptu, využívající primárně framework SvelteKit. Nebráním se ani tvorbě jiných NodeJS aplikaci, jako jsou Discord boti, Twitch boti a tak dále.'
 </script>
 
-<nav class="3xl:text-3xl mx-auto flex w-full flex-row flex-wrap justify-center gap-1 text-2xl">
+<svelte:head>
+    <title>{currentNavItem?.name} | patrick115.eu</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{currentNavItem?.name} | patrick115.eu" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="{PUBLIC_ORIGIN}/{$page.url.pathname}" />
+    <meta property="og:image" content="{PUBLIC_ORIGIN}/images/icon.png" />
+    <meta property="twitter:card" content="summary_large_image" />
+</svelte:head>
+
+<nav class="mx-auto flex w-full flex-row flex-wrap justify-center gap-1 text-2xl 3xl:text-3xl">
     {#each navigationData as item}
         {#if currentNavItem !== null && currentNavItem.path == item.path}
             <div class="cursor-pointer px-2 py-1">
