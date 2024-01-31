@@ -41,7 +41,7 @@
     })
 
     const description =
-        'Ahoj, jmenuji se Patrik Mintěl a jsem frontent a backend programátor v TypeScriptu, využívající primárně framework SvelteKit. Nebráním se ani tvorbě jiných NodeJS aplikaci, jako jsou Discord boti, Twitch boti a tak dále.'
+        'Ahoj, jmenuji se Patrik Mintěl a jsem frontend a backend programátor v TypeScriptu, využívající primárně framework SvelteKit. Nebráním se ani tvorbě jiných NodeJS aplikaci, jako jsou Discord boti, Twitch boti a tak dále.'
 </script>
 
 <svelte:head>
