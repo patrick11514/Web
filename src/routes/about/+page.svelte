@@ -31,7 +31,7 @@
         default: '/images/djs.png'
     }}
     alt="Discord JS text"
-    label="2022 - DiscordJS"
+    label="2022: DiscordJS"
 >
     Mimo tvorbu webových stránek jsem také začal tvořit Discord Boty, mezi první větší discord boty je můj discord bot pro zobrazování statistik ze hry League of Legends <Link
         href="https://github.com/patrick11514/MinonkaBot"
@@ -47,7 +47,7 @@
         default: '/images/sveltekit.png'
     }}
     alt="sveltekit logo"
-    label="2022 - SvelteKit"
+    label="2022: SvelteKit"
 >
     Ke konci střední jsem se seznámil s prvním fullstack frameworkem Next.JS, kdy jsem měl příležito se přidat k projeklu kamaráda <Link href="https://skypad6000.eu">
         Skypada
