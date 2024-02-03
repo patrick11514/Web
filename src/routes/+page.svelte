@@ -27,7 +27,7 @@
 </script>
 
 <section class="flex h-full w-full flex-col md:my-auto md:flex-row lg:mx-auto lg:w-[80%] xl:w-[75%] 3xl:w-[50%]">
-    <img class="mx-auto my-4 aspect-square w-[50%] max-w-56 self-center rounded-3xl md:mx-4 md:max-w-96" src="/images/icon.png" alt="Artwork" />
+    <img class="mx-auto my-4 aspect-square w-[50%] max-w-56 self-center rounded-3xl md:mx-4 md:max-w-96" src="/images/icon.webp" alt="Artwork" />
     <div class="mx-auto flex w-[90%] flex-col text-justify font-fira-sans text-lg md:my-auto lg:text-xl xl:text-2xl">
         <h2 class="text-center font-ubuntu text-3xl font-bold lg:text-4xl xl:text-5xl">Patrik Mintěl</h2>
         <p class="text-center font-roboto">Věk: {age}</p>

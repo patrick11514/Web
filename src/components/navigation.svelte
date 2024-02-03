@@ -51,7 +51,7 @@
     <meta property="og:title" content="{currentNavItem?.name} | patrick115.eu" />
     <meta property="og:description" content={description} />
     <meta property="og:url" content="{PUBLIC_ORIGIN}/{$page.url.pathname}" />
-    <meta property="og:image" content="{PUBLIC_ORIGIN}/images/icon.png" />
+    <meta property="og:image" content="{PUBLIC_ORIGIN}/images/icon.webp" />
     <meta property="twitter:card" content="/summary_large_image" />
 </svelte:head>
 
