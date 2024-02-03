@@ -52,7 +52,7 @@
     <meta property="og:description" content={description} />
     <meta property="og:url" content="{PUBLIC_ORIGIN}/{$page.url.pathname}" />
     <meta property="og:image" content="{PUBLIC_ORIGIN}/images/icon.png" />
-    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:card" content="/summary_large_image" />
 </svelte:head>
 
 <nav class="mx-auto flex w-full flex-row flex-wrap justify-center gap-1 text-2xl 3xl:text-3xl">
