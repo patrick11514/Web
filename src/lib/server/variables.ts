@@ -1,4 +1,5 @@
-import { DATABASE_DATABASE, DATABASE_IP, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_USER, JWT_SECRET } from '$env/static/private'
+import type { DB } from '$/types/database'
+import { DATABASE_IP, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_USER, JWT_SECRET } from '$env/static/private'
 import { Kysely, MysqlDialect } from 'kysely'
 import { createPool } from 'mysql2'
 import { JWTCookies } from './cookies/main'
@@ -10,10 +11,10 @@ const dialect = new MysqlDialect({
         port: parseInt(DATABASE_PORT),
         user: DATABASE_USER,
         password: DATABASE_PASSWORD,
-        database: DATABASE_DATABASE
+        database: DATABASE_NAME
     })
 })
 
-export const conn = new Kysely<Database>({
+export const conn = new Kysely<DB>({
     dialect
 })
