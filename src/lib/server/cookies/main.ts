@@ -1,8 +1,9 @@
-import { compressToBase64, decompressFromBase64 } from 'async-lz-string'
+import lzString from 'async-lz-string'
 import jwt from 'jsonwebtoken'
 import path from 'path'
 import JSONdb from 'simple-json-db'
 import { v4 as uuid } from 'uuid'
+const { compressToBase64, decompressFromBase64 } = lzString
 
 /**
  * @author patrick115 (Patrik Mintěl)
