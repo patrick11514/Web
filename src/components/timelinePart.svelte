@@ -8,8 +8,6 @@
               default: string;
           };
     export let alt: string;
-
-    //
 </script>
 
 <section class="flex font-ubuntu lg:mx-auto lg:w-[80%] 3xl:text-xl" class:flex-row={!reverse} class:flex-row-reverse={reverse}>
