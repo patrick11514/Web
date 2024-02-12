@@ -1,32 +1,32 @@
 <script lang="ts">
-    import Link from '$/components/link.svelte'
-    import { onMount } from 'svelte'
+    import Link from '$/components/link.svelte';
+    import { onMount } from 'svelte';
 
-    const born = new Date(2003, 4, 1, 7)
+    const born = new Date(2003, 4, 1, 7);
 
     const calculateAge = () => {
-        const now = new Date()
-        const diff = now.getTime() - born.getTime()
+        const now = new Date();
+        const diff = now.getTime() - born.getTime();
 
-        const years = diff / (1000 * 60 * 60 * 24 * 365.25)
+        const years = diff / (1000 * 60 * 60 * 24 * 365.25);
 
-        return years.toFixed(12)
-    }
+        return years.toFixed(12);
+    };
 
-    let age = calculateAge()
+    let age = calculateAge();
 
     onMount(() => {
         const timer = setInterval(() => {
-            age = calculateAge()
-        }, 25)
+            age = calculateAge();
+        }, 25);
 
         return () => {
-            clearInterval(timer)
-        }
-    })
+            clearInterval(timer);
+        };
+    });
 </script>
 
-<section class="flex h-full w-full flex-col md:my-auto md:flex-row lg:mx-auto lg:w-[80%] xl:w-[75%] 3xl:w-[50%]">
+<section class="flex w-full flex-col md:my-auto md:flex-row lg:mx-auto lg:w-[80%] xl:w-[75%] 3xl:w-[50%]">
     <img class="mx-auto my-4 aspect-square w-[50%] max-w-56 self-center rounded-3xl md:mx-4 md:max-w-96" src="/images/icon.webp" alt="Artwork" />
     <div class="mx-auto flex w-[90%] flex-col text-justify font-fira-sans text-lg md:my-auto lg:text-xl xl:text-2xl">
         <h2 class="text-center font-ubuntu text-3xl font-bold lg:text-4xl xl:text-5xl">Patrik Mintěl</h2>
@@ -41,6 +41,6 @@
             funkční část (TypeScript). Aktuální framework, který na tyto účely používám je <Link href="https://kit.svelte.dev/">SvelteKit</Link>. Když už zavítám do designu
             webových stránek, tak využívám <Link href="https://tailwindcss.com/">Tailwind CSS</Link>.
         </p>
-        <p>Mimo tvorbu webových aplikací se věnuji i tvorbě jiných aplikací v NodeJS, jako jsou Discord boti, Twitch Boti a podobně.</p>
+        <p>Mimo tvorbu webových aplikací se věnuji i tvorbě jiných aplikací v NodeJS, jako jsou Discord boti, Twitch boti a podobně.</p>
     </div>
 </section>

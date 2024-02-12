@@ -1,10 +1,9 @@
 <script lang="ts">
-    import Link from '$/components/link.svelte'
-    import TimeLinePart from '$/components/timelinePart.svelte'
+    import Link from '$/components/link.svelte';
+    import TimeLinePart from '$/components/timelinePart.svelte';
 </script>
 
-<h2 class="text-center font-ubuntu text-3xl font-bold 3xl:text-4xl">O mně</h2>
-<h4 class="mb-4 text-center font-inter 3xl:text-xl">
+<h4 class="border-b-2 border-b-text pb-4 text-center font-inter 3xl:text-xl">
     Zde nalezneš můj příběh, jak jsem se dostal k programování úplně od začátku seřazený chronologicky od nejnovějšího k nejstaršímu.
 </h4>
 

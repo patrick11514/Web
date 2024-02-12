@@ -1,9 +1,9 @@
-import lzString from 'async-lz-string'
-import jwt from 'jsonwebtoken'
-import path from 'path'
-import JSONdb from 'simple-json-db'
-import { v4 as uuid } from 'uuid'
-const { compressToBase64, decompressFromBase64 } = lzString
+import lzString from 'async-lz-string';
+import jwt from 'jsonwebtoken';
+import path from 'path';
+import JSONdb from 'simple-json-db';
+import { v4 as uuid } from 'uuid';
+const { compressToBase64, decompressFromBase64 } = lzString;
 
 /**
  * @author patrick115 (Patrik Mintěl)
@@ -14,102 +14,102 @@ const { compressToBase64, decompressFromBase64 } = lzString
  */
 
 interface cookie<Type> {
-    expires: number
-    values: Type
+    expires: number;
+    values: Type;
 }
 
 export class SessionCookies {
-    private db: JSONdb<cookie<unknown>>
+    private db: JSONdb<cookie<unknown>>;
 
     constructor(storage = './cookies.json') {
         this.db = new JSONdb<cookie<unknown>>(storage.startsWith('./') || storage.startsWith('../') ? path.join(__dirname, storage) : storage, {
             syncOnWrite: true,
             jsonSpaces: false,
             asyncWrite: false
-        })
+        });
     }
 
     checkCookies() {
-        const cookies = Object.entries(this.db.JSON())
+        const cookies = Object.entries(this.db.JSON());
         cookies.forEach(([key, value]) => {
             if (value.expires < Date.now()) {
-                this.db.delete(key)
+                this.db.delete(key);
             }
-        })
+        });
     }
 
     getCookie<T>(key: string) {
-        this.checkCookies()
-        return this.db.get(key) as cookie<T>
+        this.checkCookies();
+        return this.db.get(key) as cookie<T>;
     }
 
     updateCookie<T>(id: string, value: T, age: number) {
-        this.checkCookies()
+        this.checkCookies();
 
         this.db.set(id, {
             expires: Date.now() + age,
             values: value
-        })
+        });
 
-        return id
+        return id;
     }
 
     setCookie<T>(value: T, age: number) {
-        this.checkCookies()
+        this.checkCookies();
 
-        let id = uuid()
+        let id = uuid();
 
         while (this.db.has(id)) {
-            id = uuid()
+            id = uuid();
         }
 
         this.db.set(id, {
             expires: Date.now() + age,
             values: value
-        })
+        });
 
-        return id
+        return id;
     }
 
     deleteCookie(key: string) {
-        this.checkCookies()
-        this.db.delete(key)
+        this.checkCookies();
+        this.db.delete(key);
     }
 }
 
 export class JWTCookies {
-    private key: string
-    private compress: boolean
+    private key: string;
+    private compress: boolean;
 
     constructor(key: string, compress = false) {
-        this.key = key
-        this.compress = compress
+        this.key = key;
+        this.compress = compress;
     }
 
     async setCookie(value: object | string | Buffer): Promise<string> {
-        let cookie = jwt.sign(value, this.key)
+        let cookie = jwt.sign(value, this.key);
 
         if (this.compress) {
-            cookie = await compressToBase64(cookie)
+            cookie = await compressToBase64(cookie);
 
             //remove all = from the end of the string
             while (cookie.endsWith('=')) {
-                cookie = cookie.slice(0, -1)
+                cookie = cookie.slice(0, -1);
             }
         }
-        return cookie
+        return cookie;
     }
 
     async getCookie<T>(token: string): Promise<T | null> {
         try {
             if (this.compress) {
-                token = await decompressFromBase64(token)
+                token = await decompressFromBase64(token);
             }
 
-            return jwt.verify(token, this.key) as T
+            return jwt.verify(token, this.key) as T;
         } catch (e) {
-            console.error(e)
-            return null
+            console.error(e);
+            return null;
         }
     }
 }

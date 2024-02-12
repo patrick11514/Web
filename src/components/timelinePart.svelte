@@ -1,13 +1,13 @@
 <script lang="ts">
-    export let reverse = false
-    export let label: string | undefined = undefined
+    export let reverse = false;
+    export let label: string | undefined = undefined;
     export let src:
         | string
         | {
-              [selector: string]: string
-              default: string
-          }
-    export let alt: string
+              [selector: string]: string;
+              default: string;
+          };
+    export let alt: string;
 
     //
 </script>
@@ -28,7 +28,7 @@
         {#if label !== undefined}
             <span class="text-wrap font-ubuntu text-lg font-bold 3xl:text-xl">{label}</span>
         {/if}
-        <div class="w-0.5 flex-grow bg-white"></div>
+        <div class="w-0.5 flex-grow bg-text"></div>
     </section>
     <span class="my-2 w-[40%] self-center px-2 xl:w-[45%]" class:text-right={!reverse}><slot /></span>
 </section>

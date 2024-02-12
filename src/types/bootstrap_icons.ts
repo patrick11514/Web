@@ -2049,6 +2049,6 @@ type BootstrapIconPart =
     | 'suitcase'
     | 'suitcase2-fill'
     | 'suitcase2'
-    | 'vignette'
+    | 'vignette';
 
-export type BootstrapIcon = `bi-${BootstrapIconPart}`
+export type BootstrapIcon = `bi-${BootstrapIconPart}`;

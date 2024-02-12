@@ -1,15 +1,15 @@
 <script lang="ts">
-    import Icon from '$/components/Icon.svelte'
-    import { page } from '$app/stores'
+    import Icon from '$/components/Icon.svelte';
+    import { page } from '$app/stores';
 
     const texts = {
         404: {
             title: 'Tak tady jsi špatně',
             description: 'Tato stránka neexistuje'
         }
-    }
+    };
 
-    const status = $page.status as keyof typeof texts
+    const status = $page.status as keyof typeof texts;
 </script>
 
 <svelte:head>
