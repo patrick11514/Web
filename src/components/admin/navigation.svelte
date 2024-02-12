@@ -4,6 +4,8 @@
         path: string;
         fullName: string;
         icon: BootstrapIcon;
+        hidden?: boolean;
+        start?: boolean;
     };
 </script>
 
@@ -31,11 +33,26 @@
             fullName: 'Správa Projektů',
             path: '/admin/projects',
             icon: 'bi-window-fullscreen'
+        },
+        {
+            name: 'New',
+            fullName: 'Přidat Projekt',
+            path: '/admin/projects/new',
+            icon: 'bi-plus',
+            hidden: true
+        },
+        {
+            name: 'Info',
+            fullName: 'Prohlížení Projektu',
+            path: '/admin/projects/',
+            icon: 'bi-info-circle',
+            start: true,
+            hidden: true
         }
     ];
 
     page.subscribe((value) => {
-        currentNavItem = navigationData.find((item) => item.path == value.url.pathname) ?? null;
+        currentNavItem = navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
     });
 
     export let folded: boolean;
@@ -46,7 +63,7 @@
     <ClickOutside clickoutside={() => (folded = true)}>
         <nav
             class={twMerge(
-                'absolute top-0 flex h-full min-w-max -translate-x-full flex-col flex-wrap gap-1 border-r-2 border-r-text bg-background px-8 py-2 text-2xl transition-all duration-300 md:static  md:translate-x-0 3xl:text-3xl',
+                'absolute top-0 z-10 flex h-full min-w-max -translate-x-full flex-col flex-wrap gap-1 border-r-2 border-r-text bg-background px-8 py-2 text-2xl transition-all duration-300 md:static  md:translate-x-0 3xl:text-3xl',
                 folded == false ? 'translate-x-0' : ''
             )}
         >
@@ -54,7 +71,7 @@
                 <span class="font-ubuntu font-bold">{$sessionData.data.username}</span>
                 <Button on:click={logout} class="px-2 py-1 text-lg">Odhlásit se</Button>
             </div>
-            {#each navigationData as item}
+            {#each navigationData.filter((item) => (item.hidden && item.hidden === true ? false : true)) as item}
                 {#if currentNavItem !== null && currentNavItem.path == item.path}
                     <div class="mx-auto w-max cursor-pointer px-2 py-1">
                         <h2 class="mx-auto w-max border-b-4 border-b-text font-fira-sans font-bold">

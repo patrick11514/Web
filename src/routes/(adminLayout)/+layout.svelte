@@ -1,5 +1,21 @@
 <script lang="ts" context="module">
-    export const logout = async () => {};
+    export const logout = async () => {
+        const result = await API.auth.logout.fetch();
+
+        if (result.status === false) {
+            SwalAlert({
+                icon: 'error',
+                title: result.message
+            });
+            return;
+        }
+
+        sessionData.set({
+            logged: false
+        });
+
+        goto('/admin');
+    };
 </script>
 
 <script lang="ts">
@@ -7,6 +23,9 @@
     import Navigation, { type NavigationItem } from '$/components/admin/navigation.svelte';
     import Button from '$/components/button.svelte';
     import { sessionData } from '$/components/store.svelte';
+    import { API } from '$/lib/api';
+    import { SwalAlert } from '$/lib/functions';
+    import { goto } from '$app/navigation';
     import type { LayoutData } from './$types';
 
     export let data: LayoutData;
