@@ -3,8 +3,8 @@ import { COOKIE_EXPIRE } from '$env/static/private';
 import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { procedure } from '../api';
-import { conn, jwt } from '../variables';
+import { procedure } from '../../api';
+import { conn, jwt } from '../../variables';
 
 export const login = procedure.POST.input(
     z.object({
