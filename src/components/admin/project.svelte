@@ -5,7 +5,7 @@
     export let uuid: string;
 </script>
 
-<a href="/admin/projects/{uuid}" class="m-2 mx-auto h-full w-[80%]">
+<a href="/admin/projects/{uuid}" class="m-2 mx-auto w-[80%]">
     <div class="flex flex-row items-center bg-primary">
         <img class="max-w-[35%]" src={image} alt={name} />
         <div class="ml-2 flex flex-col">
