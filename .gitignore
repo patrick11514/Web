@@ -10,7 +10,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 #custom folders
-projects
+/projects
 
 #lock files
 pnpm-lock.yaml
