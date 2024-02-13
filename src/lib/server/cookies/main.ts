@@ -1,9 +1,7 @@
-import lzString from 'async-lz-string';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import JSONdb from 'simple-json-db';
 import { v4 as uuid } from 'uuid';
-const { compressToBase64, decompressFromBase64 } = lzString;
 
 /**
  * @author patrick115 (Patrik Mintěl)
@@ -79,33 +77,17 @@ export class SessionCookies {
 
 export class JWTCookies {
     private key: string;
-    private compress: boolean;
 
-    constructor(key: string, compress = false) {
+    constructor(key: string) {
         this.key = key;
-        this.compress = compress;
     }
 
-    async setCookie(value: object | string | Buffer): Promise<string> {
-        let cookie = jwt.sign(value, this.key);
-
-        if (this.compress) {
-            cookie = await compressToBase64(cookie);
-
-            //remove all = from the end of the string
-            while (cookie.endsWith('=')) {
-                cookie = cookie.slice(0, -1);
-            }
-        }
-        return cookie;
+    setCookie(value: object | string | Buffer): string {
+        return jwt.sign(value, this.key);
     }
 
-    async getCookie<T>(token: string): Promise<T | null> {
+    getCookie<T>(token: string): T | null {
         try {
-            if (this.compress) {
-                token = await decompressFromBase64(token);
-            }
-
             return jwt.verify(token, this.key) as T;
         } catch (e) {
             console.error(e);

@@ -10,7 +10,7 @@ export const load = (async ({ cookies }) => {
         throw redirect(302, '/admin');
     }
 
-    const data = await jwt.getCookie(session);
+    const data = jwt.getCookie(session);
 
     if (!data) {
         throw redirect(302, '/admin');

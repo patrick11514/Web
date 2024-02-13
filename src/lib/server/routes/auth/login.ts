@@ -39,7 +39,7 @@ export const login = procedure.POST.input(
         username: userData.username
     };
 
-    const cookie = await jwt.setCookie(data);
+    const cookie = jwt.setCookie(data);
 
     cookies.set('session', cookie, {
         path: '/',

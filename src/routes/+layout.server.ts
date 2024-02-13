@@ -24,7 +24,7 @@ export const load = (async (event) => {
         } satisfies LoginDataWithAppData;
     }
 
-    const data = await jwt.getCookie<RegularUser>(cookie);
+    const data = jwt.getCookie<RegularUser>(cookie);
 
     if (!data) {
         return {
