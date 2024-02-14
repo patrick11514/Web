@@ -11,7 +11,7 @@
 
 <script lang="ts">
     import ClickOutside from '$/components/clickOutside.svelte';
-    import { logout } from '$/routes/(adminLayout)/+layout.svelte';
+    import { logout } from '$/lib/functions';
     import type { BootstrapIcon } from '$/types/bootstrap_icons';
     import { page } from '$app/stores';
     import { twMerge } from 'tailwind-merge';
@@ -33,6 +33,12 @@
             fullName: 'Správa Projektů',
             path: '/admin/projects',
             icon: 'bi-window-fullscreen'
+        },
+        {
+            name: 'Tagy',
+            fullName: 'Správa Tagů',
+            path: '/admin/tags',
+            icon: 'bi-tags-fill'
         },
         {
             name: 'New',
@@ -63,7 +69,7 @@
     <ClickOutside clickoutside={() => (folded = true)}>
         <nav
             class={twMerge(
-                'absolute top-0 z-10 flex h-full min-w-max -translate-x-full flex-col flex-wrap gap-1 border-r-2 border-r-text bg-background px-8 py-2 text-2xl transition-all duration-300 md:static  md:translate-x-0 3xl:text-3xl',
+                'absolute top-0 z-10 flex h-full min-w-max -translate-x-full flex-col flex-wrap gap-1 border-r-2 border-r-text bg-background px-8 py-2 text-2xl transition-all duration-300 3xl:text-3xl',
                 folded == false ? 'translate-x-0' : ''
             )}
         >
@@ -92,7 +98,7 @@
                     </a>
                 {/if}
             {/each}
-            <footer class="mt-auto text-center font-ubuntu text-sm font-bold">
+            <footer class="mt-auto text-center font-ubuntu text-sm font-bold 3xl:text-base">
                 v{version}
             </footer>
         </nav>

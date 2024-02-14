@@ -7,9 +7,16 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 export interface Project {
   date: Date;
   description: string;
+  image_count: number;
   name: string;
   preview: string;
-  uuid: Generated<string>;
+  uuid: string;
+}
+
+export interface ProjectImage {
+  id: Generated<number>;
+  name: string;
+  project: string;
 }
 
 export interface ProjectTags {
@@ -31,6 +38,7 @@ export interface User {
 
 export interface DB {
   project: Project;
+  project_image: ProjectImage;
   project_tags: ProjectTags;
   tag: Tag;
   user: User;

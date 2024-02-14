@@ -1,7 +1,7 @@
-import { create } from './create';
+import { get } from './get';
 import { list } from './list';
 
 export const project = {
-    create,
-    list
+    list,
+    get
 };

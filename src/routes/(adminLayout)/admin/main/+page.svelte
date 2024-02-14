@@ -1,3 +1,7 @@
+<script lang="ts">
+    import Message from '$/components/admin/message.svelte';
+</script>
+
 <section class="flex flex-1">
-    <h1 class="m-auto text-center text-xl font-bold">Tady bude v budoucnu usefull stránka XD</h1>
+    <Message center={true}>Tady bude v budoucnu usefull stránka XD</Message>
 </section>

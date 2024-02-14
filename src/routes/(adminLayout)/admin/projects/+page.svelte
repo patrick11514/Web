@@ -34,11 +34,11 @@
     });
 </script>
 
-<div class="flex flex-1 flex-col">
+<div class="mx-auto flex w-full flex-col sm:mx-auto sm:w-[80%] md:w-[60%] lg:max-w-[812px]">
     {#if !projects}
         <Message>Načítání...</Message>
     {:else}
-        <Button on:click={() => goto('/admin/projects/new')}>Přidat projekt</Button>
+        <Button class="xsm:mx-auto xsm:w-[80%] xsm:max-w-64 3xl:max-w-96" on:click={() => goto('/admin/projects/new')}>Přidat projekt</Button>
         {#if projects.length == 0}
             <Message>Nebyly nalezeny žádné projekty, přidej nějaký.</Message>
         {:else}

@@ -19,7 +19,14 @@ export default {
                 accent: '#6d37cd'
             },
             screens: {
-                '3xl': '1920px'
+                '3xl': '1920px',
+                xsm: '480px'
+            },
+            width: {
+                112: '28rem'
+            },
+            maxWidth: {
+                112: '28rem'
             }
         }
     },
