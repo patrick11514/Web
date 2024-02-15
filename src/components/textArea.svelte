@@ -6,4 +6,4 @@
     export let id = '';
 </script>
 
-<textarea class="rounded-xl border-2 border-primary bg-transparent p-1 text-lg font-medium 3xl:text-xl" {name} {id} {cols} {rows} bind:value></textarea>
+<textarea class="h-max rounded-xl border-2 border-primary bg-transparent p-1 text-lg font-medium 3xl:text-xl" {name} {id} {cols} {rows} bind:value></textarea>

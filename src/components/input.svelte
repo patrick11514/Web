@@ -1,7 +1,7 @@
 <script lang="ts">
     export let id = '';
     export let value: string | number = '';
-    export let type: 'text' | 'password' | 'email' | 'number' | 'date' | 'datetime';
+    export let type: 'text' | 'password' | 'email' | 'number' | 'date' | 'datetime' | 'color';
 </script>
 
 <input

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { User as DBUser, Project, ProjectImage, ProjectTags } from './database';
+import type { Tag as DBTag, User as DBUser, Project, ProjectImage, ProjectTags } from './database';
 
 export type User = Omit<DBUser, 'id'> & {
     id: number;
@@ -10,6 +10,10 @@ export type ProjectType = Omit<Project, 'uuid'> & {
 };
 
 export type RegularUser = Omit<User, 'password'>;
+
+export type Tag = Omit<DBTag, 'id'> & {
+    id: number;
+};
 
 export type LoginData =
     | {
