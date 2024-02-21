@@ -17,14 +17,7 @@ export const projects = procedure.GET.query(async () => {
 
             returnData.push({
                 ...project,
-                tags: tags
-                    .filter((tag) => projectTags.includes(tag.id))
-                    .map((tag) => {
-                        return {
-                            ...tag,
-                            id: undefined
-                        };
-                    }),
+                tags: tags.filter((tag) => projectTags.includes(tag.id)),
                 images: images.map((image) => image.name)
             });
         }

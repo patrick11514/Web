@@ -1,10 +1,10 @@
 import type { Response, ResponseWithData, Tag } from '$/types/types';
 import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 import { z } from 'zod';
-import { adminProcedure, procedure } from '../api';
+import { adminProcedure } from '../api';
 import { conn } from '../variables';
 
-export const list = procedure.GET.query(async () => {
+export const list = adminProcedure.GET.query(async () => {
     try {
         const result = await conn.selectFrom('tag').selectAll().execute();
 
@@ -21,7 +21,7 @@ export const list = procedure.GET.query(async () => {
     }
 });
 
-const create = procedure.PUT.input(
+const create = adminProcedure.PUT.input(
     z.object({
         text: z.string(),
         color: z.string()

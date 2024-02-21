@@ -8,7 +8,11 @@
 </script>
 
 {#if color.startsWith('#')}
-    <span class={twMerge('m-0.5 w-max rounded-lg px-1 font-ubuntu font-bold shadow-xl drop-shadow-md', cls)} style="background-color: {color}"><slot /></span>
+    <button on:click class={twMerge('m-1 w-max cursor-pointer rounded-md px-2 py-1 font-ubuntu font-bold shadow-xl drop-shadow-md', cls)} style="background-color: {color}">
+        <slot />
+    </button>
 {:else}
-    <span class={twMerge('m-0.5 w-max rounded-lg px-1 font-ubuntu font-bold shadow-xl drop-shadow-md', color, cls)}><slot /></span>
+    <button on:click class={twMerge('m-1 w-max cursor-pointer rounded-md px-2 py-1 font-ubuntu font-bold shadow-xl drop-shadow-md', color, cls)}>
+        <slot />
+    </button>
 {/if}

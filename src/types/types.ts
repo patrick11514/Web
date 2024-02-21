@@ -54,5 +54,7 @@ export type FullProjectData = ProjectType & {
 
 export type PublicProjectData = ProjectType & {
     images: string[];
-    tags: Omit<Tag, 'id'>[];
+    tags: Tag[];
 };
+
+export type DeArray<T> = T extends (infer U)[] ? U : never;

@@ -23,8 +23,16 @@ export const SwalAlert = async (data: SweetAlertOptions) => {
 
 export const createSimpleMarkDown = (data: string | undefined) => {
     if (!data || !browser) return '';
-    let result = data.replaceAll(/\[(.*)\]\((.*)\)/g, '<a class="text-primary" href="$2" target="_blank">$1</a>');
+    let result = data.replaceAll(/\[(.*)\]\((.*)\)/g, '<a class="text-primary" target="_blank" href="$2" >$1</a>');
     result = result.replaceAll(/\*\*(.*)\*\*/g, '<span class="font-bold">$1</span>');
+
+    DOMPurify.addHook('afterSanitizeAttributes', function (node) {
+        // set all elements owning target to target=_blank
+        if ('target' in node) {
+            node.setAttribute('target', '_blank');
+            node.setAttribute('rel', 'noopener');
+        }
+    });
 
     return DOMPurify.sanitize(result);
 };

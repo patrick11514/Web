@@ -27,6 +27,17 @@ export default {
             },
             maxWidth: {
                 112: '28rem'
+            },
+            maxHeight: {
+                112: '28rem',
+                128: '32rem',
+                144: '36rem'
+            },
+            borderWidth: {
+                1: '1px'
+            },
+            lineClamp: {
+                8: '8'
             }
         }
     },
