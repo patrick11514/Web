@@ -140,7 +140,13 @@ const deleteData = adminProcedure.DELETE.input(schema).query(async ({ input: { u
 
 const updateSchema = projectDataSchema.extend({
     uuid: z.string(),
-    previewChanged: z.boolean()
+    previewChanged: z.boolean(),
+    tags: z.array(
+        z.object({
+            uuid: z.string(),
+            tag: z.number()
+        })
+    )
 });
 
 const updateData = adminProcedure.PATCH.input(updateSchema).query(async ({ input }) => {
@@ -225,6 +231,36 @@ const updateData = adminProcedure.PATCH.input(updateSchema).query(async ({ input
         } satisfies ErrorApiResponse;
     }
 
+    try {
+        //sync tags
+        const currentTags = await conn.selectFrom('project_tags').selectAll().where('uuid', '=', input.uuid).execute();
+
+        const ids = input.tags.map((tag) => tag.tag);
+
+        //remove unused tags
+        for (const tag of currentTags.filter((tag) => !ids.includes(tag.tag))) {
+            await conn.deleteFrom('project_tags').where('tag', '=', tag.tag).executeTakeFirstOrThrow();
+        }
+
+        const current = currentTags.map((tag) => tag.tag);
+
+        //add new tags
+        for (const tag of input.tags.filter((tag) => !current.includes(tag.tag))) {
+            await conn
+                .insertInto('project_tags')
+                .values({
+                    uuid: input.uuid,
+                    tag: tag.tag
+                })
+                .executeTakeFirstOrThrow();
+        }
+    } catch (_) {
+        return {
+            status: false,
+            code: 500,
+            message: 'Nepodařilo se aktualizovat tagy'
+        } satisfies ErrorApiResponse;
+    }
     return {
         status: true
     } satisfies Response;

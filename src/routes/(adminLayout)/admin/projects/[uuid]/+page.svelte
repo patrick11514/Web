@@ -4,6 +4,7 @@
     import Gallery from '$/components/admin/gallery.svelte';
     import Message from '$/components/admin/message.svelte';
     import Project from '$/components/admin/project.svelte';
+    import TagSelect from '$/components/admin/tagSelect.svelte';
     import Button from '$/components/button.svelte';
     import Group from '$/components/group.svelte';
     import Input from '$/components/input.svelte';
@@ -230,7 +231,8 @@
             filePath: projectData.preview,
             uuid: projectData.uuid,
             images: images.map((image) => image.path),
-            previewChanged: imageModified
+            previewChanged: imageModified,
+            tags: projectData.tags
         });
 
         if (!result.status) {
@@ -244,9 +246,31 @@
         fetchData();
     };
 
+    const addTag = (id: number) => {
+        if (!projectData) return;
+
+        projectData.tags = [
+            ...projectData.tags,
+            {
+                tag: id,
+                uuid: projectData.uuid
+            }
+        ];
+    };
+
+    const removeTag = (id: number) => {
+        if (!projectData) return;
+
+        projectData.tags = projectData.tags.filter((tag) => tag.tag !== id);
+    };
+
     resolveData(data.project);
 
-    console.log(tags);
+    let unassignedTags: Tag[] = [];
+    let assignedTags: Tag[] = [];
+
+    $: unassignedTags = tags.filter((tag) => !projectData?.tags.map((tag) => tag.tag).includes(tag.id));
+    $: assignedTags = tags.filter((tag) => projectData?.tags.map((tag) => tag.tag).includes(tag.id));
 </script>
 
 <section class="mx-auto flex flex-col p-2 sm:w-[80%] md:w-[75%] lg:grid lg:grid-cols-2 lg:items-center lg:gap-4">
@@ -270,6 +294,32 @@
         <Group>
             <Label for="name">Datum dokonění projektu:</Label>
             <Input id="name" type="date" bind:value={date} />
+        </Group>
+
+        <Group>
+            <Label>Ostatní projektu:</Label>
+            <Group class="flex-row flex-wrap gap-2">
+                {#if unassignedTags.length == 0}
+                    <Message>Nejsou žádné jiné tagy k přiřazení</Message>
+                {:else}
+                    {#each unassignedTags as tag}
+                        <TagSelect id={tag.id} color={tag.color} action={addTag} icon="bi-check" class="text-black">{tag.name}</TagSelect>
+                    {/each}
+                {/if}
+            </Group>
+        </Group>
+
+        <Group>
+            <Label>Tagy projektu:</Label>
+            <Group class="flex-row flex-wrap gap-2">
+                {#if assignedTags.length == 0}
+                    <Message>Nejsou žádné jiné tagy k přiřazení</Message>
+                {:else}
+                    {#each assignedTags as tag}
+                        <TagSelect id={tag.id} color={tag.color} action={removeTag} icon="bi-x" class="text-black">{tag.name}</TagSelect>
+                    {/each}
+                {/if}
+            </Group>
         </Group>
 
         <Group>
