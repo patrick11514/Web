@@ -12,7 +12,7 @@
     import TextArea from '$/components/textArea.svelte';
     import { API } from '$/lib/api';
     import { SwalAlert, createSimpleMarkDown, getDate, getFiles, uploadImage } from '$/lib/functions';
-    import type { FullProjectData } from '$/types/types';
+    import type { FullProjectData, Tag } from '$/types/types';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import path from 'path-browserify';
@@ -57,8 +57,31 @@
         resolveData(result);
     };
 
+    let tags: Tag[] = [];
+
+    const resolveTags = (result: (typeof data)['tags']) => {
+        if (!result.status) {
+            SwalAlert({
+                icon: 'error',
+                title: result.message
+            });
+            return;
+        }
+
+        tags = result.data;
+    };
+
+    resolveTags(data.tags);
+
+    const loadTags = async () => {
+        const result = await API.tag.GET();
+
+        resolveTags(result);
+    };
+
     onMount(() => {
         fetchData();
+        loadTags();
     });
 
     let imageModified = false;
@@ -222,6 +245,8 @@
     };
 
     resolveData(data.project);
+
+    console.log(tags);
 </script>
 
 <section class="mx-auto flex flex-col p-2 sm:w-[80%] md:w-[75%] lg:grid lg:grid-cols-2 lg:items-center lg:gap-4">

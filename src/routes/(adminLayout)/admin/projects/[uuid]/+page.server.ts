@@ -13,6 +13,7 @@ export const load = (async (ev) => {
     }
 
     return {
-        project: await Server.ssr.project.get.POST(ev, { uuid })
+        project: await Server.ssr.project.get.POST(ev, { uuid }),
+        tags: await Server.ssr.tag.GET(ev)
     };
 }) satisfies PageServerLoad;
