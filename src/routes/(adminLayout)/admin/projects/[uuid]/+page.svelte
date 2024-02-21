@@ -26,7 +26,7 @@
     };
 
     const fetchData = async () => {
-        const result = await API.project.get.POST.fetch({
+        const result = await API.project.get.POST({
             uuid: $page.params.uuid
         });
 
@@ -75,7 +75,7 @@
         const formData = new FormData();
         formData.set('file', onlyFiles[0]);
 
-        const result = await API.upload.POST.fetch(formData);
+        const result = await API.upload.POST(formData);
 
         if (!result.status) {
             SwalAlert({
@@ -88,7 +88,7 @@
         if (imageModified) {
             const imagePath = path.parse(projectData.preview);
 
-            const removeResult = await API.upload.DELETE.fetch({
+            const removeResult = await API.upload.DELETE({
                 name: imagePath.base
             });
 
@@ -175,7 +175,7 @@
 
         if (!result.isConfirmed) return;
 
-        const deleteResult = await API.project.get.DELETE.fetch({
+        const deleteResult = await API.project.get.DELETE({
             uuid: projectData.uuid
         });
 
@@ -193,7 +193,7 @@
     const updateProject = async () => {
         if (!projectData) return;
 
-        const result = await API.project.get.PATCH.fetch({
+        const result = await API.project.get.PATCH({
             name: projectData.name,
             date: projectData.date,
             description: projectData.description,

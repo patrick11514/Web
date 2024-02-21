@@ -42,7 +42,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@patrick115/sveltekitapi": "^1.1.5",
+        "@patrick115/sveltekitapi": "^1.2.1",
         "bcrypt": "^5.1.1",
         "bootstrap-icons": "^1.11.3",
         "dompurify": "^3.0.8",

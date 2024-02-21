@@ -11,7 +11,7 @@
     let password = '';
 
     const login = async () => {
-        const data = await API.auth.login.fetch({
+        const data = await API.auth.login({
             username,
             password
         });

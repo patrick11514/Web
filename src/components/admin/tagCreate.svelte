@@ -45,7 +45,7 @@
     const addTag = async () => {
         if (color === 'default') return;
 
-        const result = await API.tag.PUT.fetch({
+        const result = await API.tag.PUT({
             text: tagText,
             color: color === 'custom' ? customColor : color
         });

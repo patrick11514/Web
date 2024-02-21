@@ -37,7 +37,7 @@
             if ($projectData.filePath) {
                 const imagePath = path.parse($projectData.filePath);
 
-                const resultOfRemove = await API.upload.DELETE.fetch({
+                const resultOfRemove = await API.upload.DELETE({
                     name: imagePath.base
                 });
 
@@ -111,7 +111,7 @@
 
         const imagePath = path.parse($projectData.images[id]);
 
-        const result = await API.upload.DELETE.fetch({
+        const result = await API.upload.DELETE({
             name: imagePath.base
         });
 
@@ -137,7 +137,7 @@
             return;
         }
 
-        const response = await API.project.get.PUT.fetch(result.data);
+        const response = await API.project.get.PUT(result.data);
 
         if (!response.status) {
             SwalAlert({

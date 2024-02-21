@@ -15,7 +15,7 @@
     let tags: TagType[] | undefined = undefined;
 
     const getTags = async () => {
-        const result = await API.tag.GET.fetch();
+        const result = await API.tag.GET();
 
         if (!result.status) {
             SwalAlert({
@@ -46,7 +46,7 @@
 
         if (!confirm.isConfirmed) return;
 
-        const result = await API.tag.DELETE.fetch({
+        const result = await API.tag.DELETE({
             id
         });
 

@@ -11,7 +11,7 @@
     let tagData: Tag | undefined = undefined;
 
     const load = async () => {
-        const result = await API.tag.POST.fetch({
+        const result = await API.tag.POST({
             id: parseInt($page.params.id)
         });
 
@@ -36,7 +36,7 @@
     const updateTag = async () => {
         if (!tagData) return;
 
-        const result = await API.tag.PATCH.fetch({
+        const result = await API.tag.PATCH({
             id: tagData.id,
             text: tagData.name,
             color: color === 'custom' ? customColor : color

@@ -30,7 +30,7 @@ export const createSimpleMarkDown = (data: string | undefined) => {
 };
 
 export const logout = async () => {
-    const result = await API.auth.logout.fetch();
+    const result = await API.auth.logout();
 
     if (result.status === false) {
         SwalAlert({
@@ -83,7 +83,7 @@ export const uploadImage = async (file: File) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        const result = await API.upload.POST.fetch(formData);
+        const result = await API.upload.POST(formData);
 
         if (!result.status) {
             return reject(result.message);

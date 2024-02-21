@@ -15,7 +15,7 @@
         | undefined = undefined;
 
     onMount(async () => {
-        const result = await API.project.list.fetch();
+        const result = await API.project.list();
 
         if ('status' in result) {
             SwalAlert({
