@@ -7,6 +7,9 @@
     import type { ProjectType } from '$/types/types';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
+    import type { PageServerData } from './$types';
+
+    export let data: PageServerData;
 
     let projects:
         | (Omit<ProjectType, 'date'> & {
@@ -14,9 +17,7 @@
           })[]
         | undefined = undefined;
 
-    onMount(async () => {
-        const result = await API.project.list();
-
+    const handleData = (result: (typeof data)['projects']) => {
         if ('status' in result) {
             SwalAlert({
                 icon: 'error',
@@ -31,6 +32,14 @@
                 date: new Date(project.date)
             };
         });
+    };
+
+    handleData(data.projects);
+
+    onMount(async () => {
+        const result = await API.project.list();
+
+        handleData(result);
     });
 </script>
 

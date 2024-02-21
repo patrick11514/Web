@@ -7,14 +7,13 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import { onMount } from 'svelte';
+    import type { PageServerData } from './$types';
+
+    export let data: PageServerData;
 
     let tagData: Tag | undefined = undefined;
 
-    const load = async () => {
-        const result = await API.tag.POST({
-            id: parseInt($page.params.id)
-        });
-
+    const handleData = (result: (typeof data)['tag']) => {
         if (!result.status) {
             SwalAlert({
                 icon: 'error',
@@ -27,6 +26,14 @@
 
         color = tagData.color.startsWith('#') ? 'custom' : tagData.color;
         customColor = tagData.color.startsWith('#') ? tagData.color : '#000';
+    };
+
+    const load = async () => {
+        const result = await API.tag.POST({
+            id: parseInt($page.params.id)
+        });
+
+        handleData(result);
     };
 
     onMount(() => {
@@ -60,6 +67,8 @@
 
     let color: string;
     let customColor: string;
+
+    handleData(data.tag);
 </script>
 
 <div class="flex w-full flex-col p-2 xsm:mx-auto xsm:w-[80%] sm:w-[70%] md:w-[60%] lg:max-w-112">

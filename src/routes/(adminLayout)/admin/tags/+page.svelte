@@ -9,14 +9,15 @@
     import { SwalAlert } from '$/lib/functions';
     import type { Tag as TagType } from '$/types/types';
     import { onMount } from 'svelte';
+    import type { PageServerData } from './$types';
+
+    export let data: PageServerData;
 
     let creating = false;
 
     let tags: TagType[] | undefined = undefined;
 
-    const getTags = async () => {
-        const result = await API.tag.GET();
-
+    const handleData = (result: (typeof data)['tags']) => {
         if (!result.status) {
             SwalAlert({
                 icon: 'error',
@@ -26,6 +27,14 @@
         }
 
         tags = result.data;
+    };
+
+    handleData(data.tags);
+
+    const getTags = async () => {
+        const result = await API.tag.GET();
+
+        handleData(result);
     };
 
     onMount(() => {

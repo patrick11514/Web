@@ -17,6 +17,9 @@
     import { page } from '$app/stores';
     import path from 'path-browserify';
     import { onMount } from 'svelte';
+    import type { PageServerData } from './$types';
+
+    export let data: PageServerData;
 
     let projectData: FullProjectData | undefined = undefined;
 
@@ -25,11 +28,7 @@
         modified: boolean;
     };
 
-    const fetchData = async () => {
-        const result = await API.project.get.POST({
-            uuid: $page.params.uuid
-        });
-
+    const resolveData = (result: (typeof data)['project']) => {
         if (!result.status) {
             SwalAlert({
                 icon: 'error',
@@ -48,6 +47,14 @@
                 modified: false
             };
         });
+    };
+
+    const fetchData = async () => {
+        const result = await API.project.get.POST({
+            uuid: $page.params.uuid
+        });
+
+        resolveData(result);
     };
 
     onMount(() => {
@@ -213,6 +220,8 @@
 
         fetchData();
     };
+
+    resolveData(data.project);
 </script>
 
 <section class="mx-auto flex flex-col p-2 sm:w-[80%] md:w-[75%] lg:grid lg:grid-cols-2 lg:items-center lg:gap-4">
