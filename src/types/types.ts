@@ -51,3 +51,8 @@ export type FullProjectData = ProjectType & {
     images: Omit<ProjectImage, 'id'>[];
     tags: Omit<ProjectTags, 'id'>[];
 };
+
+export type PublicProjectData = ProjectType & {
+    images: string[];
+    tags: Omit<Tag, 'id'>[];
+};
