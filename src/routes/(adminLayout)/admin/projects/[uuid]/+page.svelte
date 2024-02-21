@@ -243,6 +243,11 @@
             return;
         }
 
+        SwalAlert({
+            icon: 'success',
+            title: 'Projekt byl úspěšně upraven'
+        });
+
         fetchData();
     };
 
