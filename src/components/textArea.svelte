@@ -1,6 +1,6 @@
 <script lang="ts">
     export let value: string | undefined;
-    export let cols = 30;
+    export let cols = 0;
     export let rows = 10;
     export let name = '';
     export let id = '';
