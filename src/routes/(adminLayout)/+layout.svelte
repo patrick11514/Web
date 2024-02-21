@@ -8,7 +8,7 @@
 
     export let data: LayoutData;
 
-    let navItem: NavigationItem | null = null;
+    let navItem: NavigationItem;
     let folded = true;
 
     const toggleFolded = () => {

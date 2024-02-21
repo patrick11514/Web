@@ -19,8 +19,6 @@
     import Button from '../button.svelte';
     import { sessionData } from '../store.svelte';
 
-    export let currentNavItem: NavigationItem | null = null;
-
     const navigationData: NavigationItem[] = [
         {
             name: 'Domů',
@@ -57,8 +55,14 @@
         }
     ];
 
+    const getNavItem = (value: typeof $page) => {
+        return navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
+    };
+
+    export let currentNavItem: NavigationItem | null = getNavItem($page);
+
     page.subscribe((value) => {
-        currentNavItem = navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
+        currentNavItem = getNavItem(value);
     });
 
     export let folded: boolean;
