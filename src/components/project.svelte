@@ -7,7 +7,10 @@
     export let project: PublicProjectData;
 </script>
 
-<a href="/aaa" class="max-h-128 mx-auto flex h-auto w-full flex-col rounded-md bg-secondary p-2 xsm:w-[80%] sm:w-[65%] md:mx-0 md:max-w-96">
+<a
+    href="/aaa"
+    class="max-h-128 hover:scale-102 mx-auto flex h-auto w-full flex-col rounded-md bg-secondary p-2 transition-all duration-200 xsm:w-[80%] sm:w-[65%] md:mx-0 md:max-w-96"
+>
     <img class="m-2 mx-auto max-h-60" src="/customImages/{project.uuid}/{project.preview}" alt="Project's Preview" />
     <div class="flex flex-row">
         <h1 class="font-ubuntu text-2xl font-bold">{project.name}</h1>

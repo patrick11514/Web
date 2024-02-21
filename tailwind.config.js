@@ -38,6 +38,9 @@ export default {
             },
             lineClamp: {
                 8: '8'
+            },
+            scale: {
+                102: '1.02'
             }
         }
     },
