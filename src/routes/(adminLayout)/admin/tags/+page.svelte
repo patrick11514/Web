@@ -8,7 +8,6 @@
     import { API } from '$/lib/api';
     import { SwalAlert } from '$/lib/functions';
     import type { Tag as TagType } from '$/types/types';
-    import { onMount } from 'svelte';
     import type { PageServerData } from './$types';
 
     export let data: PageServerData;
@@ -36,10 +35,6 @@
 
         handleData(result);
     };
-
-    onMount(() => {
-        getTags();
-    });
 
     const remove = async (id: number) => {
         const confirm = await SwalAlert({

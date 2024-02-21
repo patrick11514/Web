@@ -6,7 +6,6 @@
     import type { Tag } from '$/types/types';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import { onMount } from 'svelte';
     import type { PageServerData } from './$types';
 
     export let data: PageServerData;
@@ -35,10 +34,6 @@
 
         handleData(result);
     };
-
-    onMount(() => {
-        load();
-    });
 
     const updateTag = async () => {
         if (!tagData) return;

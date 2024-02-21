@@ -17,7 +17,6 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import path from 'path-browserify';
-    import { onMount } from 'svelte';
     import type { PageServerData } from './$types';
 
     export let data: PageServerData;
@@ -79,11 +78,6 @@
 
         resolveTags(result);
     };
-
-    onMount(() => {
-        fetchData();
-        loadTags();
-    });
 
     let imageModified = false;
 
