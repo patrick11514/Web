@@ -1,9 +1,10 @@
-import type { PublicProjectData, ResponseWithData } from '$/types/types';
+import type { PublicProjectData, ResponseWithData, Tag } from '$/types/types';
 import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
+import { z } from 'zod';
 import { procedure } from '../api';
 import { conn } from '../variables';
 
-export const projects = procedure.GET.query(async () => {
+const list = procedure.GET.query(async () => {
     try {
         const data = await conn.selectFrom('project').selectAll().execute();
         const tags = await conn.selectFrom('tag').selectAll().execute();
@@ -34,3 +35,47 @@ export const projects = procedure.GET.query(async () => {
         } satisfies ErrorApiResponse;
     }
 });
+
+const getOne = procedure.POST.input(
+    z.object({
+        uuid: z.string()
+    })
+).query(async ({ input: { uuid } }) => {
+    try {
+        const project = await conn.selectFrom('project').selectAll().where('uuid', '=', uuid).executeTakeFirst();
+
+        if (!project) {
+            return {
+                status: false,
+                code: 404,
+                message: 'Projekt nebyl nalezen'
+            } satisfies ErrorApiResponse;
+        }
+
+        const images = await conn.selectFrom('project_image').where('project', '=', uuid).select('name').execute();
+        const tags = (await conn
+            .selectFrom('project_tags')
+            .innerJoin('tag', 'project_tags.tag', 'tag.id')
+            .select(['id', 'name', 'color'])
+            .where('uuid', '=', uuid)
+            .execute()) as Tag[];
+
+        return {
+            status: true,
+            data: {
+                ...project,
+                images: images.map((image) => image.name),
+                tags
+            }
+        } satisfies ResponseWithData<PublicProjectData>;
+    } catch (e) {
+        console.log(e);
+        return {
+            status: false,
+            code: 500,
+            message: 'Nepovedlo se načíst projekt'
+        } satisfies ErrorApiResponse;
+    }
+});
+
+export const projects = [list, getOne];

@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async (ev) => {
     return {
-        projects: await Server.ssr.projects(ev),
+        projects: await Server.ssr.projects.GET(ev),
         tags: await Server.ssr.tags(ev)
     };
 }) satisfies PageServerLoad;

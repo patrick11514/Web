@@ -22,6 +22,7 @@
                 icon: 'error',
                 title: result.message
             });
+
             return;
         }
 

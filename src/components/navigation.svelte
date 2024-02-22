@@ -11,6 +11,7 @@
         icon: BootstrapIcon;
         start?: boolean;
         login: boolean;
+        hidden?: boolean;
     };
 
     let currentNavItem: NavigationItem | null = null;
@@ -46,6 +47,14 @@
             icon: 'bi-tools',
             login: true,
             start: true
+        },
+        {
+            name: 'Informace o projektu',
+            path: '/projects/',
+            icon: 'bi-info-circle',
+            start: true,
+            hidden: true,
+            login: false
         }
     ];
 
@@ -70,6 +79,10 @@
 
 <nav class="mx-auto flex w-full flex-row flex-wrap justify-center gap-1 text-2xl 3xl:text-3xl">
     {#each navigationData.filter((item) => {
+        if (item.hidden && item.hidden === true) {
+            return false;
+        }
+
         if (item.login) {
             return $sessionData.logged;
         }

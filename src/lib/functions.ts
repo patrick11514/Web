@@ -10,6 +10,12 @@ export const sleep = (ms: number) => {
 };
 
 export const SwalAlert = async (data: SweetAlertOptions) => {
+    if (!browser) {
+        return {
+            isConfirmed: false
+        };
+    }
+
     return Swal.fire({
         toast: true,
         position: 'top-end',
