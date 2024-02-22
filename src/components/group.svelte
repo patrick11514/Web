@@ -5,6 +5,6 @@
     export { cls as class };
 </script>
 
-<div class={twMerge('flex flex-col', cls)}>
+<div class={twMerge('my-2 flex flex-col', cls)}>
     <slot />
 </div>
