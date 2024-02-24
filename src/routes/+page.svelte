@@ -32,7 +32,7 @@
         <h2 class="text-center font-ubuntu text-3xl font-bold lg:text-4xl xl:text-5xl">Patrik Mintěl</h2>
         <p class="text-center font-roboto">Věk: {age}</p>
         <p class="my-1">
-            Aktuálně studuju <Link href="https://www.vsb.cz">Vysokou školu Báňskou</Link> v Ostravě. Přesněji studuji obor Informatika na
+            Aktuálně studuji <Link href="https://www.vsb.cz">Vysokou školu Báňskou</Link> v Ostravě. Přesněji studuji obor Informatika na
             <Link href="http://fei.vsb.cz">fakultě elektrotechniky a informatiky</Link>. Ve volném čase se věnuji programováním a hraním her.
         </p>
         <p class="my-1">
