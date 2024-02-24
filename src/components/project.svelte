@@ -16,7 +16,7 @@
         <h1 class="font-ubuntu text-2xl font-bold">{project.name}</h1>
         <h2 class="my-auto ml-auto text-gray-300">{project.date.toLocaleDateString()}</h2>
     </div>
-    <Pre class="line-clamp-6 overflow-ellipsis">{@html createSimpleMarkDown(project.description)}</Pre>
+    <Pre class="line-clamp-4 overflow-ellipsis">{@html createSimpleMarkDown(project.description)}</Pre>
     <div class="my-1 mt-auto flex flex-row flex-wrap">
         {#each project.tags as tag}
             <Tag color={tag.color}>{tag.name}</Tag>

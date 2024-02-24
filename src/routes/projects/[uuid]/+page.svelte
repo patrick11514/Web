@@ -26,7 +26,7 @@
     handleData(data.project);
 </script>
 
-<section class="mx-auto flex flex-1 flex-col gap-x-4 border-t-2 border-t-text p-2 md:grid md:w-[80%] md:grid-cols-2">
+<section class="mx-auto flex w-full flex-1 flex-col gap-x-4 border-t-2 border-t-text p-2 md:grid md:w-[80%] md:grid-cols-2">
     <!-- <a href="/projects"><Button>Zpět</Button></a>-->
     {#if !projectData}
         <Message center={true}>Někde nastala chyba :(</Message>
@@ -45,15 +45,17 @@
             <Label class="text-center md:text-left">Popis projektu</Label>
             <Pre>{@html createSimpleMarkDown(projectData.description)}</Pre>
         </Group>
-        <Group class="col-span-2 row-start-5">
-            <Label class="text-center">Obrázky</Label>
-            <div class="flex flex-col justify-center gap-4 p-2 md:flex-row md:flex-wrap md:items-start">
-                {#each projectData.images as image}
-                    <a class="flex w-max max-w-full items-center justify-center" href="/customImages/{projectData.uuid}/{image}" target="_blank">
-                        <img class="md:h-auto md:max-w-96" src="/customImages/{projectData.uuid}/{image}" alt="Project's preview" />
-                    </a>
-                {/each}
-            </div>
-        </Group>
+        {#if projectData.images.length > 0}
+            <Group class="col-span-2 row-start-5">
+                <Label class="text-center">Obrázky</Label>
+                <div class="flex flex-col justify-center gap-4 p-2 md:flex-row md:flex-wrap md:items-start">
+                    {#each projectData.images as image}
+                        <a class="flex w-max max-w-full items-center justify-center" href="/customImages/{projectData.uuid}/{image}" target="_blank">
+                            <img class="md:h-auto md:max-w-96" src="/customImages/{projectData.uuid}/{image}" alt="Project's preview" />
+                        </a>
+                    {/each}
+                </div>
+            </Group>
+        {/if}
     {/if}
 </section>

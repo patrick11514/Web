@@ -51,6 +51,7 @@
     };
 </script>
 
+<span class="text-center font-ubuntu font-bold 2xl:text-xl">Kliknutím na tag můžeš podle něho filtrovat projekty</span>
 <section class="flex flex-row flex-wrap items-center justify-center px-2">
     {#if !tags}
         <Message>Nepovedlo se načíst tagy :/</Message>
