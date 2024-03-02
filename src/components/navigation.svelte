@@ -62,8 +62,7 @@
         currentNavItem = navigationData.find((item) => (item.start && item.start === true ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
     });
 
-    const description =
-        'Ahoj, jmenuji se Patrik Mintěl a jsem frontend a backend programátor v TypeScriptu, využívající primárně framework SvelteKit. Nebráním se ani tvorbě jiných NodeJS aplikaci, jako jsou Discord boti, Twitch boti a tak dále.';
+    const description = 'Frontend a backend programátor v TypeScriptu, využívající primárně framework SvelteKit. Nebráním se ani tvorbě jiných NodeJS aplikací.';
 </script>
 
 <svelte:head>
