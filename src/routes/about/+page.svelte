@@ -106,8 +106,8 @@
     alt="Screenshot of wysiwyg web builder from 2016"
     label="2016"
 >
-    V 8. třídě na základní škole jsem se začal zajímat o tvorbu webových stránek. Začal jsem prvně tvořit stránky přes WYSIWIG Web Builder, ale brzy jsem zjístil, že to není ono,
-    něco málo jsem zkoušel tvorǐt i ve Wordu, kde to ale vyplivlo do HTML souboru hromadu zbytečných tagů a obrázky se tam zobrazovaly špatně. V tento moment jsem se začal postupně
+    V 8. třídě na základní škole jsem se začal zajímat o tvorbu webových stránek. Začal jsem tvořit stránky přes WYSIWIG Web Builder, ale brzy jsem zjistil, že to není ono,
+    něco málo jsem zkoušel tvořit i ve Wordu, kde to ale vyplivlo do HTML souboru hromadu zbytečných tagů a obrázky se tam zobrazovaly špatně. V tento moment jsem se začal postupně
     učit HTML a CSS, s tím že jsem si na svoje stránky stáhnul nějaký základní AUTH systém, kdy se dokáži přihlásit a poté z PHP session zjišťovat, kdo je přihlášený. Tento systém
     jsem začal zkoumat a zjišťovat si více věci o PHP.
 </TimeLinePart>

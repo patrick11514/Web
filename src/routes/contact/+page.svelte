@@ -23,7 +23,7 @@
             title: 'LinkedIn'
         },
         {
-            link: 'https://instagram.com/patrik.mintel',
+            link: 'https://instagram.com/patrikmintel',
             icon: 'bi-instagram',
             title: 'Instagram'
         },
