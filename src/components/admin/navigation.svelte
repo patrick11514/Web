@@ -52,6 +52,13 @@
             icon: 'bi-info-circle',
             start: true,
             hidden: true
+        },
+        {
+            name: 'Galerie',
+            fullName: 'Galerie obrázků',
+            path: '/admin/gallery',
+            icon: 'bi-image',
+            start: true
         }
     ];
 

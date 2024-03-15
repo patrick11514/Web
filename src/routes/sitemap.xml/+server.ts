@@ -4,7 +4,7 @@ import type { RequestHandler } from './$types';
 
 const date = fs.statSync('package.json').atime;
 
-const urls = ['/', '/projects', '/contact', '/about'];
+const urls = ['/', '/projects', '/contact', '/about', '/gallery'];
 
 export const GET = (({ setHeaders }) => {
     setHeaders({ 'Content-Type': 'text/xml' });

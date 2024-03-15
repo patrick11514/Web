@@ -4,6 +4,13 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
+export interface Gallery {
+  alt: string;
+  date: Date;
+  id: Generated<number>;
+  name: string;
+}
+
 export interface Project {
   date: Date;
   description: string;
@@ -37,6 +44,7 @@ export interface User {
 }
 
 export interface DB {
+  gallery: Gallery;
   project: Project;
   project_image: ProjectImage;
   project_tags: ProjectTags;

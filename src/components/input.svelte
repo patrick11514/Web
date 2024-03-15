@@ -1,7 +1,7 @@
 <script lang="ts">
     export let id = '';
     export let value: string | number = '';
-    export let type: 'text' | 'password' | 'email' | 'number' | 'date' | 'datetime' | 'color';
+    export let type: 'text' | 'password' | 'email' | 'number' | 'date' | 'datetime' | 'color' | 'time';
 </script>
 
 <input
@@ -10,4 +10,5 @@
     {type}
     {value}
     on:input={(ev) => (value = ev.currentTarget.value)}
+    on:change
 />

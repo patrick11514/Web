@@ -1,5 +1,6 @@
 import { router } from '../api';
 import { auth } from './auth';
+import gallery from './gallery';
 import { project } from './project';
 import { projects } from './projects';
 import { tag } from './tag';
@@ -12,7 +13,8 @@ export const Router = router({
     projects,
     upload,
     tag,
-    tags
+    tags,
+    gallery
 });
 
 export type AppRouter = typeof Router;

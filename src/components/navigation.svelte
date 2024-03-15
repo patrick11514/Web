@@ -42,6 +42,13 @@
             login: false
         },
         {
+            name: 'Galerie',
+            path: '/gallery',
+            icon: 'bi-image',
+            login: false,
+            start: true
+        },
+        {
             name: 'Admin',
             path: '/admin',
             icon: 'bi-tools',
