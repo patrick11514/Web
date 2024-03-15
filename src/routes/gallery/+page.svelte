@@ -34,7 +34,7 @@
 <section class="flex flex-1 flex-col">
     <h2 class="mx-auto text-2xl font-bold">Galerie z mého koníčku astrofotografie.</h2>
     <div class="flex p-8">
-        <div class="gap-2 [column-count:1] md:[column-count:2] 2xl:[column-count:3]">
+        <div class="h-full gap-2 [column-count:1] md:[column-count:2] 2xl:[column-count:3]">
             {#if !images}
                 <Message center={true}>Načítání obrázků...</Message>
             {:else if images.length == 0}
