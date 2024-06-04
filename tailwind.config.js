@@ -12,12 +12,13 @@ export default {
                 roboto: ['Roboto', 'sans-serif']
             },
             colors: {
-                text: '#daedf6',
-                background: '#040c10',
-                primary: '#8fc4e3',
-                secondary: '#291f7b',
-                accent: '#6d37cd'
+                text: '#e5f9fd',
+                background: '#01090c',
+                primary: '#7be6f5',
+                secondary: '#991515',
+                accent: '#ef8537'
             },
+
             screens: {
                 '3xl': '1920px',
                 xsm: '480px'
