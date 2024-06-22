@@ -69,7 +69,6 @@ const getOne = procedure.POST.input(
             }
         } satisfies ResponseWithData<PublicProjectData>;
     } catch (e) {
-        console.log(e);
         return {
             status: false,
             code: 500,
