@@ -68,19 +68,19 @@
 >
     <img class="h-auto w-full" src="/customImages/gallery/{data.name}" alt={data.alt} />
     <div class="flex flex-col p-2">
-        <h2 class="font-ubuntu lg:text-xl xl:text-2xl">
+        <h2 class="font-ubuntu font-bold lg:text-xl xl:text-2xl">
             {data.alt}
             {#if admin}
                 <Icon on:click={remove} class="cursor-pointer text-red-500" name="bi-trash-fill" />
             {/if}
         </h2>
         <Group>
-            <h2 class="font-ubuntu lg:text-xl xl:text-2xl">Datum Pořízení:</h2>
+            <h2 class="font-ubuntu font-bold lg:text-lg xl:text-xl">Datum Pořízení:</h2>
             <h3>{formatDate(data.date)}</h3>
         </Group>
         {#if Object.keys(transformedEquipment).length > 0}
             <Group>
-                <h2 class="font-ubuntu lg:text-xl xl:text-2xl">Vybavení:</h2>
+                <h2 class="font-ubuntu font-bold lg:text-lg xl:text-xl">Vybavení:</h2>
                 {#each Object.entries(transformedEquipment) as [name, items]}
                     <Group>
                         <h3 class="font-ubuntu lg:text-lg xl:text-xl">{name}:</h3>
