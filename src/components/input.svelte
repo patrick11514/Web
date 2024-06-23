@@ -1,7 +1,9 @@
 <script lang="ts">
+    import type { HTMLInputTypeAttribute } from 'svelte/elements';
+
     export let id = '';
     export let value: string | number = '';
-    export let type: 'text' | 'password' | 'email' | 'number' | 'date' | 'datetime' | 'color' | 'time';
+    export let type: HTMLInputTypeAttribute;
 </script>
 
 <input
