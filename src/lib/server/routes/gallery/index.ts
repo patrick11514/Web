@@ -1,10 +1,12 @@
 import type { GalleryItem, Response, ResponseWithData } from '$/types/types';
 import { FormDataInput, type ErrorApiResponse } from '@patrick115/sveltekitapi';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import Path from 'node:path';
 import { z } from 'zod';
-import { adminProcedure, procedure } from '../api';
-import { conn } from '../variables';
+import { adminProcedure, procedure } from '../../api';
+import { conn } from '../../variables';
+import single from './single';
 
 const extensions = ['.png', '.jpg', '.jpeg', '.gif', '.avif', '.tiff', '.webp', '.webm'] as const;
 
@@ -24,8 +26,12 @@ const upload = adminProcedure.POST.input(FormDataInput).query(async ({ input }) 
         fs.mkdirSync(root, { recursive: true });
     }
 
-    const path = Path.join(root, file.name);
+    let path = Path.join(root, file.name);
     const fileName = Path.parse(file.name);
+
+    while (fs.existsSync(path)) {
+        path = Path.join(root, fileName.name + crypto.randomBytes(4).toString('hex') + fileName.ext);
+    }
 
     if (!extensions.includes(fileName.ext as (typeof extensions)[number])) {
         return {
@@ -41,13 +47,32 @@ const upload = adminProcedure.POST.input(FormDataInput).query(async ({ input }) 
 
     return {
         status: true,
-        data: '/customImages/gallery/' + file.name
+        data: file.name
     } satisfies ResponseWithData<string>;
 });
 
 const list = procedure.GET.query(async () => {
     try {
-        const data = await conn.selectFrom('gallery').select(['name', 'alt']).orderBy('date', 'desc').execute();
+        const galleryItems = await conn.selectFrom('gallery').selectAll().orderBy('date', 'desc').execute();
+
+        const joinTable = await conn.selectFrom('gallery_equipment').selectAll().execute();
+
+        const equipments = await conn
+            .selectFrom('equipment')
+            .innerJoin('equipment_type', 'equipment.type', 'equipment_type.id')
+            .select(['equipment.id', 'equipment.link', 'equipment.name', 'equipment_type.name as type', 'equipment.id as type_id'])
+            .execute();
+
+        const data: GalleryItem[] = [];
+
+        for (const item of galleryItems) {
+            const equipmentIds = joinTable.filter((join) => join.gallery_id === item.id).map((item) => item.equipment_id);
+
+            data.push({
+                ...item,
+                equipment: equipments.filter((equipment) => equipmentIds.includes(equipment.id))
+            });
+        }
 
         return {
             status: true,
@@ -92,4 +117,12 @@ const add = procedure.PUT.input(
     }
 });
 
-export default [upload, list, add];
+const remove = adminProcedure.DELETE.input(z.number()).query(async ({ input }) => {
+    await conn.deleteFrom('gallery').where('id', '=', input).execute();
+
+    return {
+        status: true
+    } satisfies Response;
+});
+
+export default [upload, list, add, remove, { single }];
