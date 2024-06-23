@@ -25,7 +25,7 @@ const get = procedure.GET.query(async () => {
     const data = await conn
         .selectFrom('equipment')
         .innerJoin('equipment_type', 'equipment.type', 'equipment_type.id')
-        .select(['equipment.name', 'equipment_type.name as type', 'equipment.link', 'equipment.id'])
+        .select(['equipment.name', 'equipment_type.name as type', 'equipment.link', 'equipment.id', 'equipment_type.id as type_id'])
         .execute();
 
     return {

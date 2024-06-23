@@ -23,6 +23,11 @@ export interface Gallery {
   name: string;
 }
 
+export interface GalleryEquipment {
+  equipment_id: number;
+  gallery_id: number;
+}
+
 export interface Project {
   date: Date;
   description: string;
@@ -59,6 +64,7 @@ export interface DB {
   equipment: Equipment;
   equipment_type: EquipmentType;
   gallery: Gallery;
+  gallery_equipment: GalleryEquipment;
   project: Project;
   project_image: ProjectImage;
   project_tags: ProjectTags;

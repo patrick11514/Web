@@ -59,7 +59,10 @@ export type PublicProjectData = ProjectType & {
 
 export type DeArray<T> = T extends (infer U)[] ? U : never;
 
-export type GalleryItem = Omit<Gallery, 'id' | 'date'>;
+export type GalleryItem = Omit<Gallery, 'id'> & {
+    id: number;
+    equipment: EquipmentInfo[];
+};
 
 export type EquipmentType = Omit<DBEquipmentType, 'id'> & {
     id: number;
@@ -67,5 +70,12 @@ export type EquipmentType = Omit<DBEquipmentType, 'id'> & {
 
 export type EquipmentInfo = Omit<Equipment, 'id' | 'type'> & {
     id: number;
+    type_id: number;
     type: string;
 };
+
+//https://stackoverflow.com/a/54178819
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+//https://stackoverflow.com/a/53050575
+export type NoUndefinedField<T> = { [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>> };

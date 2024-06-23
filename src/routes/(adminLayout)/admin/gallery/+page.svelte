@@ -34,7 +34,7 @@
         <Message center={true}>Přidej nějaký obrázky do galerie</Message>
     {:else}
         {#each items as item}
-            <GalleryItemElm class="w-[60%]" data={item} />
+            <GalleryItemElm class="w-[60%]" data={item} admin={true} />
         {/each}
     {/if}
 </section>

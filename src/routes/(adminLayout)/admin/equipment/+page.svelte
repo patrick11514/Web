@@ -12,7 +12,9 @@
     let equipments: EquipmentInfo[] = [];
 
     const getEquipment = (response: (typeof data)['equipment']) => {
-        equipments = response.data;
+        equipments = response.data.toSorted((a, b) => {
+            return a.type_id - b.type_id;
+        });
     };
 
     getEquipment(data.equipment);

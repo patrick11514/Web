@@ -89,20 +89,46 @@ const list = procedure.GET.query(async () => {
 
 const add = procedure.PUT.input(
     z.object({
-        image: z.string(),
-        date: z.coerce.date(),
-        alt: z.string()
+        id: z.number().optional(),
+        alt: z.string(),
+        date: z.date(),
+        name: z.string(),
+        equipment: z.array(
+            z.object({
+                id: z.number(),
+                name: z.string(),
+                link: z.string(),
+                type: z.string(),
+                type_id: z.number()
+            })
+        )
     })
 ).query(async ({ input }) => {
-    const imageData = Path.parse(input.image);
-
     try {
-        conn.insertInto('gallery')
+        const result = await conn
+            .insertInto('gallery')
             .values({
-                name: imageData.base,
+                name: input.name,
                 date: input.date,
                 alt: input.alt
             })
+            .executeTakeFirst();
+
+        //enter equipment
+        if (!result.insertId) {
+            throw new Error('Unable to get id');
+        }
+
+        await conn
+            .insertInto('gallery_equipment')
+            .values(
+                input.equipment.map((item) => {
+                    return {
+                        gallery_id: Number(result.insertId),
+                        equipment_id: item.id
+                    };
+                })
+            )
             .execute();
 
         return {
@@ -125,4 +151,60 @@ const remove = adminProcedure.DELETE.input(z.number()).query(async ({ input }) =
     } satisfies Response;
 });
 
-export default [upload, list, add, remove, { single }];
+const edit = adminProcedure.PATCH.input(
+    z.object({
+        id: z.number(),
+        alt: z.string(),
+        date: z.coerce.date(),
+        name: z.string(),
+        equipment: z.array(
+            z.object({
+                id: z.number(),
+                name: z.string(),
+                link: z.string(),
+                type: z.string(),
+                type_id: z.number()
+            })
+        )
+    })
+).query(async ({ input }) => {
+    try {
+        await conn
+            .updateTable('gallery')
+            .set({
+                name: input.name,
+                date: input.date,
+                alt: input.alt
+            })
+            .where('id', '=', input.id)
+            .execute();
+
+        //delete old equipment
+        await conn.deleteFrom('gallery_equipment').where('gallery_id', '=', input.id).execute();
+
+        //add current equipment
+        await conn
+            .insertInto('gallery_equipment')
+            .values(
+                input.equipment.map((item) => {
+                    return {
+                        gallery_id: input.id,
+                        equipment_id: item.id
+                    };
+                })
+            )
+            .execute();
+
+        return {
+            status: true
+        } satisfies Response;
+    } catch (_) {
+        return {
+            status: false,
+            code: 500,
+            message: 'Internal server error'
+        } satisfies ErrorApiResponse;
+    }
+});
+
+export default [upload, list, add, remove, edit, { single }];

@@ -4,6 +4,9 @@
     export let onEnter: (() => void) | null = null;
     export let onLeave: (() => void) | null = null;
 
+    let cls = '';
+    export { cls as class };
+
     let isOver = false;
     let input: HTMLInputElement;
 
@@ -63,6 +66,7 @@
     on:click={() => input.click()}
     role="button"
     tabindex="0"
+    class={cls}
 >
     <slot />
 </div>

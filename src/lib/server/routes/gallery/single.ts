@@ -1,4 +1,4 @@
-import type { GalleryItem, ResponseWithData } from '$/types/types';
+import type { GalleryItem, NoUndefinedField, ResponseWithData } from '$/types/types';
 import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 import { z } from 'zod';
 import { adminProcedure } from '../../api';
@@ -7,9 +7,9 @@ import { conn } from '../../variables';
 const endpoint = adminProcedure.POST.input(z.number()).query(async ({ input }) => {
     const galleryItem = await conn
         .selectFrom('gallery')
-        .innerJoin('gallery_equipment', 'gallery.id', 'gallery_equipment.gallery_id')
-        .innerJoin('equipment', 'gallery_equipment.equipment_id', 'equipment.id')
-        .innerJoin('equipment_type', 'equipment.type', 'equipment_type.id')
+        .leftJoin('gallery_equipment', 'gallery.id', 'gallery_equipment.gallery_id')
+        .leftJoin('equipment', 'gallery_equipment.equipment_id', 'equipment.id')
+        .leftJoin('equipment_type', 'equipment.type', 'equipment_type.id')
         .select([
             'gallery.id',
             'gallery.name',
@@ -41,7 +41,11 @@ const endpoint = adminProcedure.POST.input(z.number()).query(async ({ input }) =
             alt: first.alt,
             name: first.name,
             date: first.date,
-            equipment: galleryItem.map((item) => {
+            equipment: (
+                galleryItem.filter((item) => {
+                    return item.equipment_id && item.equipment_name && item.link && item.type_id && item.type_name;
+                }) as NoUndefinedField<(typeof galleryItem)[number]>[]
+            ).map((item) => {
                 return {
                     id: item.equipment_id,
                     name: item.equipment_name,
