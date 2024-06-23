@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Tag as DBTag, User as DBUser, Gallery, Project, ProjectImage, ProjectTags } from './database';
+import type { EquipmentType as DBEquipmentType, Tag as DBTag, User as DBUser, Equipment, Gallery, Project, ProjectImage, ProjectTags } from './database';
 
 export type User = Omit<DBUser, 'id'> & {
     id: number;
@@ -60,3 +60,12 @@ export type PublicProjectData = ProjectType & {
 export type DeArray<T> = T extends (infer U)[] ? U : never;
 
 export type GalleryItem = Omit<Gallery, 'id' | 'date'>;
+
+export type EquipmentType = Omit<DBEquipmentType, 'id'> & {
+    id: number;
+};
+
+export type EquipmentInfo = Omit<Equipment, 'id' | 'type'> & {
+    id: number;
+    type: string;
+};

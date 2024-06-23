@@ -5,4 +5,4 @@
     export let name: BootstrapIcon;
 </script>
 
-<i class="bi {name} {cls}"><slot /></i>
+<i on:click on:keypress role="button" tabindex="-1" class="bi {name} {cls}"><slot /></i>

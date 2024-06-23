@@ -59,6 +59,12 @@
             path: '/admin/gallery',
             icon: 'bi-image',
             start: true
+        },
+        {
+            name: 'Equipment',
+            fullName: 'Vybavení',
+            path: '/admin/equipment',
+            icon: 'bi-wrench'
         }
     ];
 
