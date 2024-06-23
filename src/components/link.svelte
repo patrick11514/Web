@@ -7,4 +7,4 @@
     export { cls as class };
 </script>
 
-<a class={twMerge('text-primary', cls)} {href} target={external ? '_blank' : '_self'}><slot /></a>
+<a class={twMerge('text-primary', cls)} {href} target={external ? '_blank' : undefined}><slot /></a>
