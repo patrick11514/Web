@@ -73,12 +73,6 @@
 
     resolveTags(data.tags);
 
-    const loadTags = async () => {
-        const result = await API.tag.GET();
-
-        resolveTags(result);
-    };
-
     let imageModified = false;
 
     let images: ImageModified[] = [];
