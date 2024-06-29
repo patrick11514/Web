@@ -91,7 +91,7 @@ const add = procedure.PUT.input(
     z.object({
         id: z.number().optional(),
         alt: z.string(),
-        date: z.date(),
+        date: z.coerce.date(),
         name: z.string(),
         equipment: z.array(
             z.object({
