@@ -164,7 +164,7 @@
                 </div>
             {/each}
             <Select id="equipment" bind:value={selectedEquipment} class="text-xl font-bold">
-                <option value="" selected>Vyber vybavení pro přidání</option>
+                <option value="" selected disabled>Vyber vybavení pro přidání</option>
                 {#each equipment.filter((item) => !data.equipment.map((eq) => eq.id).includes(item.id)) as item}
                     <option value={item.id}>{item.name} ({item.type})</option>
                 {/each}

@@ -106,7 +106,7 @@
     <Group>
         <Label for="type">Typ</Label>
         <Select id="type" bind:value={type} class="py-2 text-xl font-bold">
-            <option value="" selected>Vyber typ</option>
+            <option value="" selected disabled>Vyber typ</option>
             {#each types as type}
                 <option value={type.id}>{type.name}</option>
             {/each}
