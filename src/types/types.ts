@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { EquipmentType as DBEquipmentType, Tag as DBTag, User as DBUser, Equipment, Gallery, Project, ProjectImage, ProjectTags } from './database';
+import type { Equipment as DBEquipment, EquipmentType as DBEquipmentType, Tag as DBTag, User as DBUser, Gallery, Project, ProjectImage, ProjectTags } from './database';
 
 export type User = Omit<DBUser, 'id'> & {
     id: number;
@@ -68,10 +68,14 @@ export type EquipmentType = Omit<DBEquipmentType, 'id'> & {
     id: number;
 };
 
-export type EquipmentInfo = Omit<Equipment, 'id' | 'type'> & {
+export type EquipmentInfo = Omit<DBEquipment, 'id' | 'type'> & {
     id: number;
     type_id: number;
     type: string;
+};
+
+export type Equipment = Omit<DBEquipment, 'id'> & {
+    id: number;
 };
 
 //https://stackoverflow.com/a/54178819

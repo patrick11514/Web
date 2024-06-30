@@ -1,11 +1,17 @@
-import type { EquipmentInfo, Response, ResponseWithData } from '$/types/types';
+import type { Equipment, EquipmentInfo, Response, ResponseWithData } from '$/types/types';
 import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 import { z } from 'zod';
 import { adminProcedure, procedure } from '../../api';
 import { conn } from '../../variables';
 import t from './type';
 
-const add = adminProcedure.PUT.input(z.object({ name: z.string(), link: z.string().url(), type: z.number() })).query(async ({ input }) => {
+const add = adminProcedure.PUT.input(
+    z.object({
+        name: z.string(),
+        link: z.string().url(),
+        type: z.number()
+    })
+).query(async ({ input }) => {
     try {
         await conn.insertInto('equipment').values(input).execute();
 
@@ -42,10 +48,52 @@ const remove = adminProcedure.DELETE.input(z.number()).query(async ({ input }) =
     } satisfies Response;
 });
 
+const single = adminProcedure.POST.input(z.number()).query(async ({ input }) => {
+    const item = await conn.selectFrom('equipment').selectAll().executeTakeFirst();
+
+    if (!item) {
+        return {
+            status: false,
+            code: 404,
+            message: 'Not found'
+        } satisfies ErrorApiResponse;
+    }
+
+    return {
+        status: true,
+        data: item
+    } satisfies ResponseWithData<Equipment>;
+});
+
+const update = adminProcedure.PATCH.input(
+    z.object({
+        id: z.number().min(1),
+        name: z.string(),
+        link: z.string().url(),
+        type: z.number()
+    })
+).query(async ({ input }) => {
+    const result = await conn.updateTable('equipment').set(input).where('id', '=', input.id).executeTakeFirst();
+
+    if (!result) {
+        return {
+            status: false,
+            code: 404,
+            message: 'Not found'
+        } satisfies ErrorApiResponse;
+    }
+
+    return {
+        status: true
+    } satisfies Response;
+});
+
 export default [
     get,
     add,
     remove,
+    single,
+    update,
     {
         type: t
     }
