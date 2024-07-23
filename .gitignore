@@ -11,6 +11,7 @@ vite.config.ts.timestamp-*
 
 #custom folders
 /projects
+.cache
 
 #lock files
 pnpm-lock.yaml
