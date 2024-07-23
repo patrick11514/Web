@@ -107,7 +107,7 @@ export const GET = (async ({ params, setHeaders, url }) => {
         'Content-Type': 'image/' + fileExtension.startsWith('.') ? fileExtension.slice(1) : fileExtension,
         'Content-Length': fileInfo.size.toString(),
         'Last-Modified': fileInfo.mtime.toUTCString(),
-        'Cache-Control': 'public, max-age=600'
+        'Cache-Control': 'public, max-age=86400'
     });
 
     return new Response(file);
