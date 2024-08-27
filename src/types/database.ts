@@ -60,6 +60,13 @@ export interface User {
   username: string;
 }
 
+export interface Visitors {
+  date: Generated<Date>;
+  id: Generated<number>;
+  ip: string;
+  page: string;
+}
+
 export interface DB {
   equipment: Equipment;
   equipment_type: EquipmentType;
@@ -70,4 +77,5 @@ export interface DB {
   project_tags: ProjectTags;
   tag: Tag;
   user: User;
+  visitors: Visitors;
 }
