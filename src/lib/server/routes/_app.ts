@@ -4,6 +4,7 @@ import equipment from './equipment';
 import gallery from './gallery/index';
 import { project } from './project';
 import { projects } from './projects';
+import stats from './stats';
 import { tag } from './tag';
 import { tags } from './tags';
 import { upload } from './upload';
@@ -16,7 +17,8 @@ export const Router = router({
     tag,
     tags,
     gallery,
-    equipment
+    equipment,
+    stats
 });
 
 export type AppRouter = typeof Router;
