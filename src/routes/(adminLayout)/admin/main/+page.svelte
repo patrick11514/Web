@@ -80,5 +80,11 @@
             <Chart type="line" data={chartData} />
         </div>
     </section>
-    <section class="w-full md:w-[50%]">aa</section>
+    <section class="w-full md:w-[50%]">
+        {#if data.cat}
+            <img src={data.cat} alt="Random cat :)" />
+        {:else}
+            No cat found :(
+        {/if}
+    </section>
 </section>
