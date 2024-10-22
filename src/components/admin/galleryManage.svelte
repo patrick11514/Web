@@ -132,7 +132,7 @@
 
     <Group>
         <Label for="preview">Obrázek</Label>
-        <FileInput onDrop={handleDrop} class="m-2 mx-auto flex w-[80%] rounded-lg p-2 transition-colors duration-200 hover:bg-secondary">
+        <FileInput onDrop={handleDrop} class="m-2 mx-auto flex w-full min-w-40 rounded-lg p-2 transition-colors duration-200 hover:bg-secondary">
             {#if !data.name}
                 <Icon class="mx-auto text-9xl" name="bi-upload" />
             {:else}
