@@ -11,17 +11,20 @@ type LoginDataWithAppData = {
 };
 
 export const load = (async (event) => {
-    //stats
-    const ip = event.getClientAddress();
-    const page = event.url.pathname;
+    //if page is not error ie. route is valid, then log visitors
+    if (event.route !== null) {
+        //stats
+        const ip = event.getClientAddress();
+        const page = event.url.pathname;
 
-    conn.insertInto('visitors')
-        .values({
-            ip,
-            page,
-            date: new Date()
-        })
-        .execute();
+        conn.insertInto('visitors')
+            .values({
+                ip,
+                page,
+                date: new Date()
+            })
+            .execute();
+    }
 
     //other things
     const cookie = event.cookies.get('session');
