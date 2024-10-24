@@ -15,4 +15,4 @@
     });
 </script>
 
-<GalleryManage data={$galleryData} equipment={data.equipment.data} />
+<GalleryManage data={$galleryData} equipment={data.equipment.data} detailTypes={data.details.data} />

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { API } from '$/lib/api';
     import { SwalAlert, extractDate } from '$/lib/functions';
-    import type { EquipmentInfo, GalleryItem, PartialBy } from '$/types/types';
+    import type { DetailTypes, EquipmentInfo, GalleryItem, PartialBy } from '$/types/types';
     import { goto } from '$app/navigation';
     import Icon from '../Icon.svelte';
     import Button from '../button.svelte';
@@ -11,8 +11,11 @@
     import Select from '../select.svelte';
     import FileInput from './fileInput.svelte';
 
+    export let detailTypes: DetailTypes[];
     export let equipment: EquipmentInfo[];
     export let data: PartialBy<GalleryItem, 'id'>;
+
+    console.log(detailTypes);
 
     const handleDrop = async (rawFiles: (File | null)[]) => {
         const files = rawFiles.filter((file) => file !== null) as File[];
@@ -119,6 +122,10 @@
 
         goto('/admin/gallery');
     };
+
+    let addedCategories: DetailTypes[] = [];
+
+    let detailsData: {}[] = [];
 </script>
 
 <div class="mx-auto flex flex-col items-center justify-center p-4 sm:w-[80%] md:w-[75%]">
@@ -155,7 +162,7 @@
     </Group>
 
     <Group>
-        <Label for="alt">Vybavení</Label>
+        <Label for="equipment">Vybavení</Label>
         <div class="flex flex-row flex-wrap gap-2">
             {#each data.equipment as equipment}
                 <div class="rounded-md border-2 border-primary px-1 py-2 text-xl transition-colors duration-200 hover:bg-secondary">
@@ -167,6 +174,18 @@
                 <option value="" selected disabled>Vyber vybavení pro přidání</option>
                 {#each equipment.filter((item) => !data.equipment.map((eq) => eq.id).includes(item.id)) as item}
                     <option value={item.id}>{item.name} ({item.type})</option>
+                {/each}
+            </Select>
+        </div>
+    </Group>
+
+    <Group>
+        <Label for="details">Detaily</Label>
+        <div class="flex flex-row flex-wrap gap-2">
+            <Select id="details" value="">
+                <option value="" selected disabled>+</option>
+                {#each detailTypes as detail}
+                    <option value={detail.id}>{detail.name}</option>
                 {/each}
             </Select>
         </div>
