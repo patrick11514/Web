@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from 'svelte';
+
     /**
      * Source: https://svelte.dev/repl/0ace7a508bd843b798ae599940a91783?version=3.16.7
      */
@@ -18,9 +20,15 @@
         };
     }
 
-    export let clickoutside: () => void;
-    let cls = '';
-    export { cls as class };
+    const {
+        children,
+        class: cls = '',
+        clickoutside
+    }: {
+        children: Snippet;
+        class?: string;
+        clickoutside: () => void;
+    } = $props();
 </script>
 
-<div class={cls} use:clickOutside><slot /></div>
+<div class={cls} use:clickOutside>{@render children()}</div>

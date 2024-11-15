@@ -1,9 +1,17 @@
 <script lang="ts">
-    export let value: string | undefined;
-    export let cols = 0;
-    export let rows = 10;
-    export let name = '';
-    export let id = '';
+    let {
+        value = $bindable(),
+        cols = 0,
+        rows = 10,
+        name = '',
+        id = ''
+    }: {
+        value: string | undefined;
+        cols?: number;
+        rows?: number;
+        name?: string;
+        id?: string;
+    } = $props();
 </script>
 
 <textarea class="h-max rounded-xl border-2 border-primary bg-transparent p-1 text-lg font-medium 3xl:text-xl" {name} {id} {cols} {rows} bind:value></textarea>

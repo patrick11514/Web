@@ -6,11 +6,11 @@
     import type { Tag } from '$/types/types';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let tagData: Tag | undefined = undefined;
+    let tagData = $state<Tag | undefined>(undefined);
 
     const handleData = (result: (typeof data)['tag']) => {
         if (!result.status) {
@@ -36,7 +36,7 @@
     };
 
     const updateTag = async () => {
-        if (!tagData) return;
+        if (!tagData || !color || !customColor) return;
 
         const result = await API.tag.PATCH({
             id: tagData.id,
@@ -60,8 +60,8 @@
         load();
     };
 
-    let color: string;
-    let customColor: string;
+    let color = $state<string>();
+    let customColor = $state<string>();
 
     handleData(data.tag);
 </script>

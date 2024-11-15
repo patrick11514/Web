@@ -4,11 +4,11 @@
     import GalleryItemElm from '$/components/galleryItem.svelte';
     import { SwalAlert } from '$/lib/functions';
     import type { GalleryItem } from '$/types/types';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let items: GalleryItem[] | undefined = undefined;
+    let items = $state<GalleryItem[] | undefined>(undefined);
 
     const parseItems = (request: (typeof data)['items']) => {
         if (!request.status) {

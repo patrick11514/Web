@@ -11,9 +11,15 @@
     import Select from '../select.svelte';
     import FileInput from './fileInput.svelte';
 
-    export let detailTypes: DetailTypes[];
-    export let equipment: EquipmentInfo[];
-    export let data: PartialBy<GalleryItem, 'id'>;
+    let {
+        detailTypes,
+        equipment,
+        data = $bindable()
+    }: {
+        detailTypes: DetailTypes[];
+        equipment: EquipmentInfo[];
+        data: PartialBy<GalleryItem, 'id'>;
+    } = $props();
 
     console.log(detailTypes);
 
@@ -48,8 +54,8 @@
         data.name = result.data;
     };
 
-    let time = '';
-    let date = '';
+    let time = $state('');
+    let date = $state('');
 
     if (data.date) {
         const extracted = extractDate(data.date);
@@ -57,15 +63,17 @@
         time = extracted[1];
     }
 
-    $: data.date = new Date(`${date}T${time}`);
+    $effect(() => {
+        data.date = new Date(`${date}T${time}`);
+    });
 
     const removeEquipment = (id: number) => {
         data.equipment = data.equipment.filter((item) => item.id !== id);
     };
 
-    let selectedEquipment = '';
+    let selectedEquipment = $state('');
 
-    $: {
+    $effect(() => {
         if (selectedEquipment !== '') {
             const number = parseInt(selectedEquipment);
 
@@ -77,7 +85,7 @@
 
             selectedEquipment = '';
         }
-    }
+    });
 
     const process = async () => {
         if (data.id !== undefined) {
@@ -167,7 +175,7 @@
             {#each data.equipment as equipment}
                 <div class="rounded-md border-2 border-primary px-1 py-2 text-xl transition-colors duration-200 hover:bg-secondary">
                     {equipment.name}
-                    <Icon on:click={() => removeEquipment(equipment.id)} class="cursor-pointer text-red-500" name="bi-trash-fill" />
+                    <Icon onclick={() => removeEquipment(equipment.id)} class="cursor-pointer text-red-500" name="bi-trash-fill" />
                 </div>
             {/each}
             <Select id="equipment" bind:value={selectedEquipment} class="text-xl font-bold">
@@ -192,7 +200,7 @@
     </Group>
 
     <Group class="mx-auto flex-row">
-        <Button on:click={process}>
+        <Button onclick={process}>
             {#if data.id !== undefined}
                 Upravit
             {:else}

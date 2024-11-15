@@ -5,11 +5,11 @@
     import { SwalAlert } from '$/lib/functions';
     import type { GalleryItem } from '$/types/types';
     import { onMount } from 'svelte';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let images: GalleryItem[] | undefined = undefined;
+    let images = $state<GalleryItem[] | undefined>(undefined);
 
     const handleImages = async (request: (typeof data)['images']) => {
         if (!request.status) {

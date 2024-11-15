@@ -5,12 +5,12 @@
     import { SwalAlert } from '$/lib/functions';
     import type { PublicProjectData, Tag as PublicTag } from '$/types/types';
     import { twMerge } from 'tailwind-merge';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let projects: PublicProjectData[] | undefined = undefined;
-    let tags: PublicTag[] | undefined = undefined;
+    let projects = $state<PublicProjectData[] | undefined>(undefined);
+    let tags = $state<PublicTag[] | undefined>(undefined);
 
     const resolveTags = (response: (typeof data)['tags']) => {
         if (!response.status) {
@@ -39,7 +39,7 @@
 
     handleData(data.projects);
 
-    let selectedTag: number | undefined = undefined;
+    let selectedTag = $state<number | undefined>(undefined);
 
     const selectTag = (id: number) => {
         if (selectedTag === id) {

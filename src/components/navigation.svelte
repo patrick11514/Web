@@ -14,7 +14,7 @@
         hidden?: boolean;
     };
 
-    let currentNavItem: NavigationItem | null = null;
+    let currentNavItem = $state<NavigationItem | null>(null);
 
     const navigationData: NavigationItem[] = [
         {

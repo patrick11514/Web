@@ -4,7 +4,7 @@
     import Pre from './pre.svelte';
     import Tag from './tag.svelte';
 
-    export let project: PublicProjectData;
+    const { project }: { project: PublicProjectData } = $props();
 </script>
 
 <a

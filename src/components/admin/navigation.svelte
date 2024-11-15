@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
     export type NavigationItem = {
         name: string;
         path: string;
@@ -72,14 +72,19 @@
         return navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
     };
 
-    export let currentNavItem: NavigationItem | null = getNavItem($page);
+    let {
+        currentNavItem = $bindable(getNavItem($page)),
+        folded,
+        version
+    }: {
+        currentNavItem: NavigationItem | null;
+        folded: boolean;
+        version: string;
+    } = $props();
 
     page.subscribe((value) => {
         currentNavItem = getNavItem(value);
     });
-
-    export let folded: boolean;
-    export let version: string;
 </script>
 
 {#if $sessionData.logged}
@@ -92,7 +97,7 @@
         >
             <div class="flex flex-col text-center text-xl md:hidden">
                 <span class="font-ubuntu font-bold">{$sessionData.data.username}</span>
-                <Button on:click={logout} class="px-2 py-1 text-lg">Odhlásit se</Button>
+                <Button onclick={logout} class="px-2 py-1 text-lg">Odhlásit se</Button>
             </div>
             {#each navigationData.filter((item) => (item.hidden && item.hidden === true ? false : true)) as item}
                 {#if currentNavItem !== null && currentNavItem.path == item.path}

@@ -1,17 +1,22 @@
 <script lang="ts">
     import { API } from '$/lib/api';
     import { SwalAlert, formatDate } from '$/lib/functions';
-    import type { EquipmentInfo, GalleryItem } from '$/types/types';
+    import type { EquipmentInfo, GalleryItem, PropChild } from '$/types/types';
     import { twMerge } from 'tailwind-merge';
     import Icon from './Icon.svelte';
     import Group from './group.svelte';
     import Link from './link.svelte';
 
-    let cls = '';
-    export let admin = false;
-    export { cls as class };
-
-    export let data: GalleryItem;
+    const {
+        children,
+        class: cls,
+        admin = false,
+        data = $bindable()
+    }: PropChild<{
+        admin: boolean;
+        class: string;
+        data: GalleryItem;
+    }> = $props();
 
     const remove = async (ev: MouseEvent) => {
         ev.preventDefault();
@@ -71,7 +76,7 @@
         <h2 class="font-ubuntu font-bold lg:text-xl xl:text-2xl">
             {data.alt}
             {#if admin}
-                <Icon on:click={remove} class="cursor-pointer text-red-500" name="bi-trash-fill" />
+                <Icon onclick={remove} class="cursor-pointer text-red-500" name="bi-trash-fill" />
             {/if}
         </h2>
         <Group>

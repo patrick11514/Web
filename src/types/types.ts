@@ -10,6 +10,7 @@ import type {
     ProjectTags,
     DetailTypes as DBDetailTypes
 } from './database';
+import type { Snippet } from 'svelte';
 
 export type User = Omit<DBUser, 'id'> & {
     id: number;
@@ -27,12 +28,12 @@ export type Tag = Omit<DBTag, 'id'> & {
 
 export type LoginData =
     | {
-          logged: false;
-      }
+        logged: false;
+    }
     | {
-          logged: true;
-          data: RegularUser;
-      };
+        logged: true;
+        data: RegularUser;
+    };
 
 export type Response = {
     status: true;
@@ -92,6 +93,8 @@ export type Equipment = Omit<DBEquipment, 'id'> & {
 export type DetailTypes = Omit<DBDetailTypes, 'id'> & {
     id: number;
 };
+
+export type Idk = 'string';
 
 //https://stackoverflow.com/a/54178819
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

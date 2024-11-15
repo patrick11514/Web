@@ -2,9 +2,9 @@
     import GalleryManage from '$/components/admin/galleryManage.svelte';
     import type { GalleryItem, PartialBy } from '$/types/types';
     import { writable } from 'svelte/store';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
     const galleryData = writable<PartialBy<GalleryItem, 'id'>>({
         id: undefined,

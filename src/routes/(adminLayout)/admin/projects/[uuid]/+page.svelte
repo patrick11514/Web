@@ -17,11 +17,11 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import path from 'path-browserify';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let projectData: FullProjectData | undefined = undefined;
+    let projectData = $state<FullProjectData | undefined>(undefined);
 
     type ImageModified = {
         path: string;
@@ -73,9 +73,8 @@
 
     resolveTags(data.tags);
 
-    let imageModified = false;
-
-    let images: ImageModified[] = [];
+    let imageModified = $state(false);
+    let images = $state<ImageModified[]>([]);
 
     const handleDrop = async (files: (File | null)[]) => {
         if (!projectData) return;
@@ -175,9 +174,13 @@
         ];
     };
 
-    let date: string;
+    let date = $state<string>();
 
-    $: projectData ? (projectData.date = new Date(date)) : '';
+    $effect(() => {
+        if (projectData && date) {
+            projectData.date = new Date(date);
+        }
+    });
 
     const deleteProject = async () => {
         if (!projectData) return;
@@ -259,11 +262,8 @@
 
     resolveData(data.project);
 
-    let unassignedTags: Tag[] = [];
-    let assignedTags: Tag[] = [];
-
-    $: unassignedTags = tags.filter((tag) => !projectData?.tags.map((tag) => tag.tag).includes(tag.id));
-    $: assignedTags = tags.filter((tag) => projectData?.tags.map((tag) => tag.tag).includes(tag.id));
+    let unassignedTags = $derived(tags.filter((tag) => !projectData?.tags.map((tag) => tag.tag).includes(tag.id)));
+    let assignedTags = $derived(tags.filter((tag) => projectData?.tags.map((tag) => tag.tag).includes(tag.id)));
 </script>
 
 <section class="mx-auto flex flex-col p-2 sm:w-[80%] md:w-[75%] lg:grid lg:grid-cols-2 lg:items-center lg:gap-4">
@@ -344,15 +344,15 @@
                 {#each images as image, id}
                     <div class="flex flex-row rounded-md border-2 border-primary bg-accent p-1">
                         <h2 class="my-auto break-all">{image.modified ? image.path : `/customImages/${projectData?.uuid}/${image.path}`}</h2>
-                        <button on:click={() => removeImage(id)} class="ml-auto p-1 text-2xl text-red-600"><Icon name="bi-trash-fill" /></button>
+                        <button onclick={() => removeImage(id)} class="ml-auto p-1 text-2xl text-red-600"><Icon name="bi-trash-fill" /></button>
                     </div>
                 {/each}
             </div>
         {/if}
 
         <div class="col-span-2 mx-auto flex flex-row">
-            <Button on:click={updateProject}>Upravit</Button>
-            <Button on:click={deleteProject} class="bg-red-700 hover:bg-red-500">Smazat</Button>
+            <Button onclick={updateProject}>Upravit</Button>
+            <Button onclick={deleteProject} class="bg-red-700 hover:bg-red-500">Smazat</Button>
         </div>
     {/if}
 </section>

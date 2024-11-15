@@ -9,11 +9,11 @@
     import type { Equipment, EquipmentType } from '$/types/types';
     import { goto } from '$app/navigation';
     import { writable } from 'svelte/store';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let types: EquipmentType[] = [];
+    let types = $state<EquipmentType[]>([]);
 
     const processTypes = (response: (typeof data)['types']) => {
         if (!response.status) {

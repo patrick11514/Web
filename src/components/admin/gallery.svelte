@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let images: string[] = [];
+    const { images = [] }: { images: string[] } = $props();
 </script>
 
 <div class="flex min-h-32 flex-row content-center gap-2 overflow-x-scroll rounded-md bg-primary p-2">

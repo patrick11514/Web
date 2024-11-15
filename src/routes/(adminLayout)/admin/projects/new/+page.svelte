@@ -162,9 +162,11 @@
         goto(`/admin/projects/${response.data}`);
     };
 
-    let date = getDate($projectData.date ?? '');
+    let date = $state(getDate($projectData.date ?? ''));
 
-    $: $projectData.date = new Date(date);
+    $effect(() => {
+        $projectData.date = new Date(date);
+    });
 </script>
 
 <div class="m-2 mx-auto flex flex-col p-4 sm:w-[80%] md:w-[75%] lg:grid lg:grid-cols-2 lg:items-center lg:gap-4">

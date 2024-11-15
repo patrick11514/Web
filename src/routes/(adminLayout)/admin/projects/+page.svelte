@@ -5,15 +5,16 @@
     import { SwalAlert } from '$/lib/functions';
     import type { ProjectType } from '$/types/types';
     import { goto } from '$app/navigation';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let projects:
+    let projects = $state<
         | (Omit<ProjectType, 'date'> & {
               date: Date;
           })[]
-        | undefined = undefined;
+        | undefined
+    >(undefined);
 
     const handleData = (result: (typeof data)['projects']) => {
         if ('status' in result) {
@@ -39,7 +40,7 @@
     {#if !projects}
         <Message>Načítání...</Message>
     {:else}
-        <Button class="xsm:mx-auto xsm:w-[80%] xsm:max-w-64 3xl:max-w-96" on:click={() => goto('/admin/projects/new')}>Přidat projekt</Button>
+        <Button class="xsm:mx-auto xsm:w-[80%] xsm:max-w-64 3xl:max-w-96" onclick={() => goto('/admin/projects/new')}>Přidat projekt</Button>
         {#if projects.length == 0}
             <Message>Nebyly nalezeny žádné projekty, přidej nějaký.</Message>
         {:else}

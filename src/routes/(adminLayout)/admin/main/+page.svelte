@@ -1,11 +1,11 @@
 <script lang="ts">
     import Chart from '$/components/admin/chart.svelte';
     import { SwalAlert } from '$/lib/functions';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let today: number;
+    let today = $state<number>();
 
     const getToday = () => {
         if (!data.today.status) {
@@ -21,7 +21,7 @@
 
     getToday();
 
-    let thisWeek: number;
+    let thisWeek = $state<number>();
 
     const getWeek = () => {
         if (!data.thisWeek.status) {
@@ -54,7 +54,7 @@
     getYearData();
 
     let chartData: {
-        datasets: { label: string; data: { x: string; y: number }[] }[];
+        datasets: { label: string; data: { x: number; y: number }[] }[];
     } = {
         datasets: []
     };
@@ -66,7 +66,7 @@
     for (const year of years) {
         chartData.datasets.push({
             label: year.toString(),
-            data: yearData.filter((item) => item.YEAR === year).map((item) => ({ x: item.WEEK.toString(), y: item.COUNT }))
+            data: yearData.filter((item) => item.YEAR === year).map((item) => ({ x: item.WEEK, y: item.COUNT }))
         });
     }
 </script>

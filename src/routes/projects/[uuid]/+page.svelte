@@ -6,11 +6,11 @@
     import Tag from '$/components/tag.svelte';
     import { SwalAlert, createSimpleMarkDown } from '$/lib/functions';
     import type { PublicProjectData } from '$/types/types';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let projectData: PublicProjectData | undefined = undefined;
+    let projectData = $state<PublicProjectData | undefined>(undefined);
 
     const handleData = (response: (typeof data)['project']) => {
         if (!response.status) {

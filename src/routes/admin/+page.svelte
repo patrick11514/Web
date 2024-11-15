@@ -7,8 +7,8 @@
     import { SwalAlert } from '$/lib/functions';
     import { goto } from '$app/navigation';
 
-    let username = '';
-    let password = '';
+    let username = $state('');
+    let password = $state('');
 
     const login = async () => {
         const data = await API.auth.login({

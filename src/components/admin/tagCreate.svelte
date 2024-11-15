@@ -8,11 +8,6 @@
     import Select from '../select.svelte';
     import Tag from '../tag.svelte';
 
-    export let handleCancel: () => void;
-    export let handleRefresh: () => void;
-    export let buttonName = 'Přidat tag';
-    export let cancelName = 'Zrušit';
-
     const colors = [
         'bg-slate-500',
         'bg-gray-500',
@@ -38,10 +33,6 @@
         'bg-rose-500'
     ];
 
-    export let tagText = '';
-    export let color = 'default';
-    export let customColor = '#000000';
-
     const addTag = async () => {
         if (color === 'default') return;
 
@@ -66,7 +57,25 @@
         handleRefresh();
     };
 
-    export let handleButton: () => void = addTag;
+    let {
+        handleCancel,
+        handleRefresh,
+        buttonName = 'Přidat tag',
+        cancelName = 'Zrušit',
+        tagText = $bindable(''),
+        color = $bindable('default'),
+        customColor = $bindable('#00000'),
+        handleButton = addTag
+    }: {
+        handleCancel: () => void;
+        handleRefresh: () => void;
+        buttonName?: string;
+        cancelName?: string;
+        tagText?: string;
+        color?: string;
+        customColor?: string;
+        handleButton?: () => void;
+    } = $props();
 </script>
 
 <Group>
@@ -96,10 +105,10 @@
 
 <Group>
     <Label>Ukázka tagu:</Label>
-    <Tag class="mx-auto" color={color === 'custom' ? customColor : color ?? ''}>{tagText ?? 'Nějaký text'}</Tag>
+    <Tag class="mx-auto" color={color === 'custom' ? customColor : (color ?? '')}>{tagText ?? 'Nějaký text'}</Tag>
 </Group>
 
 <Group class="mx-auto flex-row">
-    <Button on:click={handleButton}>{buttonName}</Button>
-    <Button on:click={handleCancel} class="bg-red-600 hover:bg-red-500">{cancelName}</Button>
+    <Button onclick={handleButton}>{buttonName}</Button>
+    <Button onclick={handleCancel} class="bg-red-600 hover:bg-red-500">{cancelName}</Button>
 </Group>

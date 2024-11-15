@@ -1,11 +1,20 @@
 <script lang="ts">
-    //https://www.npmjs.com/package/@svelte-parts/drop-file
-    export let onDrop: (files: Array<File | null>) => void;
-    export let onEnter: (() => void) | null = null;
-    export let onLeave: (() => void) | null = null;
+    import type { Snippet } from 'svelte';
 
-    let cls = '';
-    export { cls as class };
+    //https://www.npmjs.com/package/@svelte-parts/drop-file
+    const {
+        onDrop,
+        onEnter = null,
+        onLeave = null,
+        class: cls = '',
+        children
+    }: {
+        onDrop: (files: Array<File | null>) => void;
+        onEnter?: (() => void) | null;
+        onLeave?: (() => void) | null;
+        class?: string;
+        children: Snippet;
+    } = $props();
 
     let isOver = false;
     let input: HTMLInputElement;
@@ -68,6 +77,6 @@
     tabindex="0"
     class={cls}
 >
-    <slot />
+    {@render children()}
 </div>
 <input style="display:none" type="file" on:change={handleChange} bind:this={input} multiple />

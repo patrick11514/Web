@@ -1,13 +1,24 @@
 <script lang="ts">
-    export let reverse = false;
-    export let label: string | undefined = undefined;
-    export let src:
-        | string
-        | {
-              [selector: string]: string;
-              default: string;
-          };
-    export let alt: string;
+    import type { Snippet } from 'svelte';
+
+    const {
+        reverse = false,
+        label = undefined,
+        src,
+        alt,
+        children
+    }: {
+        reverse: boolean;
+        label: string | undefined;
+        src:
+            | string
+            | {
+                  [selector: string]: string;
+                  default: string;
+              };
+        alt: string;
+        children: Snippet;
+    } = $props();
 </script>
 
 <section class="flex font-ubuntu lg:mx-auto lg:w-[80%] 3xl:text-xl" class:flex-row={!reverse} class:flex-row-reverse={reverse}>
@@ -28,5 +39,5 @@
         {/if}
         <div class="w-0.5 flex-grow bg-text"></div>
     </section>
-    <span class="my-2 w-[40%] self-center px-2 xl:w-[45%]" class:text-right={!reverse}><slot /></span>
+    <span class="my-2 w-[40%] self-center px-2 xl:w-[45%]" class:text-right={!reverse}>{@render children()}</span>
 </section>

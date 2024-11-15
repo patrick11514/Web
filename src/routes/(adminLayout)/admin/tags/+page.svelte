@@ -8,13 +8,13 @@
     import { API } from '$/lib/api';
     import { SwalAlert } from '$/lib/functions';
     import type { Tag as TagType } from '$/types/types';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let creating = false;
+    let creating = $state(false);
 
-    let tags: TagType[] | undefined = undefined;
+    let tags = $state<TagType[] | undefined>(undefined);
 
     const handleData = (result: (typeof data)['tags']) => {
         if (!result.status) {
@@ -69,7 +69,7 @@
 
 <div class="flex w-full flex-col gap-1 p-4 xsm:mx-auto xsm:w-[80%] sm:w-[70%] md:w-[60%] lg:max-w-112">
     {#if !creating}
-        <Button on:click={() => (creating = true)} class="mx-auto">Vytvořit Tag</Button>
+        <Button onclick={() => (creating = true)} class="mx-auto">Vytvořit Tag</Button>
 
         {#if !tags}
             <Message>Načítání...</Message>
@@ -81,7 +81,7 @@
                     <a class="flex w-full" href="/admin/tags/{tag.id}">
                         <Tag class="w-full py-2 text-center" color={tag.color}>{tag.name}</Tag>
                     </a>
-                    <button on:click={() => remove(tag.id)} class="text-xl text-red-500"><Icon name="bi-trash-fill" /></button>
+                    <button onclick={() => remove(tag.id)} class="text-xl text-red-500"><Icon name="bi-trash-fill" /></button>
                 </Group>
             {/each}
         {/if}

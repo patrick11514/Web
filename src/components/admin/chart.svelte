@@ -2,9 +2,15 @@
     import { Chart, type ChartConfiguration } from 'chart.js/auto';
     import { onMount } from 'svelte';
 
-    export let type: ChartConfiguration['type'];
-    export let data: ChartConfiguration['data'];
-    export let options: ChartConfiguration['options'] = {};
+    const {
+        type,
+        data,
+        options = {}
+    }: {
+        type: ChartConfiguration['type'];
+        data: ChartConfiguration['data'];
+        options?: ChartConfiguration['options'];
+    } = $props();
 
     let canvas: HTMLCanvasElement;
 
@@ -28,4 +34,4 @@
     });
 </script>
 
-<canvas bind:this={canvas} />
+<canvas bind:this={canvas}></canvas>

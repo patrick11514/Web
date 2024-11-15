@@ -3,9 +3,9 @@
     import { SwalAlert } from '$/lib/functions';
     import type { GalleryItem } from '$/types/types';
     import { writable } from 'svelte/store';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
     const itemData = writable<GalleryItem>();
 

@@ -1,8 +1,15 @@
 <script lang="ts">
-    export let name: string;
-    export let date: Date;
-    export let image: string;
-    export let uuid: string | undefined = undefined;
+    const {
+        name,
+        date,
+        image,
+        uuid = undefined
+    }: {
+        name: string;
+        date: Date;
+        image: string;
+        uuid?: string;
+    } = $props();
 </script>
 
 <a href={uuid ? `/admin/projects/${uuid}` : undefined} class="m-2 mx-auto w-[80%]">

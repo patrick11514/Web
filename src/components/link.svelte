@@ -1,10 +1,8 @@
 <script lang="ts">
+    import type { Snippet } from 'svelte';
     import { twMerge } from 'tailwind-merge';
 
-    export let href: string;
-    export let external = true;
-    let cls = '';
-    export { cls as class };
+    const { href, external = true, class: cls, children }: { href: string; external: boolean; class: string; children: Snippet } = $props();
 </script>
 
-<a class={twMerge('text-primary', cls)} {href} target={external ? '_blank' : undefined}><slot /></a>
+<a class={twMerge('text-primary', cls)} {href} target={external ? '_blank' : undefined}>{@render children()}</a>

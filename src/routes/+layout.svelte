@@ -4,9 +4,10 @@
     import 'bootstrap-icons/font/bootstrap-icons.min.css';
     import '../app.css';
     import Navigation from '../components/navigation.svelte';
-    import type { LayoutData } from './$types';
+    import type { PageData } from './$types';
+    import type { Snippet } from 'svelte';
 
-    export let data: LayoutData;
+    const { child, data }: { child: Snippet; data: PageData } = $props();
 
     sessionData.set(data.sessionData);
     API.hydrateFromServer(data.appData);
@@ -14,6 +15,6 @@
 
 <section class="flex h-full min-h-screen w-full flex-col items-stretch bg-background text-text">
     <Navigation />
-    <slot />
+    {@render child()}
     <footer class="mx-auto font-ubuntu font-bold 3xl:text-lg">&copy; Patrik Mintěl 2021 - {new Date().getFullYear()}</footer>
 </section>

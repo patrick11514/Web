@@ -13,7 +13,7 @@
         return years.toFixed(12);
     };
 
-    let age = calculateAge();
+    let age = $state(calculateAge());
 
     onMount(() => {
         const timer = setInterval(() => {

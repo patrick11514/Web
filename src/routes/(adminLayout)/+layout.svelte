@@ -4,12 +4,13 @@
     import Button from '$/components/button.svelte';
     import { sessionData } from '$/components/store.svelte';
     import { logout } from '$/lib/functions';
+    import type { Snippet } from 'svelte';
     import type { LayoutData } from './$types';
 
-    export let data: LayoutData;
+    const { data, child }: { data: LayoutData; child: Snippet } = $props();
 
-    let navItem: NavigationItem;
-    let folded = true;
+    let navItem = $state<NavigationItem>();
+    let folded = $state(true);
 
     const toggleFolded = () => {
         if (folded) {
@@ -22,7 +23,7 @@
     <section class="flex flex-1 flex-col border-b-2 border-t-2 border-text">
         <div class="flex w-full flex-row border-b-2 border-b-text px-2">
             {#if folded}
-                <button on:click={toggleFolded} class="m-2 flex rounded-md border-2 border-text px-1.5 py-0.5 text-2xl transition-colors duration-200 hover:bg-secondary">
+                <button onclick={toggleFolded} class="m-2 flex rounded-md border-2 border-text px-1.5 py-0.5 text-2xl transition-colors duration-200 hover:bg-secondary">
                     <Icon class="m-auto" name="bi-list" />
                 </button>
             {:else}
@@ -39,7 +40,7 @@
         <div class="relative flex flex-1 flex-row">
             <Navigation bind:currentNavItem={navItem} bind:folded version={data.version} />
 
-            <slot />
+            {@render child()}
         </div>
     </section>
 {/if}

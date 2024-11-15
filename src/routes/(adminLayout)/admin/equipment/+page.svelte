@@ -5,11 +5,11 @@
     import { API } from '$/lib/api';
     import { SwalAlert } from '$/lib/functions';
     import type { EquipmentInfo } from '$/types/types';
-    import type { PageServerData } from './$types';
+    import type { PageData } from './$types';
 
-    export let data: PageServerData;
+    const { data }: { data: PageData } = $props();
 
-    let equipments: EquipmentInfo[] = [];
+    let equipments = $state<EquipmentInfo[]>([]);
 
     const getEquipment = (response: (typeof data)['equipment']) => {
         equipments = response.data.toSorted((a, b) => {
