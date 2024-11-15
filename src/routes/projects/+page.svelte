@@ -57,7 +57,7 @@
         <Message>Nepovedlo se načíst tagy :/</Message>
     {:else}
         {#each tags as tag}
-            <Tag on:click={() => selectTag(tag.id)} class={twMerge('border-2 border-transparent', tag.id == selectedTag ? 'border-text' : '')} color={tag.color}>{tag.name}</Tag>
+            <Tag onclick={() => selectTag(tag.id)} class={twMerge('border-2 border-transparent', tag.id == selectedTag ? 'border-text' : '')} color={tag.color}>{tag.name}</Tag>
         {/each}
     {/if}
 </section>

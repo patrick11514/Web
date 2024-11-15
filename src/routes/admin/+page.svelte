@@ -44,5 +44,5 @@
     <Input id="username" type="text" bind:value={username} />
     <Label for="password">Heslo</Label>
     <Input id="password" type="password" bind:value={password} />
-    <Button on:click={login}>Přihlásit se</Button>
+    <Button onclick={login}>Přihlásit se</Button>
 </div>

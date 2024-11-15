@@ -220,11 +220,11 @@
             {#each $projectData.images as image, id}
                 <div class="flex flex-row rounded-md border-2 border-primary bg-accent p-1">
                     <h2 class="my-auto break-all">{image}</h2>
-                    <button on:click={() => removeImage(id)} class="ml-auto p-1 text-2xl text-red-600"><Icon name="bi-trash-fill" /></button>
+                    <button onclick={() => removeImage(id)} class="ml-auto p-1 text-2xl text-red-600"><Icon name="bi-trash-fill" /></button>
                 </div>
             {/each}
         </div>
     {/if}
 
-    <Button class="col-span-2 sm:mx-auto sm:w-[60%]" on:click={addProject}>Přidat</Button>
+    <Button class="col-span-2 sm:mx-auto sm:w-[60%]" onclick={addProject}>Přidat</Button>
 </div>

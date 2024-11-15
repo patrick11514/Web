@@ -113,7 +113,7 @@
         </Select>
     </Group>
     <Group class="mx-auto flex-row">
-        <Button on:click={add}>Přidat</Button>
+        <Button onclick={add}>Přidat</Button>
         <a href="/admin/equipment"><Button class="bg-red-600 hover:bg-red-500">Zpět</Button></a>
     </Group>
 </div>

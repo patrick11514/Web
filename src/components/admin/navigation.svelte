@@ -69,15 +69,15 @@
     ];
 
     const getNavItem = (value: typeof $page) => {
-        return navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
+        return navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? undefined;
     };
 
     let {
-        currentNavItem = $bindable(getNavItem($page)),
-        folded,
+        currentNavItem = $bindable<NavigationItem | undefined>(),
+        folded = $bindable(),
         version
     }: {
-        currentNavItem: NavigationItem | null;
+        currentNavItem?: NavigationItem;
         folded: boolean;
         version: string;
     } = $props();
@@ -100,7 +100,7 @@
                 <Button onclick={logout} class="px-2 py-1 text-lg">Odhlásit se</Button>
             </div>
             {#each navigationData.filter((item) => (item.hidden && item.hidden === true ? false : true)) as item}
-                {#if currentNavItem !== null && currentNavItem.path == item.path}
+                {#if currentNavItem !== undefined && currentNavItem.path == item.path}
                     <div class="mx-auto w-max cursor-pointer px-2 py-1">
                         <h2 class="mx-auto w-max border-b-4 border-b-text font-fira-sans font-bold">
                             <Icon name={item.icon} />

@@ -65,18 +65,18 @@
 </script>
 
 <div
-    on:drop={handleDrop}
-    on:keydown={() => {
+    ondrop={handleDrop}
+    onkeydown={() => {
         return;
     }}
-    on:dragover={handleDragOver}
-    on:dragenter={handleEnter}
-    on:dragleave={handleLeave}
-    on:click={() => input.click()}
+    ondragover={handleDragOver}
+    ondragenter={handleEnter}
+    ondragleave={handleLeave}
+    onclick={() => input.click()}
     role="button"
     tabindex="0"
     class={cls}
 >
     {@render children()}
 </div>
-<input style="display:none" type="file" on:change={handleChange} bind:this={input} multiple />
+<input style="display:none" type="file" onchange={handleChange} bind:this={input} multiple />

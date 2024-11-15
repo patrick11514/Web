@@ -7,7 +7,7 @@
     import type { PageData } from './$types';
     import type { Snippet } from 'svelte';
 
-    const { child, data }: { child: Snippet; data: PageData } = $props();
+    const { children: children, data }: { children: Snippet; data: PageData } = $props();
 
     sessionData.set(data.sessionData);
     API.hydrateFromServer(data.appData);
@@ -15,6 +15,6 @@
 
 <section class="flex h-full min-h-screen w-full flex-col items-stretch bg-background text-text">
     <Navigation />
-    {@render child()}
+    {@render children()}
     <footer class="mx-auto font-ubuntu font-bold 3xl:text-lg">&copy; Patrik Mintěl 2021 - {new Date().getFullYear()}</footer>
 </section>

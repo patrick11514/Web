@@ -64,7 +64,7 @@
     {#each equipments as equipment}
         <div class="rounded-md border-2 border-primary px-2 py-1 text-xl font-bold transition-colors duration-200 hover:bg-secondary">
             <Link href="/admin/equipment/{equipment.id}" external={false}>{equipment.name}</Link>
-            <Icon on:click={() => deleteEquipment(equipment.id)} class="cursor-pointer text-red-500" name="bi-trash-fill" />
+            <Icon onclick={() => deleteEquipment(equipment.id)} class="cursor-pointer text-red-500" name="bi-trash-fill" />
         </div>
     {/each}
     <a href="/admin/equipment/new"><Button>Přidat vybavení</Button></a>

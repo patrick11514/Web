@@ -1,22 +1,21 @@
 <script lang="ts">
     import { API } from '$/lib/api';
     import { SwalAlert, formatDate } from '$/lib/functions';
-    import type { EquipmentInfo, GalleryItem, PropChild } from '$/types/types';
+    import type { EquipmentInfo, GalleryItem } from '$/types/types';
     import { twMerge } from 'tailwind-merge';
     import Icon from './Icon.svelte';
     import Group from './group.svelte';
     import Link from './link.svelte';
 
     const {
-        children,
         class: cls,
         admin = false,
         data = $bindable()
-    }: PropChild<{
+    }: {
         admin: boolean;
         class: string;
         data: GalleryItem;
-    }> = $props();
+    } = $props();
 
     const remove = async (ev: MouseEvent) => {
         ev.preventDefault();

@@ -7,7 +7,7 @@
     import type { Snippet } from 'svelte';
     import type { LayoutData } from './$types';
 
-    const { data, child }: { data: LayoutData; child: Snippet } = $props();
+    const { data, children }: { data: LayoutData; children: Snippet } = $props();
 
     let navItem = $state<NavigationItem>();
     let folded = $state(true);
@@ -34,13 +34,13 @@
             <h2 class="text-ubuntu my-auto ml-2 w-full text-right text-xl font-bold md:text-left 3xl:text-2xl">{navItem?.fullName ?? ''}</h2>
             <div class="my-auto ml-auto hidden flex-row md:flex">
                 <span class="my-auto font-ubuntu font-bold 3xl:text-lg">{$sessionData.data.username}</span>
-                <Button on:click={logout} class="w-max px-2 py-1 text-lg 3xl:text-xl">Odhlásit se</Button>
+                <Button onclick={logout} class="w-max px-2 py-1 text-lg 3xl:text-xl">Odhlásit se</Button>
             </div>
         </div>
         <div class="relative flex flex-1 flex-row">
             <Navigation bind:currentNavItem={navItem} bind:folded version={data.version} />
 
-            {@render child()}
+            {@render children()}
         </div>
     </section>
 {/if}
