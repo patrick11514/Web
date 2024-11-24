@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Chart, type ChartConfiguration } from 'chart.js/auto';
+    import { Chart, type ChartConfiguration, type ChartData, type ChartTypeRegistry } from 'chart.js/auto';
     import { onMount } from 'svelte';
 
     const {
@@ -8,7 +8,7 @@
         options = {}
     }: {
         type: ChartConfiguration['type'];
-        data: ChartConfiguration['data'];
+        data: ChartData<keyof ChartTypeRegistry, { x: string | number; y: number }[]>;
         options?: ChartConfiguration['options'];
     } = $props();
 

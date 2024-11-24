@@ -54,19 +54,18 @@
     getYearData();
 
     let chartData: {
-        datasets: { label: string; data: { x: number; y: number }[] }[];
+        datasets: { label: string; data: { x: string; y: number }[] }[];
     } = {
         datasets: []
     };
 
-    //get all unique year
-    //get all unique yearss
+    //get all unique years
     const years = new Set(yearData.filter((item) => item.YEAR).map((item) => item.YEAR));
 
     for (const year of years) {
         chartData.datasets.push({
             label: year.toString(),
-            data: yearData.filter((item) => item.YEAR === year).map((item) => ({ x: item.WEEK, y: item.COUNT }))
+            data: yearData.filter((item) => item.YEAR === year).map((item) => ({ x: item.WEEK.toString(), y: item.COUNT }))
         });
     }
 </script>
