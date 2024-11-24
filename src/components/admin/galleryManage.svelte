@@ -3,6 +3,7 @@
     import { SwalAlert, extractDate } from '$/lib/functions';
     import type { DetailTypes, EquipmentInfo, GalleryItem, PartialBy } from '$/types/types';
     import { goto } from '$app/navigation';
+    import { untrack } from 'svelte';
     import Icon from '../Icon.svelte';
     import Button from '../button.svelte';
     import Group from '../group.svelte';
@@ -12,16 +13,16 @@
     import FileInput from './fileInput.svelte';
 
     let {
-        detailTypes,
+        //detailTypes,
         equipment,
         data = $bindable()
     }: {
-        detailTypes: DetailTypes[];
+        //detailTypes: DetailTypes[];
         equipment: EquipmentInfo[];
         data: PartialBy<GalleryItem, 'id'>;
     } = $props();
 
-    console.log(detailTypes);
+    // console.log(detailTypes);
 
     const handleDrop = async (rawFiles: (File | null)[]) => {
         const files = rawFiles.filter((file) => file !== null) as File[];
@@ -64,7 +65,8 @@
     }
 
     $effect(() => {
-        data.date = new Date(`${date}T${time}`);
+        const newDate = new Date(`${date}T${time}`);
+        untrack(() => (data.date = newDate));
     });
 
     const removeEquipment = (id: number) => {
@@ -131,9 +133,9 @@
         goto('/admin/gallery');
     };
 
-    let addedCategories: DetailTypes[] = [];
+    //let addedCategories: DetailTypes[] = [];
 
-    let detailsData: {}[] = [];
+    //let detailsData: {}[] = [];
 </script>
 
 <div class="mx-auto flex flex-col items-center justify-center p-4 sm:w-[80%] md:w-[75%]">
@@ -187,7 +189,7 @@
         </div>
     </Group>
 
-    <Group>
+    <!--<Group>
         <Label for="details">Detaily</Label>
         <div class="flex flex-row flex-wrap gap-2">
             <Select id="details" value="">
@@ -197,7 +199,7 @@
                 {/each}
             </Select>
         </div>
-    </Group>
+    </Group>!-->
 
     <Group class="mx-auto flex-row">
         <Button onclick={process}>

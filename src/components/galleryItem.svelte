@@ -67,10 +67,10 @@
 
 <a
     class={twMerge('duration-400 m-0.5 inline-block h-full w-full rounded-sm border-1 border-white bg-white bg-opacity-0 transition-all hover:bg-opacity-5', cls)}
-    href={admin ? `/admin/gallery/${data.id}?format=webp` : `/customImages/gallery/${data.name}?format=webp`}
+    href={admin ? `/admin/gallery/${data.id}` : `/customImages/gallery/${data.name}?format=jpeg`}
     target={admin ? undefined : '_blank'}
 >
-    <img class="h-auto w-full" src="/customImages/gallery/{data.name}?format=webp&scale=50" alt={data.alt} />
+    <img class="h-auto w-full" src="/customImages/gallery/{data.name}?format=jpeg&scale=50" alt={data.alt} />
     <div class="flex flex-col p-2">
         <h2 class="font-ubuntu font-bold lg:text-xl xl:text-2xl">
             {data.alt}
@@ -93,6 +93,7 @@
                                 <Link
                                     href={item.link}
                                     class="before:content flex w-max text-lg font-bold before:m-1 before:my-auto before:block before:h-2 before:w-2 before:rounded-full before:bg-primary"
+                                    button={true}
                                 >
                                     {item.name}
                                 </Link>
