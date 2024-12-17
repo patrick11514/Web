@@ -32,7 +32,7 @@ export const createSimpleMarkDown = (data: string | undefined) => {
     let result = data.replaceAll(/\[(.*)\]\((.*)\)/g, '<a class="text-primary" target="_blank" href="$2" >$1</a>');
     result = result.replaceAll(/\*\*(.*)\*\*/g, '<span class="font-bold">$1</span>');
 
-    DOMPurify.addHook('afterSanitizeAttributes', function (node) {
+    DOMPurify.addHook('afterSanitizeAttributes', function(node) {
         // set all elements owning target to target=_blank
         if ('target' in node) {
             node.setAttribute('target', '_blank');

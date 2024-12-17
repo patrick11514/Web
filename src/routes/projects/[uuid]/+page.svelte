@@ -6,7 +6,9 @@
     import Tag from '$/components/tag.svelte';
     import { SwalAlert, createSimpleMarkDown } from '$/lib/functions';
     import type { PublicProjectData } from '$/types/types';
+    import { onMount } from 'svelte';
     import type { PageData } from './$types';
+    import { browser } from '$app/environment';
 
     const { data }: { data: PageData } = $props();
 
@@ -24,6 +26,14 @@
         projectData = response.data;
     };
     handleData(data.project);
+
+    //Since DOMPurify doesn't work in Node, we must wait for mount and then we can render it
+    //We rely on browser value, so if we are in browser, we want to render markdown directly
+    //but when we are on server (SSR), then we want to wait for mount and then render it in browser
+    let renderMd = $state(browser);
+    onMount(() => {
+        renderMd = true;
+    });
 </script>
 
 <section class="mx-auto flex w-full flex-1 flex-col gap-x-4 border-t-2 border-t-text p-2 md:grid md:w-[80%] md:grid-cols-2">
@@ -43,7 +53,9 @@
         </div>
         <Group class="col-start-2 row-start-3 rounded-md bg-sky-600 p-2">
             <Label class="text-center md:text-left">Popis projektu</Label>
-            <Pre>{@html createSimpleMarkDown(projectData.description)}</Pre>
+            {#if renderMd}
+                <Pre>{@html createSimpleMarkDown(projectData.description)}</Pre>
+            {/if}
         </Group>
         {#if projectData.images.length > 0}
             <Group class="col-span-2 row-start-5 rounded-md border-[1px] border-white p-2">
