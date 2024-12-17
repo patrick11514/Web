@@ -41,16 +41,20 @@
                 <Tag color={tag.color}>{tag.name}</Tag>
             {/each}
         </div>
-        <Group class="col-start-2 row-start-3">
+        <Group class="col-start-2 row-start-3 rounded-md bg-sky-600 p-2">
             <Label class="text-center md:text-left">Popis projektu</Label>
             <Pre>{@html createSimpleMarkDown(projectData.description)}</Pre>
         </Group>
         {#if projectData.images.length > 0}
-            <Group class="col-span-2 row-start-5">
-                <Label class="text-center">Obrázky</Label>
+            <Group class="col-span-2 row-start-5 rounded-md border-[1px] border-white p-2">
+                <Label class="mx-auto mb-2 w-max border-b-2 border-b-white text-center">Obrázky</Label>
                 <div class="flex flex-col justify-center gap-4 p-2 md:flex-row md:flex-wrap md:items-start">
                     {#each projectData.images as image}
-                        <a class="flex w-max max-w-full items-center justify-center" href="/customImages/{projectData.uuid}/{image}" target="_blank">
+                        <a
+                            class="flex w-max max-w-full items-center justify-center rounded-md border-[1px] border-white p-2 transition-transform duration-200 hover:brightness-125"
+                            href="/customImages/{projectData.uuid}/{image}"
+                            target="_blank"
+                        >
                             <img class="md:h-auto md:max-w-96" src="/customImages/{projectData.uuid}/{image}" alt="Project's preview" />
                         </a>
                     {/each}
