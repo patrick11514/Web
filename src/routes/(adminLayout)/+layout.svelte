@@ -2,10 +2,11 @@
     import Icon from '$/components/Icon.svelte';
     import Navigation, { type NavigationItem } from '$/components/admin/navigation.svelte';
     import Button from '$/components/button.svelte';
-    import { sessionData } from '$/components/store.svelte';
     import { logout } from '$/lib/functions';
-    import type { Snippet } from 'svelte';
+    import { getContext, type Snippet } from 'svelte';
     import type { LayoutData } from './$types';
+    import type { Writable } from 'svelte/store';
+    import type { LoginData } from '$/types/types';
 
     const { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -17,9 +18,11 @@
             folded = !folded;
         }
     };
+
+    const userState = getContext<Writable<LoginData>>('userState');
 </script>
 
-{#if $sessionData.logged}
+{#if $userState.logged}
     <section class="flex flex-1 flex-col border-b-2 border-t-2 border-text">
         <div class="flex w-full flex-row border-b-2 border-b-text px-2">
             {#if folded}
@@ -33,7 +36,7 @@
             {/if}
             <h2 class="text-ubuntu my-auto ml-2 w-full text-right text-xl font-bold md:text-left 3xl:text-2xl">{navItem?.fullName ?? ''}</h2>
             <div class="my-auto ml-auto hidden flex-row md:flex">
-                <span class="my-auto font-ubuntu font-bold 3xl:text-lg">{$sessionData.data.username}</span>
+                <span class="my-auto font-ubuntu font-bold 3xl:text-lg">{$userState.data.username}</span>
                 <Button onclick={logout} class="w-max px-2 py-1 text-lg 3xl:text-xl">Odhlásit se</Button>
             </div>
         </div>

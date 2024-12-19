@@ -13,11 +13,13 @@
     import ClickOutside from '$/components/clickOutside.svelte';
     import { logout } from '$/lib/functions';
     import type { BootstrapIcon } from '$/types/bootstrap_icons';
-    import { page } from '$app/stores';
     import { twMerge } from 'tailwind-merge';
     import Icon from '../Icon.svelte';
     import Button from '../button.svelte';
-    import { sessionData } from '../store.svelte';
+    import { page } from '$app/state';
+    import { getContext } from 'svelte';
+    import type { Writable } from 'svelte/store';
+    import type { LoginData } from '$/types/types';
 
     const navigationData: NavigationItem[] = [
         {
@@ -68,10 +70,6 @@
         }
     ];
 
-    const getNavItem = (value: typeof $page) => {
-        return navigationData.find((item) => (item.start ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? undefined;
-    };
-
     let {
         currentNavItem = $bindable<NavigationItem | undefined>(),
         folded = $bindable(),
@@ -82,12 +80,14 @@
         version: string;
     } = $props();
 
-    page.subscribe((value) => {
-        currentNavItem = getNavItem(value);
+    $effect(() => {
+        currentNavItem = navigationData.find((item) => (item.start ? page.url.pathname.startsWith(item.path) : item.path == page.url.pathname)) ?? undefined;
     });
+
+    const userState = getContext<Writable<LoginData>>('userState');
 </script>
 
-{#if $sessionData.logged}
+{#if $userState.logged}
     <ClickOutside clickoutside={() => (folded = true)}>
         <nav
             class={twMerge(
@@ -96,7 +96,7 @@
             )}
         >
             <div class="flex flex-col text-center text-xl md:hidden">
-                <span class="font-ubuntu font-bold">{$sessionData.data.username}</span>
+                <span class="font-ubuntu font-bold">{$userState.data.username}</span>
                 <Button onclick={logout} class="px-2 py-1 text-lg">Odhlásit se</Button>
             </div>
             {#each navigationData.filter((item) => (item.hidden && item.hidden === true ? false : true)) as item}

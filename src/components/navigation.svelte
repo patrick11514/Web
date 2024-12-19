@@ -1,9 +1,11 @@
 <script lang="ts">
     import type { BootstrapIcon } from '$/types/bootstrap_icons';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { PUBLIC_ORIGIN } from '$env/static/public';
+    import { getContext } from 'svelte';
     import Icon from './Icon.svelte';
-    import { sessionData } from './store.svelte';
+    import type { Writable } from 'svelte/store';
+    import type { LoginData } from '$/types/types';
 
     type NavigationItem = {
         name: string;
@@ -13,8 +15,6 @@
         login: boolean;
         hidden?: boolean;
     };
-
-    let currentNavItem = $state<NavigationItem | null>(null);
 
     const navigationData: NavigationItem[] = [
         {
@@ -65,11 +65,13 @@
         }
     ];
 
-    page.subscribe((value) => {
-        currentNavItem = navigationData.find((item) => (item.start && item.start === true ? value.url.pathname.startsWith(item.path) : item.path == value.url.pathname)) ?? null;
-    });
+    let currentNavItem = $derived(
+        navigationData.find((item) => (item.start && item.start === true ? page.url.pathname.startsWith(item.path) : item.path == page.url.pathname)) ?? null
+    );
 
     const description = 'Frontend a backend programátor v TypeScriptu, využívající primárně framework SvelteKit. Nebráním se ani tvorbě jiných NodeJS aplikací.';
+
+    const userData = getContext<Writable<LoginData>>('userState');
 </script>
 
 <svelte:head>
@@ -78,7 +80,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{currentNavItem?.name} | patrick115.eu" />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content="{PUBLIC_ORIGIN}{$page.url.pathname}" />
+    <meta property="og:url" content="{PUBLIC_ORIGIN}{page.url.pathname}" />
     <meta property="og:image" content="{PUBLIC_ORIGIN}/images/icon.webp" />
     <meta property="twitter:card" content="/summary_large_image" />
 </svelte:head>
@@ -90,7 +92,7 @@
         }
 
         if (item.login) {
-            return $sessionData.logged;
+            return $userData.logged;
         }
         return true;
     }) as item}

@@ -8,13 +8,20 @@
     import Input from '$/components/input.svelte';
     import Label from '$/components/label.svelte';
     import Pre from '$/components/pre.svelte';
-    import { projectData } from '$/components/store.svelte';
     import TextArea from '$/components/textArea.svelte';
     import { API } from '$/lib/api';
     import { SwalAlert, createSimpleMarkDown, getDate, getFiles, uploadImage } from '$/lib/functions';
-    import { projectDataSchema } from '$/types/types';
+    import { projectDataSchema, type ProjectData } from '$/types/types';
     import { goto } from '$app/navigation';
+    import type { Snapshot } from '@sveltejs/kit';
     import path from 'path-browserify';
+
+    let projectData = $state<Partial<ProjectData>>({
+        filePath: undefined,
+        name: '',
+        description: '',
+        images: []
+    });
 
     const handleDrop = async (files: (File | null)[]) => {
         const onlyFiles = getFiles(files);
@@ -34,8 +41,8 @@
         try {
             const result = await uploadImage(onlyFiles[0]);
 
-            if ($projectData.filePath) {
-                const imagePath = path.parse($projectData.filePath);
+            if (projectData.filePath) {
+                const imagePath = path.parse(projectData.filePath);
 
                 const resultOfRemove = await API.upload.DELETE({
                     name: imagePath.base
@@ -50,7 +57,7 @@
                 }
             }
 
-            $projectData.filePath = result;
+            projectData.filePath = result;
         } catch (e) {
             if (typeof e === 'string') {
                 SwalAlert({
@@ -98,18 +105,18 @@
 
         const images = succed.map((r) => r.data.value);
 
-        if ($projectData.images) {
-            $projectData.images = [...$projectData.images, ...images];
+        if (projectData.images) {
+            projectData.images = [...projectData.images, ...images];
             return;
         }
 
-        $projectData.images = images;
+        projectData.images = images;
     };
 
     const removeImage = async (id: number) => {
-        if (!$projectData.images) return;
+        if (!projectData.images) return;
 
-        const imagePath = path.parse($projectData.images[id]);
+        const imagePath = path.parse(projectData.images[id]);
 
         const result = await API.upload.DELETE({
             name: imagePath.base
@@ -123,11 +130,11 @@
             return;
         }
 
-        $projectData.images = $projectData.images.filter((_, i) => i !== id);
+        projectData.images = projectData.images.filter((_, i) => i !== id);
     };
 
     const addProject = async () => {
-        const result = projectDataSchema.safeParse($projectData);
+        const result = projectDataSchema.safeParse(projectData);
 
         if (!result.success) {
             SwalAlert({
@@ -152,21 +159,38 @@
             title: 'Projekt byl úspěšně přidán'
         });
 
-        projectData.set({
+        projectData = {
             filePath: undefined,
             name: '',
             description: '',
             images: []
-        });
+        };
 
         goto(`/admin/projects/${response.data}`);
     };
 
-    let date = $state(getDate($projectData.date ?? ''));
+    let date = $state(getDate(''));
 
     $effect(() => {
-        $projectData.date = new Date(date);
+        projectData.date = new Date(date);
     });
+
+    export const snapshot = {
+        capture: () => ({
+            date,
+            projectData
+        }),
+        restore: (value) => {
+            date = value.date;
+            projectData = {
+                ...value.projectData,
+                date: value.projectData.date ? new Date(value.projectData.date) : undefined
+            };
+        }
+    } satisfies Snapshot<{
+        date: string;
+        projectData: Partial<ProjectData>;
+    }>;
 </script>
 
 <div class="m-2 mx-auto flex flex-col p-4 sm:w-[80%] md:w-[75%] lg:grid lg:grid-cols-2 lg:items-center lg:gap-4">
@@ -174,10 +198,10 @@
         <Label for="preview">Náhledový obrázek</Label>
         <FileInput onDrop={handleDrop}>
             <div class="m-2 mx-auto flex w-[80%] rounded-lg p-2 transition-colors duration-200 hover:bg-secondary">
-                {#if !$projectData.filePath}
+                {#if !projectData.filePath}
                     <Icon class="mx-auto text-9xl" name="bi-upload" />
                 {:else}
-                    <img class="mx-auto" id="preview" src={$projectData.filePath} alt="preview of project" />
+                    <img class="mx-auto" id="preview" src={projectData.filePath} alt="preview of project" />
                 {/if}
             </div>
         </FileInput>
@@ -185,12 +209,12 @@
 
     <Group class="col-start-2 row-start-1">
         <Label>Náhled projektu:</Label>
-        <Project name={$projectData.name ?? 'Example'} date={$projectData.date ?? new Date()} image={$projectData.filePath ?? '/images/example_project.png'} />
+        <Project name={projectData.name ?? 'Example'} date={projectData.date ?? new Date()} image={projectData.filePath ?? '/images/example_project.png'} />
     </Group>
 
     <Group>
         <Label for="name">Jméno projektu</Label>
-        <Input bind:value={$projectData.name} id="name" type="text" />
+        <Input bind:value={projectData.name} id="name" type="text" />
     </Group>
 
     <Group>
@@ -200,24 +224,24 @@
 
     <Group>
         <Label for="description">Popis projektu</Label>
-        <TextArea bind:value={$projectData.description} id="description" />
+        <TextArea bind:value={projectData.description} id="description" />
     </Group>
 
     <Group class="col-start-2 row-start-3 self-start">
         <Label>Náhled popisu:</Label>
-        <Pre>{@html createSimpleMarkDown($projectData.description)}</Pre>
+        <Pre>{@html createSimpleMarkDown(projectData.description)}</Pre>
     </Group>
 
     <Group class="col-span-2">
         <Label>Obrázky:</Label>
         <FileInput onDrop={handleGallery}>
-            <Gallery images={$projectData.images} />
+            <Gallery images={projectData.images ?? []} />
         </FileInput>
     </Group>
 
-    {#if $projectData.images}
+    {#if projectData.images}
         <div class="col-span-2 mx-auto my-2 flex w-[50%] flex-1 flex-col gap-2">
-            {#each $projectData.images as image, id}
+            {#each projectData.images as image, id}
                 <div class="flex flex-row rounded-md border-2 border-primary bg-accent p-1">
                     <h2 class="my-auto break-all">{image}</h2>
                     <button onclick={() => removeImage(id)} class="ml-auto p-1 text-2xl text-red-600"><Icon name="bi-trash-fill" /></button>

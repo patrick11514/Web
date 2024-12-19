@@ -1,9 +1,11 @@
-import { sessionData } from '$/components/store.svelte';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import DOMPurify from 'dompurify';
 import Swal, { type SweetAlertOptions } from 'sweetalert2';
 import { API } from './api';
+import { getContext } from 'svelte';
+import type { Writable } from 'svelte/store';
+import type { LoginData } from '$/types/types';
 
 export const sleep = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -54,7 +56,7 @@ export const logout = async () => {
         return;
     }
 
-    sessionData.set({
+    getContext<Writable<LoginData>>('userState').set({
         logged: false
     });
 

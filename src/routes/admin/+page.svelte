@@ -2,13 +2,17 @@
     import Button from '$/components/button.svelte';
     import Input from '$/components/input.svelte';
     import Label from '$/components/label.svelte';
-    import { sessionData } from '$/components/store.svelte';
     import { API } from '$/lib/api';
     import { SwalAlert } from '$/lib/functions';
+    import type { LoginData } from '$/types/types';
     import { goto } from '$app/navigation';
+    import { getContext } from 'svelte';
+    import type { Writable } from 'svelte/store';
 
     let username = $state('');
     let password = $state('');
+
+    const userState = getContext<Writable<LoginData>>('userState');
 
     const login = async () => {
         const data = await API.auth.login({
@@ -29,7 +33,7 @@
             icon: 'success'
         });
 
-        sessionData.set({
+        userState.set({
             logged: true,
             data: data.data
         });

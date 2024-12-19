@@ -1,16 +1,17 @@
 <script lang="ts">
-    import { sessionData } from '$/components/store.svelte';
     import { API } from '$/lib/api';
     import 'bootstrap-icons/font/bootstrap-icons.min.css';
     import '../app.css';
     import Navigation from '../components/navigation.svelte';
     import type { PageData } from './$types';
-    import type { Snippet } from 'svelte';
+    import { setContext, type Snippet } from 'svelte';
+    import { writable } from 'svelte/store';
 
     const { children: children, data }: { children: Snippet; data: PageData } = $props();
 
-    sessionData.set(data.sessionData);
     API.hydrateFromServer(data.appData);
+
+    setContext('userState', writable(data.sessionData));
 </script>
 
 <section class="flex h-full min-h-screen w-full flex-col items-stretch bg-background text-text">
