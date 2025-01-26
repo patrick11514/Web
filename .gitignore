@@ -17,3 +17,7 @@ vite.config.ts.timestamp-*
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+#deploy
+script
+logs
