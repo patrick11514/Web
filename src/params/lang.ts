@@ -1,4 +1,4 @@
-import { languages } from '$/lib/lang/index.svelte';
+import { languages } from '$/lib/lang';
 import type { ParamMatcher } from '@sveltejs/kit';
 
 export const match = ((param: string): param is keyof typeof languages => {
