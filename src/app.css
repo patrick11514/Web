@@ -2,6 +2,13 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
+    --color-background: oklch(0.1 0.005 260); /* ≈ #0d0d0d */
+    --color-text: oklch(0.85 0.01 260); /* ≈ #e5e5e5 */
+    --color-primary: oklch(0.75 0.23 35); /* ≈ #ff4500 */
+    --color-secondary: oklch(0.8 0.17 55); /* ≈ #ff8c42 */
+    --color-primary-text: oklch(0.85 0.14 65); /* ≈ #ffaa33 */
+    --color-secondary-text: oklch(0.7 0.01 260); /* ≈ #aaaaaa */
+
     --font-roboto: 'Roboto', sans-serif;
     --font-ubuntu: 'Ubuntu', sans-serif;
     --font-poppins: 'Poppins', sans-serif;
