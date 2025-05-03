@@ -5,6 +5,7 @@ const o = z.object;
 
 export default o({
     navigation: o({
-        home: _
+        home: _,
+        home_desc: _
     })
 });
