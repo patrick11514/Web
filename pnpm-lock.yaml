@@ -11,6 +11,9 @@ importers:
       '@patrick115/sveltekitapi':
         specifier: ^1.2.12
         version: 1.2.13(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.28.2)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.2))
+      bootstrap-icons:
+        specifier: ^1.11.4
+        version: 1.11.4
       dotenv:
         specifier: ^16.4.5
         version: 16.5.0
@@ -748,6 +751,9 @@ packages:
   body-parser@2.2.0:
     resolution: {integrity: sha512-02qvAaxv8tp7fBa/mw1ga98OGm+eCbqzJOKoRt70sLmfEEi+jyBYVTDGfCL/k06/4EMk/z01gCe7HoCH/f2LTg==}
     engines: {node: '>=18'}
+
+  bootstrap-icons@1.11.4:
+    resolution: {integrity: sha512-P/3I5KsoS8tDvpBLolRBZnRkkKysUXM8Rm00nnazHY+eZ/o/smJZEDPbKI+d+XZLWdiaYDBB+ikUiCl7BogyKg==}
 
   brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -2588,6 +2594,8 @@ snapshots:
       type-is: 2.0.1
     transitivePeerDependencies:
       - supports-color
+
+  bootstrap-icons@1.11.4: {}
 
   brace-expansion@1.1.11:
     dependencies:
