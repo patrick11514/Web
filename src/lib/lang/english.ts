@@ -9,5 +9,59 @@ export default lang.parse({
         home_desc: 'Here you can learn more about me, my interests and the projects I am working on.',
         gallery: 'Gallery',
         gallery_desc: 'Here you can find my astrophotography images that I have taken since I started.'
+    },
+    main: {
+        age: 'Age',
+        text: [
+            '🎓 I am currently studying at ',
+            {
+                text: 'VŠB – Technical University of Ostrava',
+                link: 'https://www.vsb.cz/'
+            },
+            ', majoring in Computer Science at the ',
+            {
+                text: 'Faculty of Electrical Engineering and Computer Science',
+                link: 'https://www.fei.vsb.cz/'
+            },
+            '.',
+            '%%SPACE%%',
+            ' 💻 In my free time, I mostly focus on developing web applications using ',
+            {
+                text: 'SvelteKit',
+                link: 'https://kit.svelte.dev/'
+            },
+            ', ',
+            {
+                text: 'Tailwind CSS',
+                link: 'https://tailwindcss.com/'
+            },
+            ', and ',
+            {
+                text: 'TypeScript',
+                link: 'https://www.typescriptlang.org/'
+            },
+            '. I have experience with both frontend and backend, and I occasionally dive into design as well.',
+            '%%SPACE%%',
+            ' 🧠 Besides SvelteKit, I also work with other frameworks like ',
+            {
+                text: 'Vue.js',
+                link: 'https://vuejs.org/'
+            },
+            ' and ',
+            {
+                text: 'React',
+                link: 'https://react.dev/'
+            },
+            ', so I can adapt to different technologies.',
+            '%%SPACE%%',
+            ' 🛠️ In Node.js, I also develop various applications such as Discord bots, Twitch bots, and other scripts that simplify life.',
+            '%%SPACE%%',
+            ' 🌌 Outside of programming, I enjoy astrophotography — you can find my images in ',
+            {
+                text: 'my gallery',
+                link: '/gallery'
+            },
+            '!'
+        ]
     }
 } satisfies z.infer<typeof lang>);

@@ -9,5 +9,59 @@ export default lang.parse({
         home_desc: 'Zde se dozvíš více o mně, mých zájmech a projektech, na kterých pracuji.',
         gallery: 'Galerie',
         gallery_desc: 'Zde najdeš mé snímky z astrofotografování, které jsem od počátků pořídil.'
+    },
+    main: {
+        age: 'Věk',
+        text: [
+            '🎓 Aktuálně studuji na ',
+            {
+                text: 'Vysoké škole báňské – Technické univerzitě Ostrava',
+                link: 'https://www.vsb.cz/'
+            },
+            ', obor Informatika na ',
+            {
+                text: 'Fakultě elektrotechniky a informatiky',
+                link: 'https://www.fei.vsb.cz/'
+            },
+            '.',
+            '%%SPACE%%',
+            ' 💻 Ve volném čase se nejvíce věnuji vývoji webových aplikací pomocí ',
+            {
+                text: 'SvelteKit',
+                link: 'https://kit.svelte.dev/'
+            },
+            ', ',
+            {
+                text: 'Tailwind CSS',
+                link: 'https://tailwindcss.com/'
+            },
+            ' a ',
+            {
+                text: 'TypeScriptu',
+                link: 'https://www.typescriptlang.org/'
+            },
+            '. Mám zkušenosti jak s frontendem, tak backendem a občas zabrousím i do designu.',
+            '%%SPACE%%',
+            ' 🧠 Kromě SvelteKitu zvládám i práci s jinými frameworky, jako je ',
+            {
+                text: 'Vue.js',
+                link: 'https://vuejs.org/'
+            },
+            ' nebo ',
+            {
+                text: 'React',
+                link: 'https://react.dev/'
+            },
+            ', takže se umím přizpůsobit různým technologiím.',
+            '%%SPACE%%',
+            ' 🛠️ V Node.js vytvářím i různé aplikace jako jsou Discord boti, Twitch boti nebo jiné skripty, které zjednodušují život.',
+            '%%SPACE%%',
+            ' 🌌 Mimo programování se věnuji také astrofotografii – moje snímky najdeš v ',
+            {
+                text: 'mé galerii',
+                link: '/gallery'
+            },
+            '!'
+        ]
     }
 } satisfies z.infer<typeof lang>);
