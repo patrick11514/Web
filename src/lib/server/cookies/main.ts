@@ -91,7 +91,9 @@ export class JWTCookies {
     getCookie<T>(token: string): T | null {
         try {
             return jwt.verify(token, this.key) as T;
-        } catch (_) {
+        } catch (error) {
+            //eslint-disable-next-line no-console
+            console.error('Invalid token:', error);
             return null;
         }
     }

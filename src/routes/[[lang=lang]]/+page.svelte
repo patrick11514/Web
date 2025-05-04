@@ -18,6 +18,13 @@
 
     let canvas: HTMLCanvasElement;
 
+    const resizeCanvas = () => {
+        if (canvas) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+    };
+
     onMount(() => {
         const starback = Starback.create(canvas, {
             type: 'dot',
@@ -25,16 +32,24 @@
             direction: 225,
             randomOpacity: true,
             starSize: [0.1, 0.2, 0.3, 0.4],
-            speed: [0.1, 0.2],
-            backgroundColor: '#030304'
+            speed: [0.3, 0.5],
+            backgroundColor: '#030304',
+            width: window.innerWidth,
+            height: window.innerHeight
         });
 
         const intervalId = setInterval(() => {
             age = getAge();
         }, 50);
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
         return () => {
             clearInterval(intervalId);
             starback.destroy();
+
+            window.removeEventListener('resize', resizeCanvas);
         };
     });
 </script>
