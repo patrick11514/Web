@@ -18,9 +18,7 @@ export default o({
     default_desc: _,
     navigation: o({
         home: _,
-        home_desc: _,
-        gallery: _,
-        gallery_desc: _
+        gallery: _
     }),
     main: o({
         age: _,

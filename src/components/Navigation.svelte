@@ -9,7 +9,6 @@
         name: string;
         icon: BootstrapIcon;
         path: string;
-        description: string;
         matchStart?: boolean;
         hidden?: boolean;
         admin?: boolean;
@@ -21,14 +20,12 @@
         {
             name: _state.lang.navigation.home,
             icon: 'bi-house-fill',
-            path: '/',
-            description: _state.lang.navigation.home_desc
+            path: '/'
         },
         {
             name: _state.lang.navigation.gallery,
             icon: 'bi-house-fill',
-            path: '/test',
-            description: _state.lang.navigation.gallery_desc
+            path: '/test'
         }
     ] satisfies NavItem[]);
 
@@ -46,11 +43,19 @@
     });
 
     let mobileOpened = $state(false);
+
+    const title = $derived.by(() => `${currentItem?.name} | ${page.url.host}`);
+    const description = $derived(_state.lang.default_desc);
 </script>
 
 <svelte:head>
-    <title>{currentItem?.name} | {page.url.host}</title>
-    <meta name="description" content={`${_state.lang.default_desc}\n\n${currentItem?.description}`} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={page.url.toString()} />
+    <meta property="og:image" content="{page.url.origin}/images/PFP.jpg" />
 </svelte:head>
 
 <nav class="font-poppins hidden w-full p-4 text-xl md:flex lg:text-2xl">
