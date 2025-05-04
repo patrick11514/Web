@@ -4,7 +4,7 @@
     import 'bootstrap-icons/font/bootstrap-icons.css';
 
     import { API } from '$/lib/api';
-    import type { Snippet } from 'svelte';
+    import { type Snippet } from 'svelte';
     import type { LayoutData } from './$types';
     import Navigation from '$/components/Navigation.svelte';
     import { page } from '$app/state';
@@ -18,14 +18,16 @@
 
     setState({
         lang: data.lang,
-        path: getPath(page.url.pathname, data.languageList)
+        selectedLang: data.selectedLang,
+        languages: data.languageList,
+        path: getPath(page.url.pathname, Object.keys(data.languageList))
     });
 
     $effect(() => {
-        console.log(page.url.pathname);
         setState({
             lang: data.lang,
-            path: getPath(page.url.pathname, data.languageList)
+            selectedLang: data.selectedLang,
+            path: getPath(page.url.pathname, Object.keys(data.languageList))
         });
     });
 </script>
