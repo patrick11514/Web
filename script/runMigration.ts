@@ -3,7 +3,23 @@
 import { Migrator, FileMigrationProvider } from 'kysely';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { conn } from '../src/types/connection';
+import dotenv from 'dotenv';
+import { Kysely, MysqlDialect } from 'kysely';
+import { createPool } from 'mysql2';
+
+dotenv.config();
+
+const dialect = new MysqlDialect({
+    pool: createPool({
+        host: process.env.DATABASE_IP,
+        port: parseInt(process.env.DATABASE_PORT!),
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME
+    })
+});
+
+const conn = new Kysely({ dialect });
 
 async function runMigrations() {
     const migrator = new Migrator({
