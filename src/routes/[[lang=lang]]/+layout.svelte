@@ -8,7 +8,7 @@
     import type { LayoutData } from './$types';
     import Navigation from '$/components/Navigation.svelte';
     import { page } from '$app/state';
-    import { getState, setState } from '$/lib/state.svelte';
+    import { setState } from '$/lib/state.svelte';
     import { getPath } from '$/lib/lang';
     import Footer from '$/components/Footer.svelte';
 

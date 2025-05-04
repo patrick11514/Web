@@ -53,7 +53,7 @@
     <meta name="description" content={`${_state.lang.default_desc}\n\n${currentItem?.description}`} />
 </svelte:head>
 
-<nav class="font-poppins hidden w-full p-4 md:flex">
+<nav class="font-poppins hidden w-full p-4 text-xl md:flex lg:text-2xl">
     <div class="flex-1"></div>
     <div class="mx-auto flex justify-center gap-8 font-bold">
         {#each Navigation as item, index (index)}
@@ -66,7 +66,7 @@
                     'hover:text-primary-text': !isActive
                 }}
             >
-                <Icon name={item.icon} class="text-2xl" />
+                <Icon name={item.icon} class="text-2xl lg:text-3xl" />
                 {item.name}
             </a>
         {/each}
