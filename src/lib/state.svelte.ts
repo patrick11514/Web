@@ -5,18 +5,21 @@ type Language = z.infer<typeof template>;
 
 type State = {
     lang: Language;
+    selectedLang: string;
+    languages: Record<
+        string,
+        {
+            name: string;
+            flag: string;
+        }
+    >;
     path: string;
 };
 
 const state = $state({}) as State;
 
-export const setState = (newState: State) => {
-    const keys = Object.keys(newState) as (keyof State)[];
-    for (const key of keys) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        state[key] = newState[key];
-    }
+export const setState = (newState: Partial<State>) => {
+    Object.assign(state, newState);
 };
 
 export const getState = () => {
