@@ -1,4 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
+import { conn } from './lib/server/variables';
 
 export const handle = (async ({ event, resolve }) => {
     const response = await resolve(event);
@@ -7,7 +8,13 @@ export const handle = (async ({ event, resolve }) => {
     const disallowedPaths = ['/api'];
 
     if (response.status === 200 && !event.locals.is404 && !disallowedPaths.some((p) => path.startsWith(p))) {
-        console.log('log URL', event.url.pathname);
+        conn.insertInto('visitors')
+            .values({
+                ip: event.getClientAddress(),
+                page: path,
+                user_agent: event.request.headers.get('user-agent') || ''
+            })
+            .execute();
     }
 
     return response;
