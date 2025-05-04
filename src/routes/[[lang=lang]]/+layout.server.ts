@@ -1,10 +1,14 @@
 import { languages } from '$/lib/lang';
 import { Server } from '$/lib/server/server';
+import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
-    const lang = (params.lang ?? 'cs') as keyof typeof languages;
+export const load = (async ({ params, url }) => {
+    if (!params.lang) {
+        redirect(301, `/cs/${url.pathname}`);
+    }
 
+    const lang = params.lang as keyof typeof languages;
     return {
         api: Server.hydrateToClient(),
         lang: languages[lang].t,
