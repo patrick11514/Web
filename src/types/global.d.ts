@@ -1,4 +1,4 @@
-export { };
+export {};
 
 declare global {
     interface ObjectConstructor {
@@ -6,7 +6,7 @@ declare global {
         fromEntries<$Array extends readonly (readonly [PropertyKey, unknown])[]>(
             entries: $Array
         ): {
-                [$Key in $Array[number]as $Key[0]]: $Key[1];
-            };
+            [$Key in $Array[number] as $Key[0]]: $Key[1];
+        };
     }
 }
