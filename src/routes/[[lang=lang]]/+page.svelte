@@ -1,6 +1,7 @@
 <script lang="ts">
     import RichText from '$/components/utility/RichText.svelte';
     import { getState } from '$/lib/state.svelte';
+    import Starback from 'starback';
     import { onMount } from 'svelte';
 
     const _state = getState();
@@ -15,15 +16,30 @@
 
     let age = $state(getAge());
 
+    let canvas: HTMLCanvasElement;
+
     onMount(() => {
+        const starback = Starback.create(canvas, {
+            type: 'dot',
+            quantity: 250,
+            direction: 225,
+            randomOpacity: true,
+            starSize: [0.1, 0.2, 0.3, 0.4],
+            speed: [0.1, 0.2],
+            backgroundColor: '#030304'
+        });
+
         const intervalId = setInterval(() => {
             age = getAge();
         }, 50);
         return () => {
             clearInterval(intervalId);
+            starback.destroy();
         };
     });
 </script>
+
+<canvas bind:this={canvas} class="absolute inset-0 -z-10 h-full w-full overflow-hidden"></canvas>
 
 <div class="mx-auto my-auto flex w-full flex-col items-center justify-center gap-16 md:w-[90%] lg:w-[80%] lg:flex-row xl:w-[70%]">
     <div class="aspect-square max-w-96 overflow-hidden rounded-full">

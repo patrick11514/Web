@@ -29,6 +29,9 @@ importers:
       simple-json-db:
         specifier: ^2.0.0
         version: 2.0.0
+      starback:
+        specifier: github:patrick11514/starback.js
+        version: https://codeload.github.com/patrick11514/starback.js/tar.gz/fe6f8be567f2e4c4d2eadb06c007544c58dd3a0d
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -1837,6 +1840,10 @@ packages:
     resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
     engines: {node: '>= 0.6'}
 
+  starback@https://codeload.github.com/patrick11514/starback.js/tar.gz/fe6f8be567f2e4c4d2eadb06c007544c58dd3a0d:
+    resolution: {tarball: https://codeload.github.com/patrick11514/starback.js/tar.gz/fe6f8be567f2e4c4d2eadb06c007544c58dd3a0d}
+    version: 2.1.7
+
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
@@ -3608,6 +3615,8 @@ snapshots:
   source-map-js@1.2.1: {}
 
   sqlstring@2.3.3: {}
+
+  starback@https://codeload.github.com/patrick11514/starback.js/tar.gz/fe6f8be567f2e4c4d2eadb06c007544c58dd3a0d: {}
 
   statuses@2.0.1: {}
 

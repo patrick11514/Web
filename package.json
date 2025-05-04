@@ -50,6 +50,7 @@
         "kysely": "^0.27.4",
         "mysql2": "^3.11.4",
         "simple-json-db": "^2.0.0",
+        "starback": "github:patrick11514/starback.js",
         "tailwind-merge": "^3.2.0",
         "uuid": "^11.0.2",
         "zod": "^3.23.8"

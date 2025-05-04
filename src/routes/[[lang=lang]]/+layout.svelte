@@ -8,7 +8,7 @@
     import type { LayoutData } from './$types';
     import Navigation from '$/components/Navigation.svelte';
     import { page } from '$app/state';
-    import { setState } from '$/lib/state.svelte';
+    import { getState, setState } from '$/lib/state.svelte';
     import { getPath } from '$/lib/lang';
     import Footer from '$/components/Footer.svelte';
 
@@ -32,7 +32,7 @@
     });
 </script>
 
-<section class="bg-background text-text font-ubuntu flex h-full min-h-screen w-full min-w-screen flex-col text-lg lg:text-xl">
+<section class="text-text font-ubuntu flex h-full min-h-screen w-full min-w-screen flex-col text-lg lg:text-xl">
     <Navigation />
 
     <main class="flex flex-1 flex-col">
