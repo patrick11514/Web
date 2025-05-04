@@ -20,6 +20,12 @@ export default o({
         home: _,
         gallery: _
     }),
+    error: o({
+        title: _,
+        message: _,
+        sub_message: _,
+        go_home: _
+    }),
     main: o({
         age: _,
         text: r

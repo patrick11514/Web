@@ -6,7 +6,13 @@ export default lang.parse({
         'Ahoj, jsem Patrik, student a programátor, který se ve volném čase věnuje astrofotografování. Věnuji se tvorbě webových stránek a aplikací ve frameworku SvelteKit. Nebráním se tvorbě jiných aplikací, například v NodeJS, nebo jiných frameworkcích, jako jsou Vue.js, nebo React.',
     navigation: {
         home: 'Domů',
-        gallery: 'Galerie',
+        gallery: 'Galerie'
+    },
+    error: {
+        title: 'Chyba',
+        message: 'Oops!',
+        sub_message: 'Tuto stránku neznáme :(',
+        go_home: 'Zpátky domů'
     },
     main: {
         age: 'Věk',

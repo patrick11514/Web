@@ -6,7 +6,13 @@ export default lang.parse({
         'Hello, I am Patrik, a student and programmer who enjoys astrophotography in my free time. I create websites and applications using the SvelteKit framework. I am open to creating other applications, for example in NodeJS or other frameworks like Vue.js or React.',
     navigation: {
         home: 'Home',
-        gallery: 'Gallery',
+        gallery: 'Gallery'
+    },
+    error: {
+        title: 'Error',
+        message: 'Oops!',
+        sub_message: "We don't know this page :(",
+        go_home: 'Back home'
     },
     main: {
         age: 'Age',
