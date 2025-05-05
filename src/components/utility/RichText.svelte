@@ -15,7 +15,7 @@
             {@html part}
         {/if}
     {:else}
-        <Link link={part.link}>
+        <Link link={part.link} target="_blank">
             {part.text}
         </Link>
     {/if}
