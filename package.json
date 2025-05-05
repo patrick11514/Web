@@ -25,6 +25,7 @@
         "@sveltejs/vite-plugin-svelte": "^5.0.0",
         "@tailwindcss/typography": "^0.5.15",
         "@tailwindcss/vite": "^4.0.0",
+        "@types/bcrypt": "^5.0.2",
         "@types/jsonwebtoken": "^9.0.7",
         "@types/uuid": "^10.0.0",
         "eslint": "^9.18.0",
@@ -44,6 +45,7 @@
     },
     "dependencies": {
         "@patrick115/sveltekitapi": "^1.2.12",
+        "bcrypt": "^5.1.1",
         "bootstrap-icons": "^1.11.4",
         "dotenv": "^16.4.5",
         "jsonwebtoken": "^9.0.2",
