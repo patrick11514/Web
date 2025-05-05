@@ -4,13 +4,14 @@
     import 'bootstrap-icons/font/bootstrap-icons.css';
 
     import { API } from '$/lib/api';
-    import { type Snippet } from 'svelte';
+    import { onMount, type Snippet } from 'svelte';
     import type { LayoutData } from './$types';
     import Navigation from '$/components/Navigation.svelte';
     import { page } from '$app/state';
     import { setState } from '$/lib/state.svelte';
     import { getPath } from '$/lib/lang';
     import Footer from '$/components/Footer.svelte';
+    import Starback from 'starback';
 
     let { children, data }: { children: Snippet; data: LayoutData } = $props();
 
@@ -30,7 +31,40 @@
             path: getPath(page.url.pathname, Object.keys(data.languageList))
         });
     });
+
+    let canvas: HTMLCanvasElement;
+
+    const resizeCanvas = () => {
+        if (canvas) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+    };
+
+    onMount(() => {
+        const starback = Starback.create(canvas, {
+            type: 'dot',
+            quantity: 250,
+            direction: 225,
+            randomOpacity: true,
+            starSize: [0.1, 0.2, 0.3, 0.4],
+            speed: [0.3, 0.5],
+            backgroundColor: '#030304',
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        return () => {
+            starback.destroy();
+
+            window.removeEventListener('resize', resizeCanvas);
+        };
+    });
 </script>
+
+<canvas bind:this={canvas} class="absolute inset-0 -z-10 h-full w-full overflow-hidden"></canvas>
 
 <section class="text-text font-ubuntu flex h-full min-h-screen w-full min-w-screen flex-col text-lg lg:text-xl">
     <Navigation />
