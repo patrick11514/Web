@@ -1,5 +1,6 @@
 import type { z } from 'zod';
 import template from './lang/_template';
+import type { UserState } from '$/types/types';
 
 type Language = z.infer<typeof template>;
 
@@ -14,6 +15,7 @@ type State = {
         }
     >;
     path: string;
+    userState: UserState;
 };
 
 const state = $state({}) as State;

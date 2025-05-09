@@ -18,7 +18,8 @@ export default o({
     default_desc: _,
     navigation: o({
         home: _,
-        gallery: _
+        gallery: _,
+        admin: _
     }),
     error: o({
         title: _,

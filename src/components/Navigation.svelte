@@ -26,6 +26,12 @@
             name: _state.lang.navigation.gallery,
             icon: 'bi-image-fill',
             path: '/gallery'
+        },
+        {
+            name: _state.lang.navigation.admin,
+            icon: 'bi-hdd-rack',
+            path: '/admin',
+            admin: true
         }
     ] satisfies NavItem[]);
 
@@ -63,7 +69,7 @@
 <nav class="font-poppins hidden w-full p-4 text-xl md:flex lg:text-2xl">
     <div class="flex-1"></div>
     <div class="mx-auto flex justify-center gap-8 font-bold">
-        {#each Navigation as item, index (index)}
+        {#each Navigation.filter((item) => (item.admin ? _state.userState.logged : true)) as item, index (index)}
             {@const isActive = _state.path === item.path}
             <a
                 href="/{selectedLanguage}/{item.path}"

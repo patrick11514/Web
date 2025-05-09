@@ -5,7 +5,7 @@ import { conn, jwt } from './variables';
 import type { ErrorPath } from '../lang';
 import bcrypt from 'bcrypt';
 import { COOKIE_EXPIRE } from '$env/static/private';
-import type { ResponseWithData, UserData } from '$/types/types';
+import type { ActionsResponse, Response } from '$/types/types';
 
 export const r = router({
     login: procedure.POST.input(FormDataInput).query(async ({ input, ev: { cookies } }) => {
@@ -16,7 +16,7 @@ export const r = router({
             return fail(401, {
                 status: false,
                 message: 'login.form' satisfies ErrorPath
-            });
+            } satisfies ActionsResponse);
         }
 
         const data = await conn.selectFrom('account').selectAll().where('username', '=', username).executeTakeFirst();
@@ -25,14 +25,14 @@ export const r = router({
             return fail(401, {
                 status: false,
                 message: 'login.username' satisfies ErrorPath
-            });
+            } satisfies ActionsResponse);
         }
 
         if (!bcrypt.compareSync(password, data.password)) {
             return fail(401, {
                 status: false,
                 message: 'login.password' satisfies ErrorPath
-            });
+            } satisfies ActionsResponse);
         }
 
         const userData = {
@@ -48,9 +48,8 @@ export const r = router({
         });
 
         return {
-            status: true,
-            data: userData
-        } satisfies ResponseWithData<UserData>;
+            status: true
+        } satisfies Response;
     })
 });
 

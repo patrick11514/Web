@@ -1,6 +1,7 @@
 import type { ClassValue } from 'svelte/elements';
 import type { Account } from './database';
 import type { Selectable } from 'kysely';
+import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 
 export type FormElement<$Attrs> = {
     class?: ClassValue;
@@ -17,6 +18,8 @@ export type UserState =
         logged: true;
         data: UserData;
     };
+
+export type ActionsResponse = Omit<ErrorApiResponse, 'code'>;
 
 export type Response = {
     status: true;

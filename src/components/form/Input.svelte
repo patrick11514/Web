@@ -10,7 +10,7 @@
         placeholder,
         type = 'text',
         class: cls,
-        error = $bindable(undefined)
+        error = undefined
     }: FormElement<{
         value?: string | number | undefined | null;
         id?: string;
@@ -18,25 +18,17 @@
         placeholder?: string;
         type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url';
     }> = $props();
-
-    let element: HTMLInputElement | null = null;
-
-    $effect(() => {
-        if (element) {
-            element.setCustomValidity(error ?? '');
-        }
-    });
 </script>
 
 <input
-    bind:this={element}
     {id}
     {type}
     {name}
     {placeholder}
     bind:value
     class={twMerge(
-        'border-secondary focus:border-primary font-roboto placeholder:font-roboto placeholder:text-text rounded-md border-2 px-2 py-1 text-xl font-bold transition-colors duration-200 outline-none placeholder:font-bold invalid:border-red-500 lg:text-2xl',
+        'border-secondary focus:border-primary font-roboto placeholder:font-roboto placeholder:text-text rounded-md border-2 px-2 py-1 text-xl font-bold transition-colors duration-200 outline-none placeholder:font-bold lg:text-2xl',
+        error !== undefined ? 'border-red-500' : '',
         clsx(cls)
     )}
 />

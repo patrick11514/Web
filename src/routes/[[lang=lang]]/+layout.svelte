@@ -21,14 +21,16 @@
         lang: data.lang,
         selectedLang: data.selectedLang,
         languages: data.languageList,
-        path: getPath(page.url.pathname, Object.keys(data.languageList))
+        path: getPath(page.url.pathname, Object.keys(data.languageList)),
+        userState: data.userState
     });
 
     $effect(() => {
         setState({
             lang: data.lang,
             selectedLang: data.selectedLang,
-            path: getPath(page.url.pathname, Object.keys(data.languageList))
+            path: getPath(page.url.pathname, Object.keys(data.languageList)),
+            userState: data.userState
         });
     });
 
