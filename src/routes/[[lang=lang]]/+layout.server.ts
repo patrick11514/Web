@@ -5,7 +5,11 @@ import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ params, url }) => {
     if (!params.lang) {
-        redirect(301, `/cs/${url.pathname}`);
+        let path = url.pathname;
+        if (path.endsWith('/')) {
+            path = path.slice(0, -1);
+        }
+        redirect(302, `/cs${path}`);
     }
 
     const lang = params.lang as keyof typeof languages;
