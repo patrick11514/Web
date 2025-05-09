@@ -29,5 +29,20 @@ export default o({
     main: o({
         age: _,
         text: r
+    }),
+    admin: o({
+        login: o({
+            title: _,
+            username: _,
+            password: _,
+            submit: _
+        })
+    }),
+    errors: o({
+        login: o({
+            form: _,
+            username: _,
+            password: _
+        })
     })
 });

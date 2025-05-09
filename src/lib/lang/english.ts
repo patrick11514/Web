@@ -67,5 +67,20 @@ export default lang.parse({
             },
             '!'
         ]
+    },
+    admin: {
+        login: {
+            title: 'Login',
+            username: 'Username',
+            password: 'Password',
+            submit: 'Login'
+        }
+    },
+    errors: {
+        login: {
+            form: 'Please fill in the form',
+            username: 'Invalid username',
+            password: 'Invalid password'
+        }
     }
 } satisfies z.infer<typeof lang>);

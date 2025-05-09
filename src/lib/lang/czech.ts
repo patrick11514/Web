@@ -67,5 +67,20 @@ export default lang.parse({
             },
             '!'
         ]
+    },
+    admin: {
+        login: {
+            title: 'Přihlášení',
+            username: 'Jméno',
+            password: 'Heslo',
+            submit: 'Přihlásit se'
+        }
+    },
+    errors: {
+        login: {
+            form: 'Vyplň prosím všechny údaje.',
+            username: 'Špatné uživatelské jméno.',
+            password: 'Špatné heslo.'
+        }
     }
 } satisfies z.infer<typeof lang>);

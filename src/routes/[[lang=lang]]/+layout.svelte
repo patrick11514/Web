@@ -4,8 +4,8 @@
     import 'bootstrap-icons/font/bootstrap-icons.css';
 
     import { API } from '$/lib/api';
-    import { onMount, type Snippet } from 'svelte';
-    import type { LayoutData } from './$types';
+    import { onMount } from 'svelte';
+    import type { LayoutProps } from './$types';
     import Navigation from '$/components/Navigation.svelte';
     import { page } from '$app/state';
     import { setState } from '$/lib/state.svelte';
@@ -13,7 +13,7 @@
     import Footer from '$/components/Footer.svelte';
     import Starback from 'starback';
 
-    let { children, data }: { children: Snippet; data: LayoutData } = $props();
+    let { children, data }: LayoutProps = $props();
 
     API.hydrateFromServer(data.api);
 

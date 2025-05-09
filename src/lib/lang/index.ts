@@ -1,5 +1,7 @@
+import template from './_template';
 import czech from './czech';
 import english from './english';
+import type { z } from 'zod';
 
 export const languages = {
     cs: {
@@ -20,4 +22,38 @@ export const getPath = (path: string, langs: string[]) => {
         parts.shift();
     }
     return `/${parts.join('/')}`;
+};
+
+type Error = z.infer<typeof template>['errors'];
+
+type Path<$CurrentObject, $Path extends string = ''> = $CurrentObject extends string
+    ? $Path // If T is a string, return the accumulated path
+    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    $CurrentObject extends Record<string, any>
+    ? {
+        [K in keyof $CurrentObject]: Path<$CurrentObject[K], `${$Path}${$Path extends '' ? '' : '.'}${K & string}`>;
+    }[keyof $CurrentObject] // Recurse into object keys
+    : never;
+
+export type ErrorPath = Path<Error>;
+
+export const compareErrors = (a: string, b: ErrorPath) => {
+    return a === b;
+};
+
+export const resolveError = (error: string, lang: z.infer<typeof template>) => {
+    let path = lang.errors;
+    const parts = error.split('.');
+
+    for (const part of parts) {
+        if (path[part as keyof typeof path]) {
+            //eslint-disable-next-line @typescript-eslint/no-explicit-any
+            path = path[part as keyof typeof path] as any;
+        } else {
+            // If the path does not exist, return the original error string
+            return error;
+        }
+    }
+
+    return path as unknown as string;
 };

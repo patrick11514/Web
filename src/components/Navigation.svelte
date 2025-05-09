@@ -24,8 +24,8 @@
         },
         {
             name: _state.lang.navigation.gallery,
-            icon: 'bi-house-fill',
-            path: '/test'
+            icon: 'bi-image-fill',
+            path: '/gallery'
         }
     ] satisfies NavItem[]);
 
