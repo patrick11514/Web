@@ -29,11 +29,11 @@ type Error = z.infer<typeof template>['errors'];
 type Path<$CurrentObject, $Path extends string = ''> = $CurrentObject extends string
     ? $Path // If T is a string, return the accumulated path
     : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    $CurrentObject extends Record<string, any>
-    ? {
-        [K in keyof $CurrentObject]: Path<$CurrentObject[K], `${$Path}${$Path extends '' ? '' : '.'}${K & string}`>;
-    }[keyof $CurrentObject] // Recurse into object keys
-    : never;
+      $CurrentObject extends Record<string, any>
+      ? {
+            [K in keyof $CurrentObject]: Path<$CurrentObject[K], `${$Path}${$Path extends '' ? '' : '.'}${K & string}`>;
+        }[keyof $CurrentObject] // Recurse into object keys
+      : never;
 
 export type ErrorPath = Path<Error>;
 

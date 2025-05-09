@@ -83,7 +83,7 @@
         })
     );
     const filteredAdminNavigation = $derived(
-        AdminNavigation.filter((item) => {
+        AdminNavigation.filter((/*item*/) => {
             /*if (item.hidden) {
                 return false;
             }*/

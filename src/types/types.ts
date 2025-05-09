@@ -12,12 +12,12 @@ export type UserData = Omit<Selectable<Account>, 'password'>;
 
 export type UserState =
     | {
-        logged: false;
-    }
+          logged: false;
+      }
     | {
-        logged: true;
-        data: UserData;
-    };
+          logged: true;
+          data: UserData;
+      };
 
 export type ActionsResponse = Omit<ErrorApiResponse, 'code'>;
 
