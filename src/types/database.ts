@@ -3,25 +3,81 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from 'kysely';
+import type { ColumnType } from "kysely";
 
-export type Generated<T> = T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S, I | undefined, U> : ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export interface Account {
-    id: Generated<number>;
-    password: string;
-    username: string;
+  id: Generated<number>;
+  password: string;
+  username: string;
+}
+
+export interface Article {
+  content_md: string;
+  created_at: Generated<Date>;
+  id: unknown;
+  title: string;
+}
+
+export interface ArticleEquipment {
+  article_id: unknown;
+  equipment_id: number;
+  id: Generated<number>;
+}
+
+export interface DailyLightExposure {
+  article_id: unknown;
+  count: number;
+  date: Date;
+  exposure_time_s: number;
+  id: Generated<number>;
+}
+
+export interface Equipment {
+  id: Generated<number>;
+  link: Generated<string | null>;
+  name: string;
+  type_id: number;
+}
+
+export interface EquipmentType {
+  id: Generated<number>;
+  name: string;
+}
+
+export interface ExposureTotal {
+  article_id: unknown;
+  count: number;
+  exposure_time_s: number;
+  id: Generated<number>;
+  type: string;
+}
+
+export interface GalleryImage {
+  alt_text: string;
+  article_id: unknown;
+  id: unknown;
 }
 
 export interface Visitors {
-    date: Generated<Date>;
-    id: Generated<number>;
-    ip: string;
-    page: string;
-    user_agent: string;
+  date: Generated<Date>;
+  id: Generated<number>;
+  ip: string;
+  page: string;
+  user_agent: string;
 }
 
 export interface DB {
-    account: Account;
-    visitors: Visitors;
+  account: Account;
+  article: Article;
+  article_equipment: ArticleEquipment;
+  daily_light_exposure: DailyLightExposure;
+  equipment: Equipment;
+  equipment_type: EquipmentType;
+  exposure_total: ExposureTotal;
+  gallery_image: GalleryImage;
+  visitors: Visitors;
 }
