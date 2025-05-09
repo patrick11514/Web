@@ -7,7 +7,11 @@ export default lang.parse({
     navigation: {
         home: 'Domů',
         gallery: 'Galerie',
-        admin: 'Administrace'
+        admin: 'Administrace',
+        login: 'Přihlášení'
+    },
+    adminNavigation: {
+        home: 'Panel'
     },
     error: {
         title: 'Chyba',

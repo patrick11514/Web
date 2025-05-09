@@ -14,6 +14,8 @@
         admin?: boolean;
     };
 
+    type AdminItem = Omit<NavItem, 'admin'>;
+
     const _state = getState();
 
     const Navigation = $derived([
@@ -28,6 +30,12 @@
             path: '/gallery'
         },
         {
+            name: _state.lang.navigation.login,
+            icon: 'bi-person-fill',
+            path: '/login',
+            hidden: true
+        },
+        {
             name: _state.lang.navigation.admin,
             icon: 'bi-hdd-rack',
             path: '/admin',
@@ -35,6 +43,14 @@
             matchStart: true
         }
     ] satisfies NavItem[]);
+
+    const AdminNavigation = $derived([
+        {
+            name: _state.lang.adminNavigation.home,
+            icon: 'bi-clipboard-data',
+            path: '/admin'
+        }
+    ] satisfies AdminItem[]);
 
     const getNavItem = (path: string): NavItem | null => {
         return Navigation.find((item) => item.path === path) || null;
@@ -53,6 +69,27 @@
 
     const title = $derived.by(() => `${currentItem?.name} | ${page.url.host}`);
     const description = $derived(_state.lang.default_desc);
+
+    const filteredNavigation = $derived(
+        Navigation.filter((item) => {
+            const isLogged = _state.userState.logged;
+            if (item.admin) {
+                return isLogged;
+            }
+            if (item.hidden) {
+                return false;
+            }
+            return true;
+        })
+    );
+    const filteredAdminNavigation = $derived(
+        AdminNavigation.filter((item) => {
+            /*if (item.hidden) {
+                return false;
+            }*/
+            return true;
+        })
+    );
 </script>
 
 <svelte:head>
@@ -70,7 +107,7 @@
 <nav class="font-poppins hidden w-full p-4 text-xl md:flex lg:text-2xl">
     <div class="flex-1"></div>
     <div class="mx-auto flex justify-center gap-8 font-bold">
-        {#each Navigation.filter((item) => (item.admin ? _state.userState.logged : true)) as item, index (index)}
+        {#each filteredNavigation as item, index (index)}
             {@const isActive = _state.path === item.path}
             <a
                 href="/{selectedLanguage}{item.path}"
@@ -94,6 +131,28 @@
         </select>
     </div>
 </nav>
+{#if _state.userState.logged && _state.path.startsWith('/admin')}
+    <section class="font-poppins hidden w-full px-4 text-xl md:flex lg:text-2xl">
+        <div class="flex-1"></div>
+        <div class="mx-auto flex justify-center gap-8 font-bold">
+            {#each filteredAdminNavigation as item, index (index)}
+                {@const isActive = _state.path === item.path}
+                <a
+                    href="/{selectedLanguage}{item.path}"
+                    class={{
+                        'flex gap-2 transition-colors duration-200 ease-in-out': true,
+                        'text-primary': isActive,
+                        'hover:text-primary-text': !isActive
+                    }}
+                >
+                    <Icon name={item.icon} class="text-2xl lg:text-3xl" />
+                    {item.name}
+                </a>
+            {/each}
+        </div>
+        <div class="flex-1"></div>
+    </section>
+{/if}
 
 <Icon
     onclick={() => (mobileOpened = true)}
@@ -113,7 +172,7 @@
                 <option value={langKey}>{langData.flag} {langData.name}</option>
             {/each}
         </select>
-        {#each Navigation as item, index (index)}
+        {#each filteredNavigation as item, index (index)}
             {@const isActive = _state.path === item.path}
             <a
                 onclick={() => (mobileOpened = false)}
@@ -128,5 +187,24 @@
                 {item.name}
             </a>
         {/each}
+
+        {#if _state.userState.logged && _state.path.startsWith('/admin')}
+            <hr class="bg-text h-1 w-full" />
+            {#each filteredAdminNavigation as item, index (index)}
+                {@const isActive = _state.path === item.path}
+                <a
+                    onclick={() => (mobileOpened = false)}
+                    href="/{selectedLanguage}/{item.path}"
+                    class={{
+                        'text-3xl font-bold transition-colors duration-200 ease-in-out': true,
+                        'text-primary': isActive,
+                        'hover:text-primary-text': !isActive
+                    }}
+                >
+                    <Icon name={item.icon} class="text-4xl" />
+                    {item.name}
+                </a>
+            {/each}
+        {/if}
     </div>
 {/if}

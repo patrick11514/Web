@@ -28,8 +28,8 @@
 <div class="flex h-full flex-col items-center justify-center md:flex-row">
     <div class="flex flex-1 flex-col items-center justify-center">
         <h1 class="font-poppins w-max text-3xl font-bold lg:text-4xl"><Icon name="bi-bar-chart" /> {_state.lang.admin.main.stats}</h1>
-        <h3>{_state.lang.admin.main.today}: {data.today}</h3>
-        <h3>{_state.lang.admin.main.week}: {data.week}</h3>
+        <h3><span class="font-bold">{_state.lang.admin.main.today}</span>: {data.today}</h3>
+        <h3><span class="font-bold">{_state.lang.admin.main.week}</span>: {data.week}</h3>
         <div class="w-lg">
             <Chart type="line" data={chartData} />
         </div>

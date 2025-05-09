@@ -7,7 +7,11 @@ export default lang.parse({
     navigation: {
         home: 'Home',
         gallery: 'Gallery',
-        admin: 'Administration'
+        admin: 'Administration',
+        login: 'Login'
+    },
+    adminNavigation: {
+        home: 'Dashboard'
     },
     error: {
         title: 'Error',

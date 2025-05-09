@@ -19,7 +19,11 @@ export default o({
     navigation: o({
         home: _,
         gallery: _,
-        admin: _
+        admin: _,
+        login: _
+    }),
+    adminNavigation: o({
+        home: _
     }),
     error: o({
         title: _,
