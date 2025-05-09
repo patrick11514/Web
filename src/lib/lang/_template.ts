@@ -37,6 +37,11 @@ export default o({
             username: _,
             password: _,
             submit: _
+        }),
+        main: o({
+            stats: _,
+            today: _,
+            week: _
         })
     }),
     errors: o({

@@ -31,7 +31,8 @@
             name: _state.lang.navigation.admin,
             icon: 'bi-hdd-rack',
             path: '/admin',
-            admin: true
+            admin: true,
+            matchStart: true
         }
     ] satisfies NavItem[]);
 
@@ -72,9 +73,9 @@
         {#each Navigation.filter((item) => (item.admin ? _state.userState.logged : true)) as item, index (index)}
             {@const isActive = _state.path === item.path}
             <a
-                href="/{selectedLanguage}/{item.path}"
+                href="/{selectedLanguage}{item.path}"
                 class={{
-                    'transition-colors duration-200 ease-in-out': true,
+                    'flex gap-2 transition-colors duration-200 ease-in-out': true,
                     'text-primary': isActive,
                     'hover:text-primary-text': !isActive
                 }}

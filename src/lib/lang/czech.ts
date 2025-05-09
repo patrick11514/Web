@@ -75,6 +75,11 @@ export default lang.parse({
             username: 'Jméno',
             password: 'Heslo',
             submit: 'Přihlásit se'
+        },
+        main: {
+            stats: 'Statistiky',
+            today: 'Dnes',
+            week: 'Tento týden'
         }
     },
     errors: {

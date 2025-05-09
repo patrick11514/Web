@@ -75,6 +75,11 @@ export default lang.parse({
             username: 'Username',
             password: 'Password',
             submit: 'Login'
+        },
+        main: {
+            stats: 'Statistics',
+            today: 'Today',
+            week: 'This Week'
         }
     },
     errors: {
