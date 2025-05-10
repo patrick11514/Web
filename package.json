@@ -15,7 +15,9 @@
         "genDatabaseSchema": "kysely-codegen --out-file ./src/types/database.ts",
         "start": "node -r dotenv/config build",
         "migration:create": "./script/createMigration.sh",
-        "migrate": "tsx ./script/runMigration.ts"
+        "migrate": "tsx ./script/runMigration.ts",
+        "migrate:up": "tsx ./script/runMigration.ts up",
+        "migrate:down": "tsx ./script/runMigration.ts down"
     },
     "devDependencies": {
         "@eslint/compat": "^1.2.9",

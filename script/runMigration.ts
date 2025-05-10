@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { Migrator, FileMigrationProvider } from 'kysely';
+import { Migrator, FileMigrationProvider, MigrationResultSet } from 'kysely';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import dotenv from 'dotenv';
@@ -31,7 +31,17 @@ async function runMigrations() {
         })
     });
 
-    const result = await migrator.migrateToLatest();
+    const direction = process.argv[2];
+
+    let result: MigrationResultSet;
+
+    if (direction === 'up') {
+        result = await migrator.migrateUp();
+    } else if (direction === 'down') {
+        result = await migrator.migrateDown();
+    } else {
+        result = await migrator.migrateToLatest();
+    }
 
     if (result.error) {
         console.error('Migration failed:', result.error);
