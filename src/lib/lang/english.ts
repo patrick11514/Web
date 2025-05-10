@@ -84,13 +84,44 @@ export default lang.parse({
             stats: 'Statistics',
             today: 'Today',
             week: 'This Week'
+        },
+        equipment: {
+            types: {
+                title: 'Equipment Types',
+                actions: 'Actions',
+                translateKey: 'Translate',
+                placeholder: 'Type name',
+                button: 'Add Type',
+                success: 'New type was successfully added!',
+                empty: 'No equipment types have been added yet.',
+                editSuccess: 'Equpment type name was successfully edited!',
+                deleteSuccess: 'Equipment type was successfully deleted!',
+                edit: {
+                    title: 'Editing equipment type id %1',
+                    button: 'Edit'
+                }
+            }
         }
     },
     errors: {
+        internal: 'Internal Server Error, please try again later.',
         login: {
             form: 'Please fill in the form',
             username: 'Invalid username',
             password: 'Invalid password'
+        },
+        equipment: {
+            form: 'Please fill eqipment type name.',
+            empty: 'Translation key cannot be empty.'
         }
+    },
+    equipmentType: {
+        camera: 'Camera',
+        telescope: 'Telescope',
+        mount: 'Mount',
+        filter: 'Filter',
+        barlow: 'Barlow',
+        reducer: 'Reducer',
+        guidescope: 'Guidescope'
     }
 } satisfies z.infer<typeof lang>);

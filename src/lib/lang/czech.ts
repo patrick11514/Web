@@ -84,13 +84,44 @@ export default lang.parse({
             stats: 'Statistiky',
             today: 'Dnes',
             week: 'Tento týden'
+        },
+        equipment: {
+            types: {
+                title: 'Typy vybavení',
+                translateKey: 'Překlad',
+                actions: 'Akce',
+                placeholder: 'Název typu vybavení',
+                button: 'Přidat',
+                success: 'Nový typ vybavení byl přidán!',
+                empty: 'Žádné typy vybavení nebyly přidány.',
+                editSuccess: 'Název typu vybavení byl úspěšně upraven!',
+                deleteSuccess: 'Typ vybavení byl úspěšně smazán!',
+                edit: {
+                    title: 'Úprava vybavení s id %1',
+                    button: 'Upravit'
+                }
+            }
         }
     },
     errors: {
+        internal: 'Něco se nepovedlo, zkus to prosím zachvíli znova.',
         login: {
             form: 'Vyplň prosím všechny údaje.',
             username: 'Špatné uživatelské jméno.',
             password: 'Špatné heslo.'
+        },
+        equipment: {
+            form: 'Vyplň prosím název typu vybavení.',
+            empty: 'Překladový klíč nesmí být prázdný.',
         }
+    },
+    equipmentType: {
+        camera: 'Kamera',
+        mount: 'Montáž',
+        telescope: 'Dalekohled',
+        filter: 'Filtr',
+        barlow: 'Barlow',
+        reducer: 'Reduktor',
+        guidescope: 'Guidescope'
     }
 } satisfies z.infer<typeof lang>);
