@@ -4,6 +4,7 @@
     import { getState } from '$/lib/state.svelte';
     import { page } from '$app/state';
     import { goto } from '$app/navigation';
+    import { untrack } from 'svelte';
 
     type NavItem = {
         name: string;
@@ -39,8 +40,7 @@
             name: _state.lang.navigation.admin,
             icon: 'bi-hdd-rack',
             path: '/admin',
-            admin: true,
-            matchStart: true
+            admin: true
         }
     ] satisfies NavItem[]);
 
@@ -49,19 +49,47 @@
             name: _state.lang.adminNavigation.home,
             icon: 'bi-clipboard-data',
             path: '/admin'
+        },
+        {
+            name: 'Equipment',
+            icon: 'bi-moon-stars-fill',
+            path: '/admin/equipment'
         }
     ] satisfies AdminItem[]);
 
-    const getNavItem = (path: string): NavItem | null => {
-        return Navigation.find((item) => item.path === path) || null;
+    const getNavItem = (path: string): NavItem | AdminItem | null => {
+        const mainNav = Navigation.find((item) => item.path === path) || null;
+        if (mainNav) {
+            return mainNav;
+        }
+
+        const adminNav = AdminNavigation.find((item) => {
+            return path === item.path;
+        });
+
+        if (adminNav) {
+            return adminNav;
+        }
+
+        return null;
     };
 
     const currentItem = $derived(getNavItem(_state.path));
 
     let selectedLanguage = $state(_state.selectedLang);
     $effect(() => {
-        goto(`/${selectedLanguage}${_state.path}`, {
-            replaceState: true
+        let target = `/${selectedLanguage}${_state.path}`;
+        untrack(() => {
+            if (page.url.pathname !== target) {
+                const queryParams = page.url.searchParams.toString();
+                if (queryParams) {
+                    target += `?${queryParams}`;
+                }
+
+                goto(target, {
+                    replaceState: true
+                });
+            }
         });
     });
 
@@ -132,7 +160,7 @@
     </div>
 </nav>
 {#if _state.userState.logged && _state.path.startsWith('/admin')}
-    <section class="font-poppins hidden w-full px-4 text-xl md:flex lg:text-2xl">
+    <section class="font-poppins mb-4 hidden w-full px-4 text-xl md:flex lg:text-2xl">
         <div class="flex-1"></div>
         <div class="mx-auto flex justify-center gap-8 font-bold">
             {#each filteredAdminNavigation as item, index (index)}

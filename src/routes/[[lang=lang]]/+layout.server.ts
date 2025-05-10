@@ -10,6 +10,12 @@ export const load = (async ({ params, url, cookies }) => {
         if (path.endsWith('/')) {
             path = path.slice(0, -1);
         }
+
+        const queryParams = url.searchParams.toString();
+        if (queryParams) {
+            path += `?${queryParams}`;
+        }
+
         redirect(302, `/cs${path}`);
     }
 
