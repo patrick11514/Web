@@ -112,7 +112,7 @@ export default lang.parse({
         },
         equipment: {
             form: 'Vyplň prosím název typu vybavení.',
-            empty: 'Překladový klíč nesmí být prázdný.',
+            empty: 'Překladový klíč nesmí být prázdný.'
         }
     },
     equipmentType: {

@@ -15,7 +15,6 @@ export default [
                 status: false,
                 message: 'equipment.form' satisfies ErrorPath
             } satisfies ActionsResponse);
-
         }
         try {
             await conn
@@ -53,7 +52,6 @@ export default [
                 message: 'equipment.empty' satisfies ErrorPath
             } satisfies ActionsResponse);
         }
-
 
         try {
             await conn
