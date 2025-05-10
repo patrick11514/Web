@@ -41,6 +41,9 @@ importers:
       starback:
         specifier: github:patrick11514/starback.js
         version: https://codeload.github.com/patrick11514/starback.js/tar.gz/fe6f8be567f2e4c4d2eadb06c007544c58dd3a0d
+      sweetalert2:
+        specifier: ^11.21.0
+        version: 11.21.0
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -2083,6 +2086,9 @@ packages:
     resolution: {integrity: sha512-FbWBxgWOpQfhKvoGJv/TFwzqb4EhJbwCD17dB0tEpQiw1XyUEKZJtgm4nA4xq3LLsMo7hu5UY/BOFmroAxKTMg==}
     engines: {node: '>=18'}
 
+  sweetalert2@11.21.0:
+    resolution: {integrity: sha512-fiEK7SqRY/QD/wC2uqEHlfYGZ7qe2UcyQbJpbpj4YRVqplBgcI+euPZLZL+evLINcvbtXmL1SFUdZHKqBHGAAQ==}
+
   tailwind-merge@3.2.0:
     resolution: {integrity: sha512-FQT/OVqCD+7edmmJpsgCsY820RTD5AkBryuG5IUqR5YQZSdj5xlH5nLgH7YPths7WsLPSpSBNneJdM8aS8aeFA==}
 
@@ -4081,6 +4087,8 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.17
       zimmerframe: 1.1.2
+
+  sweetalert2@11.21.0: {}
 
   tailwind-merge@3.2.0: {}
 

@@ -55,6 +55,7 @@
         "mysql2": "^3.14.1",
         "simple-json-db": "^2.0.0",
         "starback": "github:patrick11514/starback.js",
+        "sweetalert2": "^11.21.0",
         "tailwind-merge": "^3.2.0",
         "uuid": "^11.1.0",
         "zod": "^3.24.4"
