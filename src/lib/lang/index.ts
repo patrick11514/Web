@@ -29,11 +29,11 @@ type Error = z.infer<typeof template>['errors'];
 type Path<$CurrentObject, $Path extends string = ''> = $CurrentObject extends string
     ? $Path // If T is a string, return the accumulated path
     : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      $CurrentObject extends Record<string, any>
-      ? {
-            [K in keyof $CurrentObject]: Path<$CurrentObject[K], `${$Path}${$Path extends '' ? '' : '.'}${K & string}`>;
-        }[keyof $CurrentObject] // Recurse into object keys
-      : never;
+    $CurrentObject extends Record<string, any>
+    ? {
+        [K in keyof $CurrentObject]: Path<$CurrentObject[K], `${$Path}${$Path extends '' ? '' : '.'}${K & string}`>;
+    }[keyof $CurrentObject] // Recurse into object keys
+    : never;
 
 export type ErrorPath = Path<Error>;
 
@@ -56,4 +56,30 @@ export const resolveError = (error: string, lang: z.infer<typeof template>) => {
     }
 
     return path as unknown as string;
+};
+
+export const resolveTranslation = (translation: string, lang: z.infer<typeof template>) => {
+    let path = lang;
+    const parts = translation.split('.');
+
+    for (const part of parts) {
+        if (path[part as keyof typeof path]) {
+            //eslint-disable-next-line @typescript-eslint/no-explicit-any
+            path = path[part as keyof typeof path] as any;
+        } else {
+            // If the path does not exist, return the original translation string
+            return translation;
+        }
+    }
+
+    return path as unknown as string;
+};
+
+export const replacePlaceholders = (text: string, ...placeholders: string[]) => {
+    let i = 1;
+    for (const placeholder of placeholders) {
+        text = text.replace(`%${i}`, placeholder);
+        i++;
+    }
+    return text;
 };
