@@ -30,5 +30,5 @@ type Params = Parameters<typeof _redirect>;
 
 export const redirect = (status: Params[0], location: Params[1]) => {
     const state = getState();
-    _redirect(status, `/${state.selectedLang}${location}`);
+    _redirect(status, `/${state.selectedLang || 'cs'}${location}`);
 };
