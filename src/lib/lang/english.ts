@@ -86,9 +86,10 @@ export default lang.parse({
             week: 'This Week'
         },
         equipment: {
+            actions: 'Actions',
             types: {
                 title: 'Equipment Types',
-                actions: 'Actions',
+                addTitle: 'Editing equipment type',
                 translateKey: 'Translate',
                 placeholder: 'Type name',
                 button: 'Add Type',
@@ -99,6 +100,32 @@ export default lang.parse({
                 edit: {
                     title: 'Editing equipment type id %1',
                     button: 'Edit'
+                },
+                delete: {
+                    question: 'Are you sure you want to delete this type?',
+                    yes: 'Yes',
+                    no: 'No'
+                }
+            },
+            equipment: {
+                title: 'Equipment',
+                addTitle: 'Editing equipment',
+                type: 'Type',
+                name: 'Name',
+                link: 'Link',
+                button: 'Add Equipment',
+                success: 'New equipment was successfully added!',
+                empty: 'No equipment has been added yet.',
+                editSuccess: 'Equipment was successfully edited!',
+                deleteSuccess: 'Equipment was successfully deleted!',
+                edit: {
+                    title: 'Editing equipment id %1',
+                    button: 'Edit'
+                },
+                delete: {
+                    question: 'Are you sure you want to delete this equipment?',
+                    yes: 'Yes',
+                    no: 'No'
                 }
             }
         }
@@ -110,9 +137,13 @@ export default lang.parse({
             username: 'Invalid username',
             password: 'Invalid password'
         },
-        equipment: {
+        types: {
             form: 'Please fill eqipment type name.',
             empty: 'Translation key cannot be empty.'
+        },
+        equipment: {
+            form: 'Please fill in the form',
+            url: 'Please enter a valid URL'
         }
     },
     equipmentType: {
@@ -122,6 +153,7 @@ export default lang.parse({
         filter: 'Filter',
         barlow: 'Barlow',
         reducer: 'Reducer',
-        guidescope: 'Guidescope'
+        guidescope: 'Guidescope',
+        phone: 'Phone'
     }
 } satisfies z.infer<typeof lang>);

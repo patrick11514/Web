@@ -86,10 +86,11 @@ export default lang.parse({
             week: 'Tento týden'
         },
         equipment: {
+            actions: 'Akce',
             types: {
                 title: 'Typy vybavení',
+                addTitle: 'Přidání nového typu',
                 translateKey: 'Překlad',
-                actions: 'Akce',
                 placeholder: 'Název typu vybavení',
                 button: 'Přidat',
                 success: 'Nový typ vybavení byl přidán!',
@@ -97,8 +98,34 @@ export default lang.parse({
                 editSuccess: 'Název typu vybavení byl úspěšně upraven!',
                 deleteSuccess: 'Typ vybavení byl úspěšně smazán!',
                 edit: {
+                    title: 'Úprava typu vybavení s id %1',
+                    button: 'Upravit'
+                },
+                delete: {
+                    question: 'Opravdu chceš smazat tento typ?',
+                    yes: 'Ano',
+                    no: 'Ne'
+                }
+            },
+            equipment: {
+                title: 'Vybavení',
+                addTitle: 'Přidání nového vybavení',
+                type: 'Typ',
+                name: 'Název',
+                link: 'Odkaz',
+                button: 'Přidat',
+                success: 'Nové vybavení bylo přidáno!',
+                empty: 'Žádné vybavení nebylo přidáno.',
+                editSuccess: 'Vybavení bylo úspěšně upraveno!',
+                deleteSuccess: 'Vybavení bylo úspěšně smazáno!',
+                edit: {
                     title: 'Úprava vybavení s id %1',
                     button: 'Upravit'
+                },
+                delete: {
+                    question: 'Opravdu chceš smazat toto vybavení?',
+                    yes: 'Ano',
+                    no: 'Ne'
                 }
             }
         }
@@ -110,9 +137,13 @@ export default lang.parse({
             username: 'Špatné uživatelské jméno.',
             password: 'Špatné heslo.'
         },
-        equipment: {
+        types: {
             form: 'Vyplň prosím název typu vybavení.',
             empty: 'Překladový klíč nesmí být prázdný.'
+        },
+        equipment: {
+            form: 'Vyplň prosím všechny údaje.',
+            url: 'Zadej platný odkaz.'
         }
     },
     equipmentType: {
@@ -122,6 +153,7 @@ export default lang.parse({
         filter: 'Filtr',
         barlow: 'Barlow',
         reducer: 'Reduktor',
-        guidescope: 'Guidescope'
+        guidescope: 'Guidescope',
+        phone: 'Telefon'
     }
 } satisfies z.infer<typeof lang>);

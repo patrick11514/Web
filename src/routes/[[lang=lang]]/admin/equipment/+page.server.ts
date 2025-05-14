@@ -12,5 +12,7 @@ export const load = (async () => {
 
 export const actions = {
     typeAdd: Server.actions.types.POST,
-    typeEdit: Server.actions.types.PATCH
+    typeEdit: Server.actions.types.PATCH,
+    equipmentAdd: Server.actions.equipment.POST,
+    equipmentEdit: Server.actions.equipment.PATCH
 } satisfies Actions;

@@ -36,7 +36,7 @@ export interface DailyLightExposure {
 
 export interface Equipment {
     id: Generated<number>;
-    link: Generated<string | null>;
+    link: string;
     name: string;
     type_id: number;
 }

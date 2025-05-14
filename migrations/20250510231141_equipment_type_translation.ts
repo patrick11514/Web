@@ -3,9 +3,9 @@
 import { Kysely } from 'kysely';
 
 export const up = async (conn: Kysely<any>) => {
-    conn.schema.alterTable('equipment_type').renameColumn('name', 'lang_key').execute();
+    await conn.schema.alterTable('equipment_type').renameColumn('name', 'lang_key').execute();
 };
 
 export const down = async (conn: Kysely<any>) => {
-    conn.schema.alterTable('equipment_type').renameColumn('lang_key', 'name').execute();
+    await conn.schema.alterTable('equipment_type').renameColumn('lang_key', 'name').execute();
 };

@@ -7,10 +7,11 @@
     import type { PageProps, SubmitFunction } from './$types';
     import { SwalAlert } from '$/lib/functions';
     import { getState } from '$/lib/state.svelte';
-    import { resolveError, replacePlaceholders } from '$/lib/lang';
+    import { resolveError, replacePlaceholders, resolveTranslation } from '$/lib/lang';
     import { API } from '$/lib/api';
     import { invalidateAll } from '$app/navigation';
     import ClickOutside from '$/components/utility/clickOutside.svelte';
+    import Select from '$/components/form/Select.svelte';
 
     const _state = getState();
 
@@ -34,21 +35,21 @@
         };
     }) satisfies SubmitFunction;
 
-    let editing = $state<null | {
+    let typeEditing = $state<null | {
         id: number;
         lang_key: string;
     }>(null);
 
-    const deleteType = async (id: number) => {
+    const typeDelete = async (id: number) => {
         const result = await SwalAlert({
             timer: 0,
             toast: false,
             position: 'center',
-            title: 'Opravdu chceš smazat tento typ?',
+            title: _state.lang.admin.equipment.types.delete.question,
             showConfirmButton: true,
-            confirmButtonText: 'Ano',
+            confirmButtonText: _state.lang.admin.equipment.types.delete.yes,
             showCancelButton: true,
-            cancelButtonText: 'Ne'
+            cancelButtonText: _state.lang.admin.equipment.types.delete.no
         });
 
         if (!result.isConfirmed) return;
@@ -78,7 +79,7 @@
                     icon: 'success'
                 });
 
-                editing = null;
+                typeEditing = null;
             } else if (result.type === 'failure' && result.data) {
                 SwalAlert({
                     title: resolveError(result.data.message, _state.lang),
@@ -89,6 +90,82 @@
             update();
         };
     }) satisfies SubmitFunction;
+
+    const equipmentAdd = (() => {
+        return async ({ update, result }) => {
+            if (result.type === 'success') {
+                SwalAlert({
+                    title: _state.lang.admin.equipment.equipment.success,
+                    icon: 'success'
+                });
+            } else if (result.type === 'failure' && result.data) {
+                SwalAlert({
+                    title: resolveError(result.data.message, _state.lang),
+                    icon: 'error'
+                });
+            }
+
+            update();
+        };
+    }) satisfies SubmitFunction;
+
+    let equipmentEditing = $state<null | {
+        id: number;
+        name: string;
+        type_id: number;
+        link: string;
+    }>(null);
+
+    const equipmentEdit = (() => {
+        return async ({ update, result }) => {
+            if (result.type === 'success') {
+                SwalAlert({
+                    title: _state.lang.admin.equipment.equipment.editSuccess,
+                    icon: 'success'
+                });
+
+                equipmentEditing = null;
+            } else if (result.type === 'failure' && result.data) {
+                SwalAlert({
+                    title: resolveError(result.data.message, _state.lang),
+                    icon: 'error'
+                });
+            }
+
+            update();
+        };
+    }) satisfies SubmitFunction;
+
+    const equipmentDelete = async (id: number) => {
+        const result = await SwalAlert({
+            timer: 0,
+            toast: false,
+            position: 'center',
+            title: _state.lang.admin.equipment.equipment.delete.question,
+            showConfirmButton: true,
+            confirmButtonText: _state.lang.admin.equipment.equipment.delete.yes,
+            showCancelButton: true,
+            cancelButtonText: _state.lang.admin.equipment.equipment.delete.no
+        });
+
+        if (!result.isConfirmed) return;
+
+        const response = await API.equipment.DELETE(id);
+        if (!response.status) {
+            SwalAlert({
+                title: resolveError(response.message, _state.lang),
+                icon: 'error'
+            });
+            return;
+        }
+
+        SwalAlert({
+            title: _state.lang.admin.equipment.equipment.deleteSuccess,
+            icon: 'success'
+        });
+
+        invalidateAll();
+    };
 </script>
 
 {#snippet title(text: string)}
@@ -99,71 +176,169 @@
     <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"><Icon name="bi-ban-fill" class="text-red-500" /> {text}</span>
 {/snippet}
 
-{#if editing !== null}
-    <div class="absolute top-0 left-0 z-10 flex h-screen w-screen bg-black/80">
-        <ClickOutside clickoutside={() => (editing = null)} class="border-primary m-auto flex flex-col gap-2 rounded-md border-2 bg-black/80 p-4">
-            {@render title(replacePlaceholders(_state.lang.admin.equipment.types.edit.title, editing.id.toString()))}
-            <form class="flex flex-col items-center justify-center" method="POST" action="?/typeEdit" use:enhance={typeEdit}>
-                <input type="hidden" name="id" value={editing.id} />
-                <FormItem for="key" label={_state.lang.admin.equipment.types.translateKey}>
-                    <Input id="key" name="lang_key" type="text" placeholder={_state.lang.admin.equipment.types.translateKey} value={editing.lang_key} required />
-                </FormItem>
-                <Button type="submit">{_state.lang.admin.equipment.types.edit.button}</Button>
-            </form>
+{#if typeEditing !== null || equipmentEditing !== null}
+    <div class="fixed top-0 left-0 z-10 flex h-screen w-screen bg-black/80">
+        <ClickOutside
+            clickoutside={() => {
+                typeEditing = null;
+                equipmentEditing = null;
+            }}
+            class="border-primary m-auto flex flex-col gap-2 rounded-md border-2 bg-black/80 p-4"
+        >
+            {#if typeEditing !== null}
+                {@render title(replacePlaceholders(_state.lang.admin.equipment.types.edit.title, typeEditing.id.toString()))}
+                <form class="flex flex-col items-center justify-center" method="POST" action="?/typeEdit" use:enhance={typeEdit}>
+                    <input type="hidden" name="id" value={typeEditing.id} />
+                    <FormItem for="key" label={_state.lang.admin.equipment.types.translateKey}>
+                        <Input id="key" name="lang_key" type="text" placeholder={_state.lang.admin.equipment.types.translateKey} value={typeEditing.lang_key} required />
+                    </FormItem>
+                    <Button type="submit">{_state.lang.admin.equipment.types.edit.button}</Button>
+                </form>
+            {:else if equipmentEditing !== null}
+                {@render title(replacePlaceholders(_state.lang.admin.equipment.equipment.edit.title, equipmentEditing.id.toString()))}
+                <form class="flex flex-col items-center justify-center" method="POST" action="?/equipmentEdit" use:enhance={equipmentEdit}>
+                    <input type="hidden" name="id" value={equipmentEditing.id} />
+                    <FormItem for="name" label={_state.lang.admin.equipment.equipment.name}>
+                        <Input id="name" name="name" type="text" placeholder={_state.lang.admin.equipment.equipment.name} value={equipmentEditing.name} required />
+                    </FormItem>
+                    <FormItem for="type" label={_state.lang.admin.equipment.equipment.type}>
+                        <Select id="type" name="type" value={equipmentEditing.type_id} required>
+                            {#each data.types as type (type.id.toString())}
+                                <option value={type.id} selected={equipmentEditing.type_id === type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option>
+                            {/each}
+                        </Select>
+                    </FormItem>
+                    <FormItem for="link" label={_state.lang.admin.equipment.equipment.link}>
+                        <Input id="link" name="link" type="url" placeholder={_state.lang.admin.equipment.equipment.link} value={equipmentEditing.link} required />
+                    </FormItem>
+                    <Button type="submit">{_state.lang.admin.equipment.equipment.edit.button}</Button>
+                </form>
+            {/if}
         </ClickOutside>
     </div>
 {/if}
 
-<section class="flex w-full flex-1 flex-col p-4">
+<section class="flex w-full flex-1 flex-col gap-4 p-4">
     <div class="flex flex-col">
-        {@render title(_state.lang.admin.equipment.types.title)}
         <div class="flex flex-col justify-between gap-2 md:flex-row">
-            <div class="min-w-full md:min-w-1/2">
-                {#if data.types.length === 0}
-                    {@render info(_state.lang.admin.equipment.types.empty)}
-                {:else}
-                    <table class="border-text w-full table-auto border-collapse rounded-md border-2 text-xl lg:text-2xl">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>{_state.lang.admin.equipment.types.translateKey}</th>
-                                <th>{_state.lang.admin.equipment.types.actions}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {#each data.types as type (type.id.toString())}
-                                <tr class="border-text border-2">
-                                    <td class="font-bold">{type.id} </td>
-                                    <td>{type.lang_key}</td>
-                                    <td class="flex justify-center gap-2">
-                                        <Icon
-                                            onclick={() =>
-                                                (editing = {
-                                                    id: type.id,
-                                                    lang_key: type.lang_key || ''
-                                                })}
-                                            name="bi-pencil-fill"
-                                            class="cursor-pointer"
-                                        />
-
-                                        <Icon onclick={() => deleteType(type.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
-                                    </td>
+            <div class="flex w-full flex-col items-start">
+                {@render title(_state.lang.admin.equipment.types.title)}
+                <div class="min-w-full 2xl:min-w-1/2">
+                    {#if data.types.length === 0}
+                        {@render info(_state.lang.admin.equipment.types.empty)}
+                    {:else}
+                        <table class="border-text w-full table-auto border-collapse rounded-md border-2 text-xl lg:text-2xl">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>{_state.lang.admin.equipment.types.translateKey}</th>
+                                    <th>{_state.lang.admin.equipment.actions}</th>
                                 </tr>
-                            {/each}
-                        </tbody>
-                    </table>
-                {/if}
+                            </thead>
+                            <tbody>
+                                {#each data.types as type (type.id.toString())}
+                                    <tr class="border-text border-2">
+                                        <td class="font-bold">{type.id} </td>
+                                        <td>{type.lang_key}</td>
+                                        <td class="flex justify-center gap-2">
+                                            <Icon
+                                                onclick={() =>
+                                                    (typeEditing = {
+                                                        id: type.id,
+                                                        lang_key: type.lang_key || ''
+                                                    })}
+                                                name="bi-pencil-fill"
+                                                class="cursor-pointer"
+                                            />
+
+                                            <Icon onclick={() => typeDelete(type.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                                        </td>
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    {/if}
+                </div>
             </div>
-            <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/typeAdd" use:enhance={typeAdd}>
-                <FormItem for="key" label={_state.lang.admin.equipment.types.translateKey}>
-                    <Input id="key" name="lang_key" type="text" placeholder={_state.lang.admin.equipment.types.translateKey} required />
-                </FormItem>
-                <Button type="submit">{_state.lang.admin.equipment.types.button}</Button>
-            </form>
+            <div class="flex flex-col">
+                {@render title(_state.lang.admin.equipment.types.addTitle)}
+                <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/typeAdd" use:enhance={typeAdd}>
+                    <FormItem for="key" label={_state.lang.admin.equipment.types.translateKey}>
+                        <Input id="key" name="lang_key" type="text" required />
+                    </FormItem>
+                    <Button type="submit">{_state.lang.admin.equipment.types.button}</Button>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="flex flex-col items-center">
-        {@render title('Equipment')}
-        <p class="mt-4">You can contact me at</p>
+    <div class="flex flex-col">
+        <div class="flex flex-col justify-between gap-2 md:flex-row">
+            <div class="flex w-full flex-col items-start">
+                {@render title(_state.lang.admin.equipment.equipment.title)}
+                <div class="min-w-full 2xl:min-w-1/2">
+                    {#if data.equipment.length === 0}
+                        {@render info(_state.lang.admin.equipment.equipment.empty)}
+                    {:else}
+                        <table class="border-text w-full table-auto border-collapse rounded-md border-2 text-xl lg:text-2xl">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>{_state.lang.admin.equipment.equipment.name}</th>
+                                    <th>{_state.lang.admin.equipment.equipment.type}</th>
+                                    <th>{_state.lang.admin.equipment.equipment.link}</th>
+                                    <th>{_state.lang.admin.equipment.actions}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each data.equipment as equipment (equipment.id.toString())}
+                                    <tr class="border-text border-2">
+                                        <td class="font-bold">{equipment.id} </td>
+                                        <td>{equipment.name}</td>
+                                        <td>{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</td>
+                                        <td>{equipment.link}</td>
+                                        <td class="flex justify-center gap-2">
+                                            <Icon
+                                                onclick={() => {
+                                                    equipmentEditing = {
+                                                        id: equipment.id,
+                                                        name: equipment.name,
+                                                        type_id: equipment.type_id,
+                                                        link: equipment.link
+                                                    };
+                                                }}
+                                                name="bi-pencil-fill"
+                                                class="cursor-pointer"
+                                            />
+
+                                            <Icon onclick={() => equipmentDelete(equipment.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                                        </td>
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    {/if}
+                </div>
+            </div>
+            <div class="flex flex-col">
+                {@render title(_state.lang.admin.equipment.equipment.addTitle)}
+                <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/equipmentAdd" use:enhance={equipmentAdd}>
+                    <FormItem for="name" label={_state.lang.admin.equipment.equipment.name}>
+                        <Input id="name" name="name" type="text" required />
+                    </FormItem>
+                    <FormItem for="type" label={_state.lang.admin.equipment.equipment.type}>
+                        <Select id="type" name="type" required>
+                            <option value={null} disabled selected></option>
+                            {#each data.types as type (type.id.toString())}
+                                <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option>
+                            {/each}
+                        </Select>
+                    </FormItem>
+                    <FormItem for="link" label={_state.lang.admin.equipment.equipment.link}>
+                        <Input id="link" name="link" type="url" required />
+                    </FormItem>
+                    <Button type="submit">{_state.lang.admin.equipment.equipment.button}</Button>
+                </form>
+            </div>
+        </div>
     </div>
 </section>

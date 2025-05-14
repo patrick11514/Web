@@ -1,28 +1,41 @@
-import { loggedProcedure } from '../api';
-import { conn } from '../variables';
-import type { ActionsResponse, Response } from '$/types/types';
 import { FormDataInput, type ErrorApiResponse } from '@patrick115/sveltekitapi';
+import { loggedProcedure } from '../api';
 import { fail } from '@sveltejs/kit';
+import type { ActionsResponse, Response } from '$/types/types';
 import type { ErrorPath } from '$/lib/lang';
+import { conn } from '../variables';
 import { z } from 'zod';
 
 export default [
     loggedProcedure.POST.input(FormDataInput).query(async ({ input }) => {
-        const lang_key = input.get('lang_key') as string | null;
+        const name = input.get('name') as string | null;
+        const type = input.get('type') as string | null;
+        const link = input.get('link') as string | null;
 
-        if (!lang_key) {
-            return fail(401, {
+        if (!name || !type || !link || isNaN(Number(type))) {
+            return fail(400, {
                 status: false,
-                message: 'types.form' satisfies ErrorPath
+                message: 'equipment.form' satisfies ErrorPath
             } satisfies ActionsResponse);
         }
+
         try {
+            const equipmentType = await conn.selectFrom('equipment_type').select('id').where('id', '=', Number(type)).executeTakeFirst();
+            if (!equipmentType) {
+                return fail(400, {
+                    status: false,
+                    message: 'equipment.form' satisfies ErrorPath
+                } satisfies ActionsResponse);
+            }
+
             await conn
-                .insertInto('equipment_type')
+                .insertInto('equipment')
                 .values({
-                    lang_key
+                    name,
+                    type_id: Number(type),
+                    link
                 })
-                .execute();
+                .executeTakeFirst();
 
             return {
                 status: true
@@ -37,7 +50,9 @@ export default [
     }),
     loggedProcedure.PATCH.input(FormDataInput).query(async ({ input }) => {
         const id = input.get('id') as string | null;
-        const lang_key = input.get('lang_key') as string | null;
+        const name = input.get('name') as string | null;
+        const type = input.get('type') as string | null;
+        const link = input.get('link') as string | null;
 
         if (!id || isNaN(Number(id))) {
             return fail(401, {
@@ -46,21 +61,31 @@ export default [
             } satisfies ActionsResponse);
         }
 
-        if (!lang_key || lang_key.trim().length === 0) {
+        if (!name || !type || !link || isNaN(Number(type))) {
             return fail(401, {
                 status: false,
-                message: 'types.empty' satisfies ErrorPath
+                message: 'equipment.form' satisfies ErrorPath
             } satisfies ActionsResponse);
         }
 
         try {
+            const equipmentType = await conn.selectFrom('equipment_type').select('id').where('id', '=', Number(type)).executeTakeFirst();
+            if (!equipmentType) {
+                return fail(400, {
+                    status: false,
+                    message: 'equipment.form' satisfies ErrorPath
+                } satisfies ActionsResponse);
+            }
+
             await conn
-                .updateTable('equipment_type')
+                .updateTable('equipment')
                 .set({
-                    lang_key
+                    name,
+                    type_id: Number(type),
+                    link
                 })
                 .where('id', '=', Number(id))
-                .execute();
+                .executeTakeFirst();
 
             return {
                 status: true
@@ -74,9 +99,7 @@ export default [
         }
     }),
     loggedProcedure.DELETE.input(z.number()).query(async ({ input }) => {
-        const id = input;
-
-        if (isNaN(Number(id))) {
+        if (!input || isNaN(Number(input))) {
             return {
                 status: false,
                 code: 400,
@@ -85,7 +108,7 @@ export default [
         }
 
         try {
-            await conn.deleteFrom('equipment_type').where('id', '=', Number(id)).execute();
+            await conn.deleteFrom('equipment').where('id', '=', Number(input)).executeTakeFirst();
 
             return {
                 status: true
