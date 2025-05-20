@@ -24,6 +24,7 @@
                     title: _state.lang.admin.equipment.types.success,
                     icon: 'success'
                 });
+                openTypeAdd = false;
             } else if (result.type === 'failure' && result.data) {
                 SwalAlert({
                     title: resolveError(result.data.message, _state.lang),
@@ -98,6 +99,7 @@
                     title: _state.lang.admin.equipment.equipment.success,
                     icon: 'success'
                 });
+                openEquipmentAdd = false;
             } else if (result.type === 'failure' && result.data) {
                 SwalAlert({
                     title: resolveError(result.data.message, _state.lang),
@@ -166,6 +168,10 @@
 
         invalidateAll();
     };
+
+    let section = $state<'types' | 'equipment'>('types');
+    let openTypeAdd = $state(false);
+    let openEquipmentAdd = $state(false);
 </script>
 
 {#snippet title(text: string)}
@@ -218,127 +224,154 @@
     </div>
 {/if}
 
-<section class="flex w-full flex-1 flex-col gap-4 p-4">
-    <div class="flex flex-col">
-        <div class="flex flex-col justify-between gap-2 md:flex-row">
-            <div class="flex w-full flex-col items-start">
+{#snippet _switch(text: string, name: typeof section)}
+    <button
+        onclick={() => (section = name)}
+        class={{
+            'cursor-pointer rounded-sm p-1': true,
+            'bg-primary-text': section === name,
+            'text-text-muted': section !== name
+        }}>{text}</button
+    >
+{/snippet}
+
+{#if openTypeAdd}
+    <div class="fixed top-0 left-0 z-10 flex h-screen w-screen bg-black/80">
+        <ClickOutside clickoutside={() => (openTypeAdd = false)} class="border-text m-auto flex flex-col rounded-md border-2 bg-black/80 p-4">
+            {@render title(_state.lang.admin.equipment.types.addTitle)}
+            <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/typeAdd" use:enhance={typeAdd}>
+                <FormItem for="key" label={_state.lang.admin.equipment.types.translateKey}>
+                    <Input id="key" name="lang_key" type="text" required />
+                </FormItem>
+                <Button type="submit">{_state.lang.admin.equipment.types.button}</Button>
+            </form>
+        </ClickOutside>
+    </div>
+{/if}
+
+{#if openEquipmentAdd}
+    <div class="fixed top-0 left-0 z-10 flex h-screen w-screen bg-black/80">
+        <ClickOutside clickoutside={() => (openEquipmentAdd = false)} class="border-text m-auto flex flex-col rounded-md border-2 bg-black/80 p-4">
+            {@render title(_state.lang.admin.equipment.equipment.addTitle)}
+            <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/equipmentAdd" use:enhance={equipmentAdd}>
+                <FormItem for="name" label={_state.lang.admin.equipment.equipment.name}>
+                    <Input id="name" name="name" type="text" required />
+                </FormItem>
+                <FormItem for="type" label={_state.lang.admin.equipment.equipment.type}>
+                    <Select id="type" name="type" required>
+                        <option value={null} disabled selected></option>
+                        {#each data.types as type (type.id.toString())}
+                            <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option>
+                        {/each}
+                    </Select>
+                </FormItem>
+                <FormItem for="link" label={_state.lang.admin.equipment.equipment.link}>
+                    <Input id="link" name="link" type="url" required />
+                </FormItem>
+                <Button type="submit">{_state.lang.admin.equipment.equipment.button}</Button>
+            </form>
+        </ClickOutside>
+    </div>
+{/if}
+
+<section class="mx-auto flex w-full flex-1 flex-col gap-4 p-4 lg:w-[90%] xl:w-[80%]">
+    <div class="text-text-inverse flex w-max gap-1 rounded-md bg-gray-600 p-1 font-bold">
+        {@render _switch(_state.lang.admin.equipment.types.title, 'types')}
+        {@render _switch(_state.lang.admin.equipment.equipment.title, 'equipment')}
+    </div>
+
+    {#if section === 'types'}
+        <div class="border-text flex w-full flex-col items-start rounded-md border-2 p-4">
+            <div class="flex w-full items-center justify-between">
                 {@render title(_state.lang.admin.equipment.types.title)}
-                <div class="min-w-full 2xl:min-w-1/2">
-                    {#if data.types.length === 0}
-                        {@render info(_state.lang.admin.equipment.types.empty)}
-                    {:else}
-                        <table class="border-text w-full table-auto border-collapse rounded-md border-2 text-xl lg:text-2xl">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>{_state.lang.admin.equipment.types.translateKey}</th>
-                                    <th>{_state.lang.admin.equipment.actions}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each data.types as type (type.id.toString())}
-                                    <tr class="border-text border-2">
-                                        <td class="font-bold">{type.id} </td>
-                                        <td>{type.lang_key}</td>
-                                        <td class="flex justify-center gap-2">
-                                            <Icon
-                                                onclick={() =>
-                                                    (typeEditing = {
-                                                        id: type.id,
-                                                        lang_key: type.lang_key || ''
-                                                    })}
-                                                name="bi-pencil-fill"
-                                                class="cursor-pointer"
-                                            />
-
-                                            <Icon onclick={() => typeDelete(type.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
-                                        </td>
-                                    </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    {/if}
-                </div>
+                <Button onclick={() => (openTypeAdd = true)}>{_state.lang.admin.equipment.types.addTitle}</Button>
             </div>
-            <div class="flex flex-col">
-                {@render title(_state.lang.admin.equipment.types.addTitle)}
-                <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/typeAdd" use:enhance={typeAdd}>
-                    <FormItem for="key" label={_state.lang.admin.equipment.types.translateKey}>
-                        <Input id="key" name="lang_key" type="text" required />
-                    </FormItem>
-                    <Button type="submit">{_state.lang.admin.equipment.types.button}</Button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="flex flex-col">
-        <div class="flex flex-col justify-between gap-2 md:flex-row">
-            <div class="flex w-full flex-col items-start">
-                {@render title(_state.lang.admin.equipment.equipment.title)}
-                <div class="min-w-full 2xl:min-w-1/2">
-                    {#if data.equipment.length === 0}
-                        {@render info(_state.lang.admin.equipment.equipment.empty)}
-                    {:else}
-                        <table class="border-text w-full table-auto border-collapse rounded-md border-2 text-xl lg:text-2xl">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>{_state.lang.admin.equipment.equipment.name}</th>
-                                    <th>{_state.lang.admin.equipment.equipment.type}</th>
-                                    <th>{_state.lang.admin.equipment.equipment.link}</th>
-                                    <th>{_state.lang.admin.equipment.actions}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each data.equipment as equipment (equipment.id.toString())}
-                                    <tr class="border-text border-2">
-                                        <td class="font-bold">{equipment.id} </td>
-                                        <td>{equipment.name}</td>
-                                        <td>{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</td>
-                                        <td>{equipment.link}</td>
-                                        <td class="flex justify-center gap-2">
-                                            <Icon
-                                                onclick={() => {
-                                                    equipmentEditing = {
-                                                        id: equipment.id,
-                                                        name: equipment.name,
-                                                        type_id: equipment.type_id,
-                                                        link: equipment.link
-                                                    };
-                                                }}
-                                                name="bi-pencil-fill"
-                                                class="cursor-pointer"
-                                            />
-
-                                            <Icon onclick={() => equipmentDelete(equipment.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
-                                        </td>
-                                    </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    {/if}
-                </div>
-            </div>
-            <div class="flex flex-col">
-                {@render title(_state.lang.admin.equipment.equipment.addTitle)}
-                <form class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2" method="POST" action="?/equipmentAdd" use:enhance={equipmentAdd}>
-                    <FormItem for="name" label={_state.lang.admin.equipment.equipment.name}>
-                        <Input id="name" name="name" type="text" required />
-                    </FormItem>
-                    <FormItem for="type" label={_state.lang.admin.equipment.equipment.type}>
-                        <Select id="type" name="type" required>
-                            <option value={null} disabled selected></option>
+            {#if data.types.length === 0}
+                {@render info(_state.lang.admin.equipment.types.empty)}
+            {:else}
+                <div class="border-text w-full rounded-md border-2">
+                    <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-xl lg:text-2xl [&_tr]:border-b-2">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>{_state.lang.admin.equipment.types.translateKey}</th>
+                                <th>{_state.lang.admin.equipment.actions}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="[&_tr:last-child]:border-b-0">
                             {#each data.types as type (type.id.toString())}
-                                <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option>
+                                <tr>
+                                    <td class="font-bold">{type.id} </td>
+                                    <td>{type.lang_key}</td>
+                                    <td class="flex justify-center gap-2">
+                                        <Icon
+                                            onclick={() =>
+                                                (typeEditing = {
+                                                    id: type.id,
+                                                    lang_key: type.lang_key || ''
+                                                })}
+                                            name="bi-pencil-fill"
+                                            class="cursor-pointer"
+                                        />
+
+                                        <Icon onclick={() => typeDelete(type.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                                    </td>
+                                </tr>
                             {/each}
-                        </Select>
-                    </FormItem>
-                    <FormItem for="link" label={_state.lang.admin.equipment.equipment.link}>
-                        <Input id="link" name="link" type="url" required />
-                    </FormItem>
-                    <Button type="submit">{_state.lang.admin.equipment.equipment.button}</Button>
-                </form>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
+            {/if}
         </div>
-    </div>
+    {:else}
+        <div class="border-text flex w-full flex-col items-start rounded-md border-2 p-4">
+            <div class="flex w-full items-center justify-between">
+                {@render title(_state.lang.admin.equipment.equipment.title)}
+                <Button onclick={() => (openEquipmentAdd = true)}>{_state.lang.admin.equipment.equipment.addTitle}</Button>
+            </div>
+            {#if data.equipment.length === 0}
+                {@render info(_state.lang.admin.equipment.equipment.empty)}
+            {:else}
+                <div class="border-text w-full rounded-md border-2">
+                    <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-xl lg:text-2xl [&_tr]:border-b-2">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>{_state.lang.admin.equipment.equipment.name}</th>
+                                <th>{_state.lang.admin.equipment.equipment.type}</th>
+                                <th>{_state.lang.admin.equipment.equipment.link}</th>
+                                <th>{_state.lang.admin.equipment.actions}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="[&_tr:last-child]:border-b-0">
+                            {#each data.equipment as equipment (equipment.id.toString())}
+                                <tr>
+                                    <td class="font-bold">{equipment.id} </td>
+                                    <td>{equipment.name}</td>
+                                    <td>{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</td>
+                                    <td>{equipment.link}</td>
+                                    <td class="flex justify-center gap-2">
+                                        <Icon
+                                            onclick={() => {
+                                                equipmentEditing = {
+                                                    id: equipment.id,
+                                                    name: equipment.name,
+                                                    type_id: equipment.type_id,
+                                                    link: equipment.link
+                                                };
+                                            }}
+                                            name="bi-pencil-fill"
+                                            class="cursor-pointer"
+                                        />
+
+                                        <Icon onclick={() => equipmentDelete(equipment.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                                    </td>
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
+            {/if}
+        </div>
+    {/if}
 </section>
