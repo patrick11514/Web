@@ -5,7 +5,7 @@
 
     const {
         link,
-        target = '_self',
+        target = null,
         class: cls = '',
         children
     }: {
