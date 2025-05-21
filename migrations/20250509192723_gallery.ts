@@ -6,7 +6,7 @@ export const up = async (conn: Kysely<any>) => {
     await conn.schema
         .createTable('equipment_type')
         .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
-        .addColumn('name', 'varchar(64)', (col) => col.notNull())
+        .addColumn('lang_key', 'varchar(64)', (col) => col.notNull())
         .execute();
 
     await conn.schema
@@ -14,7 +14,7 @@ export const up = async (conn: Kysely<any>) => {
         .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
         .addColumn('type_id', 'integer', (col) => col.notNull().references('equipment_type.id'))
         .addColumn('name', 'varchar(128)', (col) => col.notNull())
-        .addColumn('link', 'varchar(512)')
+        .addColumn('link', 'varchar(512)', (col) => col.notNull())
         .execute();
 
     await conn.schema
@@ -23,6 +23,7 @@ export const up = async (conn: Kysely<any>) => {
         .addColumn('title', 'varchar(256)', (col) => col.notNull())
         .addColumn('content_md', 'text', (col) => col.notNull())
         .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
+    .addColumn("updated_at", "timestamp", (col) => col.defaultTo(sql`now()`).notNull())
         .execute();
 
     await conn.schema
@@ -40,27 +41,18 @@ export const up = async (conn: Kysely<any>) => {
         .execute();
 
     await conn.schema
-        .createTable('exposure_total')
-        .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
-        .addColumn('article_id', 'uuid', (col) => col.notNull().references('article.id'))
-        .addColumn('type', 'varchar(16)', (col) => col.notNull()) // e.g. 'light', 'dark', 'flat'
-        .addColumn('count', 'integer', (col) => col.notNull())
-        .addColumn('exposure_time_s', 'real', (col) => col.notNull())
-        .execute();
-
-    await conn.schema
-        .createTable('daily_light_exposure')
+        .createTable('exposure')
         .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
         .addColumn('article_id', 'uuid', (col) => col.notNull().references('article.id'))
         .addColumn('date', 'date', (col) => col.notNull())
+        .addColumn('type', 'varchar(16)', (col) => col.notNull()) // e.g. 'light', 'dark', 'flat'
         .addColumn('count', 'integer', (col) => col.notNull())
         .addColumn('exposure_time_s', 'real', (col) => col.notNull())
         .execute();
 };
 
 export const down = async (conn: Kysely<any>) => {
-    await conn.schema.dropTable('daily_light_exposure').execute();
-    await conn.schema.dropTable('exposure_total').execute();
+    await conn.schema.dropTable('exposure').execute();
     await conn.schema.dropTable('gallery_image').execute();
     await conn.schema.dropTable('article_equipment').execute();
     await conn.schema.dropTable('article').execute();
