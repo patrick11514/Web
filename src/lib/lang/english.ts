@@ -156,6 +156,7 @@ export default lang.parse({
         barlow: 'Barlow',
         reducer: 'Reducer',
         guidescope: 'Guidescope',
-        phone: 'Phone'
+        phone: 'Phone',
+        focuser: 'Focuser'
     }
 } satisfies z.infer<typeof lang>);

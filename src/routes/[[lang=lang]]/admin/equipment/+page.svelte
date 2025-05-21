@@ -294,7 +294,7 @@
                                 <tr>
                                     <td class="font-bold">{equipment.id} </td>
                                     <td>{equipment.name}</td>
-                                    <td>{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</td>
+                                    <td class="pr-2">{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</td>
                                     <td>{equipment.link}</td>
                                     <td class="flex justify-center gap-2">
                                         <Icon

@@ -118,6 +118,7 @@ export default o({
         barlow: _,
         reducer: _,
         guidescope: _,
-        phone: _
+        phone: _,
+        focuser: _
     })
 });
