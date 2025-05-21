@@ -55,6 +55,7 @@
         "jsonwebtoken": "^9.0.2",
         "kysely": "^0.28.2",
         "mysql2": "^3.14.1",
+        "sharp": "^0.34.2",
         "simple-json-db": "^2.0.0",
         "starback": "github:patrick11514/starback.js",
         "sweetalert2": "^11.21.0",
