@@ -11,7 +11,9 @@ export default lang.parse({
         login: 'Login'
     },
     adminNavigation: {
-        home: 'Dashboard'
+        home: 'Dashboard',
+        equipment: 'Equipment',
+        articles: 'Articles'
     },
     error: {
         title: 'Error',

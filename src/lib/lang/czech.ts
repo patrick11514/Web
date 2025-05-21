@@ -11,7 +11,9 @@ export default lang.parse({
         login: 'Přihlášení'
     },
     adminNavigation: {
-        home: 'Panel'
+        home: 'Panel',
+        equipment: 'Vybavení',
+        articles: 'Články'
     },
     error: {
         title: 'Chyba',

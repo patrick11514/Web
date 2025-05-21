@@ -23,7 +23,9 @@ export default o({
         login: _
     }),
     adminNavigation: o({
-        home: _
+        home: _,
+        equipment: _,
+        articles: _
     }),
     error: o({
         title: _,

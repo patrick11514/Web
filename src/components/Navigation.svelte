@@ -51,9 +51,14 @@
             path: '/admin'
         },
         {
-            name: 'Equipment',
+            name: _state.lang.adminNavigation.equipment,
             icon: 'bi-moon-stars-fill',
             path: '/admin/equipment'
+        },
+        {
+            name: _state.lang.adminNavigation.articles,
+            icon: 'bi-journal-text',
+            path: '/admin/article'
         }
     ] satisfies AdminItem[]);
 
