@@ -23,7 +23,7 @@ export const up = async (conn: Kysely<any>) => {
         .addColumn('title', 'varchar(256)', (col) => col.notNull())
         .addColumn('content_md', 'text', (col) => col.notNull())
         .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
-    .addColumn("updated_at", "timestamp", (col) => col.defaultTo(sql`now()`).notNull())
+        .addColumn('updated_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
         .execute();
 
     await conn.schema

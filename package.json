@@ -12,7 +12,7 @@
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "format": "prettier --write .",
         "lint": "prettier --check . && eslint .",
-        "genDatabaseSchema": "kysely-codegen --out-file ./src/types/database.ts",
+        "genDatabaseSchema": "kysely-codegen --config-file kysely.config.json",
         "start": "node -r dotenv/config build",
         "migration:create": "./script/createMigration.sh",
         "migrate": "tsx ./script/runMigration.ts",
