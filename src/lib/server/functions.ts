@@ -59,14 +59,14 @@ export const isFile = async (path: string) => {
 };
 
 export const uploadFile = async (file: File) => {
-    const arrayBuffer= await file.arrayBuffer();
+    const arrayBuffer = await file.arrayBuffer();
     const path = Path.parse(file.name);
-    const name = (await randomBytesAsync(16)).toString("hex") + path.ext; 
+    const name = (await randomBytesAsync(16)).toString('hex') + path.ext;
 
     if (!(await isDirectory(FILE_FOLDER))) {
         await fs.mkdir(FILE_FOLDER, { recursive: true });
     }
 
-await    fs.writeFile(Path.join(FILE_FOLDER, name), Buffer.from(arrayBuffer));
+    await fs.writeFile(Path.join(FILE_FOLDER, name), Buffer.from(arrayBuffer));
     return name;
-}
+};

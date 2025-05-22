@@ -130,6 +130,54 @@ export default lang.parse({
                     no: 'Ne'
                 }
             }
+        },
+        article: {
+            title: 'Články',
+            create: 'Vytvořit článek',
+            empty: 'Žádné články nebyly vytvořeny.',
+            articleTitle: 'Název článku',
+            image: 'Obrázek',
+            lastEdit: 'Poslední úprava',
+            published: 'Publikováno',
+            actions: 'Akce',
+            form: {
+                back: 'Zpátky k článkům',
+                editTitle: 'Upravit článek',
+                createTitle: 'Vytvořit článek',
+                details: {
+                    title: 'Detaily článku',
+                    titleInput: 'Název článku',
+                    titlePlaceholder: 'Zadej název článku',
+                    content: 'Obsah článku (Markdown)',
+                    editContent: 'Úprava',
+                    previewContent: 'Náhled',
+                    contentPlaceholder: 'Zadej obsah článku v markdownu...'
+                },
+                equipment: {
+                    title: 'Vybavení',
+                    select: 'Vyber vybavení'
+                },
+                images: {
+                    title: 'Obrázky',
+                    upload: 'Nahrát obrázek',
+                    descriptionPlaceholder: 'Zadej popis obrázku',
+                    browse: 'Procházet',
+                    button: 'Přidat obrázek'
+                },
+                exposures: {
+                    title: 'Expozice',
+                    date: 'Datum',
+                    type: 'Typ',
+                    count: 'Počet',
+                    seconds: 'Sekundy',
+                    button: 'Přidat expozici',
+                    time: 'Čas (s)',
+                    total: 'Celkový čas (s)'
+                },
+                cancel: 'Zrušit',
+                save: 'Uložit článek',
+                create: 'Vytvořit článek'
+            }
         }
     },
     errors: {
@@ -158,5 +206,11 @@ export default lang.parse({
         guidescope: 'Guidescope',
         phone: 'Telefon',
         focuser: 'Zaostřovač'
+    },
+    frames: {
+        light: 'Light',
+        dark: 'Dark',
+        flat: 'Flat',
+        bias: 'Bias'
     }
 } satisfies z.infer<typeof lang>);

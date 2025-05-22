@@ -53,7 +53,8 @@ export interface Exposure {
 export interface GalleryImage {
   alt_text: string;
   article_id: string;
-  id: Generated<string>;
+  id: Generated<number>;
+  name: string;
 }
 
 export interface Visitors {

@@ -22,3 +22,22 @@ export const SwalAlert = <$Type = unknown>(data: SweetAlertOptions) => {
         ...data
     });
 };
+
+export const formatDate = (date: Date | string) => {
+    if (typeof date === 'string') {
+        date = new Date(date);
+    }
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+
+    const locale = navigator.language || 'cs-CZ';
+
+    return new Intl.DateTimeFormat(locale, options).format(date);
+};

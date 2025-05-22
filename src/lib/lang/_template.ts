@@ -92,6 +92,54 @@ export default o({
                     no: _
                 })
             })
+        }),
+        article: o({
+            title: _,
+            create: _,
+            empty: _,
+            image: _,
+            articleTitle: _,
+            published: _,
+            lastEdit: _,
+            actions: _,
+            form: o({
+                back: _,
+                editTitle: _,
+                createTitle: _,
+                details: o({
+                    title: _,
+                    titleInput: _,
+                    titlePlaceholder: _,
+                    content: _,
+                    editContent: _,
+                    previewContent: _,
+                    contentPlaceholder: _
+                }),
+                equipment: o({
+                    title: _,
+                    select: _
+                }),
+                images: o({
+                    title: _,
+                    upload: _,
+                    descriptionPlaceholder: _,
+                    browse: _,
+                    button: _
+                }),
+                exposures: o({
+                    title: _,
+                    date: _,
+                    type: _,
+                    count: _,
+                    seconds: _,
+                    button: _,
+                    time: _,
+                    total: _
+                }),
+                cancel: _,
+                save: _,
+                create: _
+            })
         })
     }),
     errors: o({
@@ -120,5 +168,11 @@ export default o({
         guidescope: _,
         phone: _,
         focuser: _
+    }),
+    frames: o({
+        light: _,
+        dark: _,
+        flat: _,
+        bias: _
     })
 });

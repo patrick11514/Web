@@ -130,6 +130,54 @@ export default lang.parse({
                     no: 'No'
                 }
             }
+        },
+        article: {
+            title: 'Articles',
+            create: 'Create new article',
+            empty: 'No articles have been created yet.',
+            image: 'Image',
+            actions: 'Actions',
+            articleTitle: 'Article title',
+            published: 'Published',
+            lastEdit: 'Last edit',
+            form: {
+                back: 'Back to articles',
+                editTitle: 'Edit article',
+                createTitle: 'Create article',
+                details: {
+                    title: 'Article details',
+                    titleInput: 'Article title',
+                    titlePlaceholder: 'Enter article title',
+                    content: 'Article content (Markdown)',
+                    editContent: 'Edit',
+                    previewContent: 'Preview',
+                    contentPlaceholder: 'Enter article content in markdown...'
+                },
+                equipment: {
+                    title: 'Equipment',
+                    select: 'Select equipment'
+                },
+                images: {
+                    title: 'Images',
+                    upload: 'Upload image',
+                    descriptionPlaceholder: 'Enter image description',
+                    browse: 'Browse',
+                    button: 'Add image'
+                },
+                exposures: {
+                    title: 'Exposures',
+                    date: 'Date',
+                    type: 'Type',
+                    count: 'Count',
+                    seconds: 'Seconds',
+                    button: 'Add exposure',
+                    time: 'Time (s)',
+                    total: 'Total (s)'
+                },
+                cancel: 'Cancel',
+                save: 'Save article',
+                create: 'Create article'
+            }
         }
     },
     errors: {
@@ -158,5 +206,11 @@ export default lang.parse({
         guidescope: 'Guidescope',
         phone: 'Phone',
         focuser: 'Focuser'
+    },
+    frames: {
+        light: 'Light',
+        dark: 'Dark',
+        flat: 'Flat',
+        bias: 'Bias'
     }
 } satisfies z.infer<typeof lang>);

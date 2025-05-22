@@ -11,7 +11,6 @@ const extensions = ['jpg', 'jpeg', 'png', 'webp', 'tiff'] satisfies ImageExtensi
 const CACHE_FOLDER = '.cache';
 const DEFAULT_IMAGE_QUALITY = 75;
 
-
 export const GET = (async ({ params, setHeaders, url }) => {
     if (!params.name) {
         error(400, 'Name is required');
