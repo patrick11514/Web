@@ -1,13 +1,11 @@
-
 {
-  "outFile": "./src/types/database.ts",
-  "overrides": {
-    "columns": {
-      "article.id": "Generated<string>",
-      "article_equipment.article_id": "string",
-      "exposure.article_id": "string",
-      "gallery_image.article_id": "string",
-      "gallery_image.id": "Generated<string>"
+    "outFile": "./src/types/database.ts",
+    "overrides": {
+        "columns": {
+            "article.id": "Generated<string>",
+            "article_equipment.article_id": "string",
+            "exposure.article_id": "string",
+            "gallery_image.article_id": "string"
+        }
     }
-  }
 }

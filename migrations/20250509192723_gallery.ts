@@ -35,7 +35,8 @@ export const up = async (conn: Kysely<any>) => {
 
     await conn.schema
         .createTable('gallery_image')
-        .addColumn('id', 'uuid', (col) => col.primaryKey())
+        .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
+        .addColumn('name', 'varchar(50)', (col) => col.notNull())
         .addColumn('article_id', 'uuid', (col) => col.notNull().references('article.id'))
         .addColumn('alt_text', 'varchar(256)', (col) => col.notNull())
         .execute();
