@@ -51,9 +51,9 @@
             position: 'center',
             title: _lang.types.delete.question,
             showConfirmButton: true,
-            confirmButtonText: _lang.types.delete.yes,
+            confirmButtonText: _state.lang.yes,
             showCancelButton: true,
-            cancelButtonText: _lang.types.delete.no
+            cancelButtonText: _state.lang.no
         });
 
         if (!result.isConfirmed) return;
@@ -89,9 +89,9 @@
             position: 'center',
             title: _lang.equipment.delete.question,
             showConfirmButton: true,
-            confirmButtonText: _lang.equipment.delete.yes,
+            confirmButtonText: _state.lang.yes,
             showCancelButton: true,
-            cancelButtonText: _lang.equipment.delete.no
+            cancelButtonText: _state.lang.no
         });
 
         if (!result.isConfirmed) return;
