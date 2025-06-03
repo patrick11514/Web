@@ -58,7 +58,8 @@
         {
             name: _state.lang.adminNavigation.articles,
             icon: 'bi-journal-text',
-            path: '/admin/article'
+            path: '/admin/article',
+            matchStart: true
         }
     ] satisfies AdminItem[]);
 
@@ -69,6 +70,9 @@
         }
 
         const adminNav = AdminNavigation.find((item) => {
+            if (item.matchStart) {
+                return path.startsWith(item.path);
+            }
             return path === item.path;
         });
 
