@@ -1,9 +1,11 @@
 import type { z } from 'zod';
-import lang from './_template';
+import lang, { _extensions } from './_template';
 
 export default lang.parse({
     default_desc:
         'Ahoj, jsem Patrik, student a programátor, který se ve volném čase věnuje astrofotografování. Věnuji se tvorbě webových stránek a aplikací ve frameworku SvelteKit. Nebráním se tvorbě jiných aplikací, například v NodeJS, nebo jiných frameworkcích, jako jsou Vue.js, nebo React.',
+    yes: 'Ano',
+    no: 'Ne',
     navigation: {
         home: 'Domů',
         gallery: 'Galerie',
@@ -104,9 +106,7 @@ export default lang.parse({
                     button: 'Upravit'
                 },
                 delete: {
-                    question: 'Opravdu chceš smazat tento typ?',
-                    yes: 'Ano',
-                    no: 'Ne'
+                    question: 'Opravdu chceš smazat tento typ?'
                 }
             },
             equipment: {
@@ -125,9 +125,7 @@ export default lang.parse({
                     button: 'Upravit'
                 },
                 delete: {
-                    question: 'Opravdu chceš smazat toto vybavení?',
-                    yes: 'Ano',
-                    no: 'Ne'
+                    question: 'Opravdu chceš smazat toto vybavení?'
                 }
             }
         },
@@ -155,14 +153,20 @@ export default lang.parse({
                 },
                 equipment: {
                     title: 'Vybavení',
-                    select: 'Vyber vybavení'
+                    select: 'Vyber vybavení',
+                    empty: 'Nevybral jsi žádné vybavení.'
                 },
                 images: {
                     title: 'Obrázky',
                     upload: 'Nahrát obrázek',
                     descriptionPlaceholder: 'Zadej popis obrázku',
                     browse: 'Procházet',
-                    button: 'Přidat obrázek'
+                    button: 'Přidat obrázek',
+                    alt: 'Zadej prosím popisek obrázku',
+                    empty: 'Zatím nebyl přidán žádný obrázek.',
+                    noImage: 'Vyber prosím obrázek',
+                    multiple: 'Vyber prosím pouze jeden obrázek',
+                    confirmDelete: 'Opravdu chceš smazat tento obrázek?'
                 },
                 exposures: {
                     title: 'Expozice',
@@ -194,6 +198,13 @@ export default lang.parse({
         equipment: {
             form: 'Vyplň prosím všechny údaje.',
             url: 'Zadej platný odkaz.'
+        },
+        upload: {
+            missing: 'Vyber prosím soubor k nahrání.',
+            error: 'Nepodařilo se nahrát soubor, zkus to prosím znovu.',
+            invalidFile: 'Nahrej prosím platný soubor',
+            extension: 'Nahrej prosím platný obrázek s příponou ' + _extensions,
+            notFound: 'Soubor s tímto jménem neexistuje.'
         }
     },
     equipmentType: {

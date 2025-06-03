@@ -1,9 +1,11 @@
 import type { z } from 'zod';
-import lang from './_template';
+import lang, { _extensions } from './_template';
 
 export default lang.parse({
     default_desc:
         'Hello, I am Patrik, a student and programmer who enjoys astrophotography in my free time. I create websites and applications using the SvelteKit framework. I am open to creating other applications, for example in NodeJS or other frameworks like Vue.js or React.',
+    yes: 'Yes',
+    no: 'No',
     navigation: {
         home: 'Home',
         gallery: 'Gallery',
@@ -104,9 +106,7 @@ export default lang.parse({
                     button: 'Edit'
                 },
                 delete: {
-                    question: 'Are you sure you want to delete this type?',
-                    yes: 'Yes',
-                    no: 'No'
+                    question: 'Are you sure you want to delete this type?'
                 }
             },
             equipment: {
@@ -125,9 +125,7 @@ export default lang.parse({
                     button: 'Edit'
                 },
                 delete: {
-                    question: 'Are you sure you want to delete this equipment?',
-                    yes: 'Yes',
-                    no: 'No'
+                    question: 'Are you sure you want to delete this equipment?'
                 }
             }
         },
@@ -155,14 +153,20 @@ export default lang.parse({
                 },
                 equipment: {
                     title: 'Equipment',
-                    select: 'Select equipment'
+                    select: 'Select equipment',
+                    empty: 'You have not selected any equipment.'
                 },
                 images: {
                     title: 'Images',
                     upload: 'Upload image',
                     descriptionPlaceholder: 'Enter image description',
                     browse: 'Browse',
-                    button: 'Add image'
+                    button: 'Add image',
+                    empty: 'No images have been added yet.',
+                    alt: 'Please enter image description',
+                    noImage: 'Please select an image to upload',
+                    multiple: 'Please select only one image',
+                    confirmDelete: 'Are you sure you want to delete this image?'
                 },
                 exposures: {
                     title: 'Exposures',
@@ -194,6 +198,13 @@ export default lang.parse({
         equipment: {
             form: 'Please fill in the form',
             url: 'Please enter a valid URL'
+        },
+        upload: {
+            missing: 'Please select a file to upload.',
+            error: 'Image upload failed, please try again later.',
+            invalidFile: 'Please enter a valid file',
+            extension: 'Please enter an image with valid extension: ' + _extensions,
+            notFound: 'File with this name does not exist.'
         }
     },
     equipmentType: {

@@ -1,9 +1,31 @@
 import { conn } from '$/lib/server/variables';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import type { Insertable } from 'kysely';
+import type { Article, Exposure, GalleryImage } from '$/types/database';
 
 export const load = (async ({ params }) => {
-    if (params.id === 'new') return;
+    const equipmentData = await conn.selectFrom('equipment').selectAll().execute();
+
+    const baseData = {
+        equipment: equipmentData
+    };
+
+    if (params.id === 'new')
+        return {
+            article: {
+                title: '',
+                content_md: '',
+                images: [],
+                exposures: [],
+                equipment: []
+            } as Insertable<Article> & {
+                images: Insertable<GalleryImage>[];
+                exposures: Insertable<Exposure>[];
+                equipment: number[];
+            },
+            ...baseData
+        };
 
     const article = await conn.selectFrom('article').selectAll().where('id', '=', params.id).executeTakeFirst();
 
@@ -17,8 +39,7 @@ export const load = (async ({ params }) => {
 
     const equipment = await conn
         .selectFrom('article_equipment')
-        .innerJoin('equipment', 'article_equipment.equipment_id', 'equipment.id')
-        .selectAll()
+        .select(['equipment_id'])
         .where('article_equipment.article_id', '=', params.id)
         .orderBy('article_equipment.id', 'asc')
         .execute();
@@ -28,12 +49,8 @@ export const load = (async ({ params }) => {
             ...article,
             images,
             exposures,
-            equipment: equipment.map((e) => ({
-                id: e.id,
-                name: e.name,
-                link: e.link,
-                type_id: e.type_id
-            }))
-        }
+            equipment: equipment.map((e) => e.equipment_id)
+        },
+        ...baseData
     };
 }) satisfies PageServerLoad;

@@ -1,3 +1,4 @@
+import { extensions } from '$/types/types';
 import { z } from 'zod';
 
 // STRING
@@ -14,8 +15,12 @@ export const r = z.array(
     )
 );
 
+export const _extensions = extensions.map((ext) => `.${ext}`).join(', ');
+
 export default o({
     default_desc: _,
+    yes: _,
+    no: _,
     navigation: o({
         home: _,
         gallery: _,
@@ -66,9 +71,7 @@ export default o({
                     button: _
                 }),
                 delete: o({
-                    question: _,
-                    yes: _,
-                    no: _
+                    question: _
                 })
             }),
             equipment: o({
@@ -87,9 +90,7 @@ export default o({
                     button: _
                 }),
                 delete: o({
-                    question: _,
-                    yes: _,
-                    no: _
+                    question: _
                 })
             })
         }),
@@ -117,14 +118,20 @@ export default o({
                 }),
                 equipment: o({
                     title: _,
-                    select: _
+                    select: _,
+                    empty: _
                 }),
                 images: o({
                     title: _,
                     upload: _,
                     descriptionPlaceholder: _,
                     browse: _,
-                    button: _
+                    button: _,
+                    alt: _,
+                    empty: _,
+                    noImage: _,
+                    multiple: _,
+                    confirmDelete: _
                 }),
                 exposures: o({
                     title: _,
@@ -156,6 +163,13 @@ export default o({
         equipment: o({
             form: _,
             url: _
+        }),
+        upload: o({
+            missing: _,
+            error: _,
+            invalidFile: _,
+            extension: _,
+            notFound: _
         })
     }),
     equipmentType: o({
