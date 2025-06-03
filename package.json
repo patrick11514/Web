@@ -54,6 +54,7 @@
         "dotenv": "^16.5.0",
         "jsonwebtoken": "^9.0.2",
         "kysely": "^0.28.2",
+        "marked": "^15.0.12",
         "mysql2": "^3.14.1",
         "sharp": "^0.34.2",
         "simple-json-db": "^2.0.0",
