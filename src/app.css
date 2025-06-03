@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@config "../tailwindcss.config.js";
 
 @theme {
     /* Base Colors */
