@@ -1,4 +1,4 @@
-import type { UserData, UserState } from '$/types/types';
+import { extensions, type ImageExtension, type UserData, type UserState } from '$/types/types';
 import type { Cookies } from '@sveltejs/kit';
 import { jwt } from './variables';
 import { redirect as _redirect } from '@sveltejs/kit';
@@ -61,6 +61,11 @@ export const isFile = async (path: string) => {
 export const uploadFile = async (file: File) => {
     const arrayBuffer = await file.arrayBuffer();
     const path = Path.parse(file.name);
+
+    if (!extensions.includes(path.ext.substring(1) as ImageExtension)) {
+        return undefined;
+    }
+
     const name = (await randomBytesAsync(16)).toString('hex') + path.ext;
 
     if (!(await isDirectory(FILE_FOLDER))) {

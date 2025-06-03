@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { ImageExtension } from '$/routes/image/[name]/+server';
+    import type { ImageExtension } from '$/types/types';
     import type { ClassValue } from 'svelte/elements';
 
     const { class: cls, alt, name, quality = 75, format = 'jpg' }: { class?: ClassValue; alt: string; name: string; quality?: number; format?: ImageExtension } = $props();
 
-    let src = $derived(name.includes('/') ? name : `/images/${name}?format=${format}&quality=${quality}`);
+    let src = $derived(name.includes('/') ? name : `/image/${name}?format=${format}&quality=${quality}`);
 </script>
 
 <picture>

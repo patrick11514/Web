@@ -4,9 +4,7 @@ import fs from 'node:fs/promises';
 import { FILE_FOLDER } from '$env/static/private';
 import sharp from 'sharp';
 import { isDirectory, isFile } from '$/lib/server/functions';
-
-export type ImageExtension = 'jpg' | 'jpeg' | 'png' | 'webp' | 'tiff';
-const extensions = ['jpg', 'jpeg', 'png', 'webp', 'tiff'] satisfies ImageExtension[];
+import { extensions, type ImageExtension } from '$/types/types';
 
 const CACHE_FOLDER = '.cache';
 const DEFAULT_IMAGE_QUALITY = 75;

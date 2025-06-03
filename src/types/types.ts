@@ -28,3 +28,6 @@ export type Response = {
 export type ResponseWithData<$Data> = Response & {
     data: $Data;
 };
+
+export type ImageExtension = 'jpg' | 'jpeg' | 'png' | 'webp' | 'tiff';
+export const extensions = ['jpg', 'jpeg', 'png', 'webp', 'tiff'] satisfies ImageExtension[];
