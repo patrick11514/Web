@@ -10,9 +10,18 @@
     import Select from '$/components/form/Select.svelte';
     import Button from '$/components/form/Button.svelte';
     import { API } from '$/lib/api';
-    import { SwalAlert } from '$/lib/functions';
+    import { formatDate, SwalAlert } from '$/lib/functions';
     import { resolveError } from '$/lib/lang';
     import Image from '$/components/utility/Image.svelte';
+    import DatePicker from '$/components/form/DatePicker.svelte';
+    import Table from '$/components/table/Table.svelte';
+    import Tr from '$/components/table/Tr.svelte';
+    import Th from '$/components/table/Th.svelte';
+    import Td from '$/components/table/Td.svelte';
+    import TBody from '$/components/table/TBody.svelte';
+    import THead from '$/components/table/THead.svelte';
+    import { goto } from '$app/navigation';
+    import { articleSchema } from '$/types/schemes';
 
     const { data }: PageProps = $props();
 
@@ -36,7 +45,16 @@
 
     export const snapshot = {
         capture: () => article,
-        restore: (data) => (article = data)
+        restore: (data) => {
+            article = {
+                ...data,
+                created_at: data.created_at ? new Date(data.created_at) : undefined,
+                exposures: data.exposures.map((exposure) => ({
+                    ...exposure,
+                    date: new Date(exposure.date)
+                }))
+            };
+        }
     } satisfies Snapshot<typeof data.article>;
 
     let imageDescription = $state('');
@@ -82,7 +100,6 @@
         article.images.push({
             name: response.data,
             alt_text: imageDescription,
-            //@TODO: after inserting the image, fill article_ids
             article_id: ''
         });
 
@@ -117,6 +134,66 @@
 
         article.images = article.images.filter((img) => img.name !== image);
     };
+
+    let exposureDate = $state<Date | undefined>(undefined);
+    let exposureType = $state('light');
+    let exposureCount = $state(1);
+    let exposureDuration = $state(30);
+
+    const addExposure = () => {
+        article.exposures.push({
+            type: exposureType,
+            date: exposureDate ?? new Date(),
+            count: exposureCount,
+            exposure_time_s: exposureDuration,
+            article_id: article.id ?? ''
+        });
+
+        exposureDate = undefined;
+        exposureType = 'light';
+        exposureCount = 1;
+        exposureDuration = 30;
+    };
+
+    const articleAdd = async () => {
+        const response = await API.article.POST(article);
+
+        if (!response.status) {
+            SwalAlert({
+                title: resolveError(response.message, _state.lang),
+                icon: 'error'
+            });
+            return;
+        }
+
+        SwalAlert({
+            title: _lang.created,
+            icon: 'success'
+        });
+
+        goto(`/${_state.selectedLang}/admin/article`);
+    };
+
+    const articleEdit = async () => {
+        const parsed = articleSchema.required().safeParse(article);
+        if (!parsed.success) return;
+        const response = await API.article.PUT(parsed.data);
+
+        if (!response.status) {
+            SwalAlert({
+                title: resolveError(response.message, _state.lang),
+                icon: 'error'
+            });
+            return;
+        }
+
+        SwalAlert({
+            title: _lang.updated,
+            icon: 'success'
+        });
+
+        goto(`/${_state.selectedLang}/admin/article`);
+    };
 </script>
 
 {#snippet subTitle(text: string)}
@@ -124,7 +201,7 @@
 {/snippet}
 
 <section class="mx-auto flex w-full flex-1 p-4 lg:w-[90%] xl:w-[80%]">
-    <form class="border-text flex w-full flex-col items-start gap-4 rounded-md border-2 p-4">
+    <div class="border-text flex w-full flex-col items-start gap-4 rounded-md border-2 p-4">
         <a href="/{_state.selectedLang}/admin/article">
             <Icon name="bi-chevron-left" />
             {_lang.back}
@@ -134,7 +211,7 @@
         <Card>
             {@render subTitle(_lang.details.title)}
             <FormItem for="title" label={_lang.details.titleInput} variant="small">
-                <Input id="title" name="title" placeholder={_lang.details.titlePlaceholder} bind:value={article.title} />
+                <Input id="title" placeholder={_lang.details.titlePlaceholder} bind:value={article.title} />
             </FormItem>
             <FormItem for="content" label={_lang.details.content} variant="small">
                 {#snippet right()}
@@ -142,7 +219,7 @@
                 {/snippet}
 
                 {#if !showPreview}
-                    <TextArea id="content" name="content" rows={10} placeholder={_lang.details.contentPlaceholder} bind:value={article.content_md} />
+                    <TextArea id="content" rows={10} placeholder={_lang.details.contentPlaceholder} bind:value={article.content_md} />
                 {:else}
                     <Markdown content={article.content_md} />
                 {/if}
@@ -175,7 +252,7 @@
         </Card>
         <Card>
             {@render subTitle(_lang.images.title)}
-            <FormItem for="image" label={_lang.images.upload} class="gap-2">
+            <FormItem for="image" label={_lang.images.upload} class="gap-2" variant="small">
                 <div class="flex flex-row items-center justify-stretch gap-2">
                     <Input type="text" class="flex-1" placeholder={_lang.images.descriptionPlaceholder} bind:value={imageDescription} />
                     <label
@@ -199,7 +276,7 @@
                 {:else}
                     <div class="flex flex-wrap gap-2">
                         {#each article.images as image (image.name)}
-                            <div class="border-text group relative flex max-w-[30%] flex-col rounded-md border-2 font-bold">
+                            <div class="border-text group relative flex max-w-[30%] flex-col rounded-md border-2 font-bold [&>picture]:m-auto">
                                 <Image name={image.name} alt={image.alt_text} />
                                 <span class="border-t-text border-t-2 p-1 font-bold">{image.alt_text}</span>
                                 <div
@@ -217,5 +294,91 @@
                 {/if}
             </FormItem>
         </Card>
-    </form>
+        <Card>
+            {@render subTitle(_lang.exposures.title)}
+            <div class="flex gap-2">
+                <FormItem for="date" label={_lang.exposures.date} variant="small">
+                    <DatePicker id="date" type="date" bind:value={exposureDate} />
+                </FormItem>
+                <FormItem for="type" label={_lang.exposures.type} variant="small">
+                    <Select id="type" bind:value={exposureType}>
+                        <option value="light">{_state.lang.frames.light}</option>
+                        <option value="dark">{_state.lang.frames.dark}</option>
+                        <option value="flat">{_state.lang.frames.flat}</option>
+                        <option value="bias">{_state.lang.frames.bias}</option>
+                    </Select>
+                </FormItem>
+                <FormItem class="flex-1" for="count" label={_lang.exposures.count} variant="small">
+                    <Input id="count" type="number" min={1} bind:value={exposureCount} />
+                </FormItem>
+                <FormItem class="flex-1" for="duration" label={_lang.exposures.seconds} variant="small">
+                    <Input id="duration" type="number" min={1} bind:value={exposureDuration} />
+                </FormItem>
+            </div>
+
+            <Button
+                class="w-full"
+                onclick={(ev) => {
+                    ev.preventDefault();
+                    addExposure();
+                }}
+            >
+                {_lang.exposures.button}
+            </Button>
+
+            <div class="border-text rounded-md border-2 text-center">
+                <Table>
+                    <THead>
+                        <Tr>
+                            <Th>{_lang.exposures.date}</Th>
+                            <Th>{_lang.exposures.type}</Th>
+                            <Th>{_lang.exposures.count}</Th>
+                            <Th>{_lang.exposures.time}</Th>
+                            <Th>{_lang.exposures.total}</Th>
+                            <Th></Th>
+                        </Tr>
+                    </THead>
+                    <TBody>
+                        {#if article.exposures.length === 0}
+                            <Tr>
+                                <Th colspan={6}>{_lang.exposures.empty}</Th>
+                            </Tr>
+                        {:else}
+                            {#each article.exposures as exposure, idx (`${exposure.date.toISOString()}-${exposure.type}-${exposure.count}-${exposure.exposure_time_s}`)}
+                                <Tr>
+                                    <Td>{formatDate(exposure.date, false)}</Td>
+                                    <Td>{exposure.type}</Td>
+                                    <Td>{exposure.count}</Td>
+                                    <Td>{exposure.exposure_time_s}</Td>
+                                    <Td>{exposure.count * exposure.exposure_time_s}</Td>
+                                    <Td>
+                                        <Icon
+                                            onclick={() => (article.exposures = article.exposures.filter((_, _idx) => _idx !== idx))}
+                                            name="bi-trash-fill"
+                                            class="cursor-pointer text-2xl text-red-500"
+                                        />
+                                    </Td>
+                                </Tr>
+                            {/each}
+                        {/if}
+                    </TBody>
+                </Table>
+            </div>
+
+            <div class="bg-divider flex items-center justify-between rounded-md p-4">
+                {#each ['light', 'dark', 'flat', 'bias'] as const as type (type)}
+                    <div class="flex flex-col">
+                        <span class="text-xl font-medium lg:text-2xl">{_state.lang.frames[type]} {_lang.exposures.frames}</span>
+                        <span class="text-2xl font-extrabold lg:text-3xl">
+                            {article.exposures.filter((ex) => ex.type === type).reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0)}s
+                        </span>
+                    </div>
+                {/each}
+            </div>
+        </Card>
+        <div class="flex w-full justify-end gap-2">
+            <Button onclick={() => goto(`/${_state.selectedLang}/admin/article`)}>{_lang.cancel}</Button>
+            <Button onclick={() => (editing ? articleEdit() : articleAdd())} class="bg-primary">{editing ? _lang.save : _lang.create}</Button>
+        </div>
+    </div>
 </section>

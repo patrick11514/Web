@@ -89,14 +89,13 @@ export default [
         try {
             let someChanged = false;
             //compare original data with input
-            if (originalData.title !== input.title || originalData.content_md !== input.content_md) 
-        {
+            if (originalData.title !== input.title || originalData.content_md !== input.content_md) {
                 someChanged = true;
                 await trx
                     .updateTable('article')
                     .set({
                         title: input.title,
-                        content_md: input.content_md,
+                        content_md: input.content_md
                     })
                     .execute();
             }
@@ -195,10 +194,14 @@ export default [
             }
 
             if (someChanged) {
-                await trx.updateTable('article').set({
-                    updated_at: new Date()
-                }).where('id', '=', input.id).execute();
-                            }
+                await trx
+                    .updateTable('article')
+                    .set({
+                        updated_at: new Date()
+                    })
+                    .where('id', '=', input.id)
+                    .execute();
+            }
 
             await trx.commit().execute();
             return {

@@ -23,7 +23,7 @@
             <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"><Icon name="bi-ban-fill" class="text-red-500" /> {_lang.empty}</span>
         {:else}
             <div class="border-text w-full rounded-md border-2">
-                <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-xl lg:text-2xl [&_tr]:border-b-2">
+                <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-center text-xl lg:text-2xl [&_tr]:border-b-2">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -37,17 +37,17 @@
                     <tbody class="[&_tr:last-child]:border-b-0">
                         {#each data.articles as article (article.id.toString())}
                             <tr>
-                                <td class="font-bold">{article.id}</td>
-                                <td>
+                                <td class="font-bold whitespace-nowrap">{article.id}</td>
+                                <td class="w-1/12">
                                     {#if article.preview}
-                                        <Image name={article.preview.name} alt={article.preview.alt_text} />
+                                        <Image class="mx-auto" name={article.preview.name} alt={article.preview.alt_text} />
                                     {/if}
                                 </td>
                                 <th>{article.title}</th>
                                 <th>{formatDate(article.created_at)}</th>
                                 <th>{formatDate(article.updated_at)}</th>
-                                <td class="flex justify-center gap-2">
-                                    <Icon onclick={() => {}} name="bi-pencil-fill" class="cursor-pointer" />
+                                <td>
+                                    <Icon onclick={() => goto(`/${_state.selectedLang}/admin/article/${article.id}`)} name="bi-pencil-fill" class="cursor-pointer" />
 
                                     <Icon onclick={() => {}} name="bi-trash-fill" class="cursor-pointer text-red-500" />
                                 </td>
