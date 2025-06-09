@@ -17,9 +17,9 @@ export const handle = (async ({ event, resolve }) => {
                 user_agent: event.request.headers.get('user-agent') || ''
             })
             .execute()
-        .catch((err) => {
+            .catch((err) => {
                 //eslint-disable-next-line no-console
-            console.error('Error logging visitor:', err);
+                console.error('Error logging visitor:', err);
             });
     }
 
