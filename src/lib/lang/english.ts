@@ -176,11 +176,15 @@ export default lang.parse({
                     seconds: 'Seconds',
                     button: 'Add exposure',
                     time: 'Time (s)',
-                    total: 'Total (s)'
+                    total: 'Total (s)',
+                    empty: 'No exposures have been added yet.',
+                    frames: 'Frames'
                 },
                 cancel: 'Cancel',
                 save: 'Save article',
-                create: 'Create article'
+                create: 'Create article',
+                created: 'Article was successfully created!',
+                updated: 'Article was successfully updated!'
             }
         }
     },
@@ -205,6 +209,9 @@ export default lang.parse({
             invalidFile: 'Please enter a valid file',
             extension: 'Please enter an image with valid extension: ' + _extensions,
             notFound: 'File with this name does not exist.'
+        },
+        article: {
+            notFound: 'Article with this ID does not exist.'
         }
     },
     equipmentType: {

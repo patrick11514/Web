@@ -176,11 +176,15 @@ export default lang.parse({
                     seconds: 'Sekundy',
                     button: 'Přidat expozici',
                     time: 'Čas (s)',
-                    total: 'Celkový čas (s)'
+                    total: 'Celkový čas (s)',
+                    empty: 'Zatím jsi nepřidal žádnou expozici.',
+                    frames: 'Snímky'
                 },
                 cancel: 'Zrušit',
                 save: 'Uložit článek',
-                create: 'Vytvořit článek'
+                create: 'Vytvořit článek',
+                created: 'Článek byl úspěšně vytvořen!',
+                updated: 'Článek byl úspěšně upraven!'
             }
         }
     },
@@ -205,6 +209,9 @@ export default lang.parse({
             invalidFile: 'Nahrej prosím platný soubor',
             extension: 'Nahrej prosím platný obrázek s příponou ' + _extensions,
             notFound: 'Soubor s tímto jménem neexistuje.'
+        },
+        article: {
+            notFound: 'Článek s tímto id neexistuje.'
         }
     },
     equipmentType: {

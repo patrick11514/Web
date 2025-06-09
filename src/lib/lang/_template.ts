@@ -141,11 +141,15 @@ export default o({
                     seconds: _,
                     button: _,
                     time: _,
-                    total: _
+                    total: _,
+                    empty: _,
+                    frames: _
                 }),
                 cancel: _,
                 save: _,
-                create: _
+                create: _,
+                created: _,
+                updated: _
             })
         })
     }),
@@ -169,6 +173,9 @@ export default o({
             error: _,
             invalidFile: _,
             extension: _,
+            notFound: _
+        }),
+        article: o({
             notFound: _
         })
     }),
