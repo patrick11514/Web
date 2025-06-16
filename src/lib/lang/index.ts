@@ -1,4 +1,4 @@
-import template from './_template';
+import template, { languagable } from './_template';
 import czech from './czech';
 import english from './english';
 import type { z } from 'zod';
@@ -82,4 +82,14 @@ export const replacePlaceholders = (text: string, ...placeholders: string[]) => 
         i++;
     }
     return text;
+};
+
+export const resolveLanguagable = (translate: z.infer<typeof languagable>, number: number) => {
+    if (number === 1) {
+        return translate[1];
+    }
+    if (number >= 2 && number <= 4) {
+        return translate[2];
+    }
+    return translate.other;
 };
