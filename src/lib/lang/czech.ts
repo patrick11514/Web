@@ -135,6 +135,7 @@ export default lang.parse({
             create: 'Vytvořit článek',
             empty: 'Žádné články nebyly vytvořeny.',
             articleTitle: 'Název článku',
+            description: 'Popisek',
             image: 'Obrázek',
             lastEdit: 'Poslední úprava',
             published: 'Publikováno',
@@ -147,6 +148,8 @@ export default lang.parse({
                     title: 'Detaily článku',
                     titleInput: 'Název článku',
                     titlePlaceholder: 'Zadej název článku',
+                    description: 'Popis článku',
+                    descriptionPlaceholder: 'Zadej krátký popis článku',
                     content: 'Obsah článku (Markdown)',
                     editContent: 'Úprava',
                     previewContent: 'Náhled',
@@ -189,6 +192,14 @@ export default lang.parse({
             }
         }
     },
+    gallery: {
+        title: 'Astro-Galerie',
+        description: 'Zde nalezneš astrofotografie pořízené mnou, společně s popisy a detaily o expozicích.',
+        updated: 'Aktualizováno',
+        created: 'Vytvořeno',
+        readMore: 'Čti dále',
+        more: 'více'
+    },
     errors: {
         internal: 'Něco se nepovedlo, zkus to prosím zachvíli znova.',
         login: {
@@ -213,7 +224,8 @@ export default lang.parse({
             notFound: 'Soubor s tímto jménem neexistuje.'
         },
         article: {
-            notFound: 'Článek s tímto id neexistuje.'
+            notFound: 'Článek s tímto id neexistuje.',
+            noImages: 'Článek musí obsahovat alespoň jeden obrázek.'
         }
     },
     equipmentType: {

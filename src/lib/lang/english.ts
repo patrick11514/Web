@@ -137,6 +137,7 @@ export default lang.parse({
             image: 'Image',
             actions: 'Actions',
             articleTitle: 'Article title',
+            description: 'Description',
             published: 'Published',
             lastEdit: 'Last edit',
             form: {
@@ -147,6 +148,8 @@ export default lang.parse({
                     title: 'Article details',
                     titleInput: 'Article title',
                     titlePlaceholder: 'Enter article title',
+                    description: 'Article description',
+                    descriptionPlaceholder: 'Enter article description',
                     content: 'Article content (Markdown)',
                     editContent: 'Edit',
                     previewContent: 'Preview',
@@ -189,6 +192,14 @@ export default lang.parse({
             }
         }
     },
+    gallery: {
+        title: 'Astro-Gallery',
+        description: 'Here you can find astrophotographs taken by me, along with descriptions and details about the exposures.',
+        updated: 'Updated',
+        created: 'Created',
+        readMore: 'Read more',
+        more: 'more'
+    },
     errors: {
         internal: 'Internal Server Error, please try again later.',
         login: {
@@ -213,7 +224,8 @@ export default lang.parse({
             notFound: 'File with this name does not exist.'
         },
         article: {
-            notFound: 'Article with this ID does not exist.'
+            notFound: 'Article with this ID does not exist.',
+            noImages: 'Article must contain at least one image.'
         }
     },
     equipmentType: {

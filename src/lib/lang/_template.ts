@@ -97,6 +97,7 @@ export default o({
         }),
         article: o({
             title: _,
+            description: _,
             create: _,
             empty: _,
             image: _,
@@ -112,6 +113,8 @@ export default o({
                     title: _,
                     titleInput: _,
                     titlePlaceholder: _,
+                    description: _,
+                    descriptionPlaceholder: _,
                     content: _,
                     editContent: _,
                     previewContent: _,
@@ -154,6 +157,14 @@ export default o({
             })
         })
     }),
+    gallery: o({
+        title: _,
+        description: _,
+        updated: _,
+        created: _,
+        readMore: _,
+        more: _
+    }),
     errors: o({
         internal: _,
         login: o({
@@ -178,7 +189,8 @@ export default o({
             notFound: _
         }),
         article: o({
-            notFound: _
+            notFound: _,
+            noImages: _
         })
     }),
     equipmentType: o({
