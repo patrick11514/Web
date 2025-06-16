@@ -36,6 +36,7 @@
                             <Th>Id</Th>
                             <Th>{_lang.image}</Th>
                             <Th>{_lang.articleTitle}</Th>
+                            <Th>{_lang.description}</Th>
                             <Th>{_lang.published}</Th>
                             <Th>{_lang.lastEdit}</Th>
                             <Th>{_lang.actions}</Th>
@@ -51,6 +52,7 @@
                                     {/if}
                                 </Td>
                                 <Td>{article.title}</Td>
+                                <Th>{article.description}</Th>
                                 <Td>{formatDate(article.created_at)}</Td>
                                 <Td>{formatDate(article.updated_at)}</Td>
                                 <Td>

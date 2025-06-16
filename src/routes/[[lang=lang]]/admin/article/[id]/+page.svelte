@@ -212,7 +212,10 @@
         <Card>
             {@render subTitle(_lang.details.title)}
             <FormItem for="title" label={_lang.details.titleInput} variant="small">
-                <Input id="title" placeholder={_lang.details.titlePlaceholder} bind:value={article.title} />
+                <Input id="title" placeholder={_lang.details.titlePlaceholder} bind:value={article.title} max={56} />
+            </FormItem>
+            <FormItem for="desc" label={_lang.details.description} variant="small">
+                <Input id="desc" placeholder={_lang.details.descriptionPlaceholder} bind:value={article.description} max={128} />
             </FormItem>
             <FormItem for="content" label={_lang.details.content} variant="small">
                 {#snippet right()}

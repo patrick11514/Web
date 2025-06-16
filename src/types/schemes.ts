@@ -18,6 +18,7 @@ const articleExposure = z.object({
 export const articleSchema = z.object({
     id: z.string().optional(),
     title: z.string(),
+    description: z.string(),
     content_md: z.string(),
     created_at: z.coerce.date().optional(),
     updated_at: z.coerce.date().optional(),

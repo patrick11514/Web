@@ -155,7 +155,7 @@
     >
         <input type="hidden" name="id" value={typeEditing!.id} />
         <FormItem for="key" label={_lang.types.translateKey}>
-            <Input id="key" name="lang_key" type="text" placeholder={_lang.types.translateKey} value={typeEditing!.lang_key} required />
+            <Input id="key" name="lang_key" type="text" placeholder={_lang.types.translateKey} value={typeEditing!.lang_key} max={64} required />
         </FormItem>
         <FormItem for="priority" label={_lang.types.priority}>
             <Input id="priority" name="priority" type="number" value={typeEditing!.priority} min={0} required />
@@ -174,7 +174,7 @@
     >
         <input type="hidden" name="id" value={equipmentEditing!.id} />
         <FormItem for="name" label={_lang.equipment.name}>
-            <Input id="name" name="name" type="text" placeholder={_lang.equipment.name} value={equipmentEditing!.name} required />
+            <Input id="name" name="name" type="text" placeholder={_lang.equipment.name} value={equipmentEditing!.name} max={128} required />
         </FormItem>
         <FormItem for="type" label={_lang.equipment.type}>
             <Select id="type" name="type" value={equipmentEditing!.type_id} required>
@@ -184,7 +184,7 @@
             </Select>
         </FormItem>
         <FormItem for="link" label={_lang.equipment.link}>
-            <Input id="link" name="link" type="url" placeholder={_lang.equipment.link} value={equipmentEditing!.link} required />
+            <Input id="link" name="link" type="url" placeholder={_lang.equipment.link} value={equipmentEditing!.link} max={512} required />
         </FormItem>
         <Button type="submit">{_lang.equipment.edit.button}</Button>
     </form>
@@ -199,7 +199,7 @@
         use:enhance={createSubmitFunction(_lang.types.success, () => (openTypeAdd = false))}
     >
         <FormItem for="key" label={_lang.types.translateKey}>
-            <Input id="key" name="lang_key" type="text" required />
+            <Input id="key" name="lang_key" type="text" max={64} required />
         </FormItem>
         <FormItem for="priority" label={_lang.types.priority}>
             <Input id="priority" name="priority" type="number" value={0} min={0} required />
@@ -217,7 +217,7 @@
         use:enhance={createSubmitFunction(_lang.equipment.success, () => (openEquipmentAdd = false))}
     >
         <FormItem for="name" label={_lang.equipment.name}>
-            <Input id="name" name="name" type="text" required />
+            <Input id="name" name="name" type="text" max={128} required />
         </FormItem>
         <FormItem for="type" label={_lang.equipment.type}>
             <Select id="type" name="type" required>
@@ -228,7 +228,7 @@
             </Select>
         </FormItem>
         <FormItem for="link" label={_lang.equipment.link}>
-            <Input id="link" name="link" type="url" required />
+            <Input id="link" name="link" type="url" max={512} required />
         </FormItem>
         <Button type="submit">{_lang.equipment.button}</Button>
     </form>

@@ -18,6 +18,7 @@ export interface Account {
 export interface Article {
   content_md: string;
   created_at: Generated<Date>;
+  description: string;
   id: Generated<string>;
   title: string;
   updated_at: Generated<Date>;

@@ -22,6 +22,7 @@ export default [
                 .values({
                     id: uuid,
                     title: input.title,
+                    description: input.description,
                     content_md: input.content_md
                 })
                 .execute();
@@ -100,14 +101,16 @@ export default [
         try {
             let someChanged = false;
             //compare original data with input
-            if (originalData.title !== input.title || originalData.content_md !== input.content_md) {
+            if (originalData.title !== input.title || originalData.description !== input.description || originalData.content_md !== input.content_md) {
                 someChanged = true;
                 await trx
                     .updateTable('article')
                     .set({
                         title: input.title,
+                        description: input.description,
                         content_md: input.content_md
                     })
+                    .where('id', '=', input.id)
                     .execute();
             }
 

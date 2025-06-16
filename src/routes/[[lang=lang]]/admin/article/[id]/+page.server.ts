@@ -15,6 +15,7 @@ export const load = (async ({ params }) => {
         return {
             article: {
                 title: '',
+                description: '',
                 content_md: '',
                 images: [],
                 exposures: [],

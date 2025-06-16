@@ -13,6 +13,8 @@
     type TextInput = {
         type?: 'text' | 'email' | 'password' | 'tel' | 'url';
         value?: string | undefined | null;
+        min?: number;
+        max?: number;
     };
 
     let {

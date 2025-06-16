@@ -21,7 +21,8 @@ export const up = async (conn: Kysely<any>) => {
     await conn.schema
         .createTable('article')
         .addColumn('id', 'uuid', (col) => col.primaryKey())
-        .addColumn('title', 'varchar(256)', (col) => col.notNull())
+        .addColumn('title', 'varchar(56)', (col) => col.notNull())
+        .addColumn('description', 'varchar(128)', (col) => col.notNull())
         .addColumn('content_md', 'text', (col) => col.notNull())
         .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
         .addColumn('updated_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
