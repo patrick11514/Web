@@ -12,7 +12,7 @@
                 opened = false;
                 onClose();
             }}
-            class="border-text m-auto flex flex-col rounded-md border-2 bg-black/80 p-4"
+            class="border-text m-auto flex w-[90%] flex-col rounded-md border-2 bg-black/80 p-4"
         >
             {@render children()}
         </ClickOutside>

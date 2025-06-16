@@ -1,5 +1,11 @@
 <script lang="ts">
     import Button from '$/components/form/Button.svelte';
+    import Table from '$/components/table/Table.svelte';
+    import TBody from '$/components/table/TBody.svelte';
+    import Td from '$/components/table/Td.svelte';
+    import Th from '$/components/table/Th.svelte';
+    import THead from '$/components/table/THead.svelte';
+    import Tr from '$/components/table/Tr.svelte';
     import Icon from '$/components/utility/Icon.svelte';
     import Image from '$/components/utility/Image.svelte';
     import { formatDate } from '$/lib/functions';
@@ -23,38 +29,38 @@
             <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"><Icon name="bi-ban-fill" class="text-red-500" /> {_lang.empty}</span>
         {:else}
             <div class="border-text w-full rounded-md border-2">
-                <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-center text-xl lg:text-2xl [&_tr]:border-b-2">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>{_lang.image}</th>
-                            <th>{_lang.articleTitle}</th>
-                            <th>{_lang.published}</th>
-                            <th>{_lang.lastEdit}</th>
-                            <th>{_lang.actions}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="[&_tr:last-child]:border-b-0">
+                <Table>
+                    <THead>
+                        <Tr>
+                            <Th>Id</Th>
+                            <Th>{_lang.image}</Th>
+                            <Th>{_lang.articleTitle}</Th>
+                            <Th>{_lang.published}</Th>
+                            <Th>{_lang.lastEdit}</Th>
+                            <Th>{_lang.actions}</Th>
+                        </Tr>
+                    </THead>
+                    <TBody>
                         {#each data.articles as article (article.id.toString())}
-                            <tr>
-                                <td class="font-bold whitespace-nowrap">{article.id}</td>
-                                <td class="w-1/12">
+                            <Tr>
+                                <Td class="font-bold">{article.id}</Td>
+                                <Td class="w-1/12">
                                     {#if article.preview}
                                         <Image class="mx-auto" name={article.preview.name} alt={article.preview.alt_text} />
                                     {/if}
-                                </td>
-                                <th>{article.title}</th>
-                                <th>{formatDate(article.created_at)}</th>
-                                <th>{formatDate(article.updated_at)}</th>
-                                <td>
+                                </Td>
+                                <Td>{article.title}</Td>
+                                <Td>{formatDate(article.created_at)}</Td>
+                                <Td>{formatDate(article.updated_at)}</Td>
+                                <Td>
                                     <Icon onclick={() => goto(`/${_state.selectedLang}/admin/article/${article.id}`)} name="bi-pencil-fill" class="cursor-pointer" />
 
                                     <Icon onclick={() => {}} name="bi-trash-fill" class="cursor-pointer text-red-500" />
-                                </td>
-                            </tr>
+                                </Td>
+                            </Tr>
                         {/each}
-                    </tbody>
-                </table>
+                    </TBody>
+                </Table>
             </div>
         {/if}
     </div>

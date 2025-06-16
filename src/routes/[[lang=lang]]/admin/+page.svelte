@@ -30,12 +30,12 @@
         <h1 class="font-poppins w-max text-3xl font-bold lg:text-4xl"><Icon name="bi-bar-chart" /> {_state.lang.admin.main.stats}</h1>
         <h3><span class="font-bold">{_state.lang.admin.main.today}</span>: {data.today}</h3>
         <h3><span class="font-bold">{_state.lang.admin.main.week}</span>: {data.week}</h3>
-        <div class="w-lg">
+        <div class="mx-auto w-[95%] md:w-lg">
             <Chart type="line" data={chartData} />
         </div>
     </div>
-    <div class="flex max-w-1/2 flex-col items-center">
+    <div class="mx-auto flex max-w-1/2 flex-col items-center md:m-0">
         <h1 class="font-poppins w-max text-3xl font-bold lg:text-4xl"><Icon name="bi-hearts" class="text-red-500" /> Cat of the day :)</h1>
-        <img class="h-auto max-w-2/3" src="https://cataas.com/cat" alt="Random cat" />
+        <img class="h-auto md:max-w-2/3" src="https://cataas.com/cat" alt="Random cat" />
     </div>
 </section>
