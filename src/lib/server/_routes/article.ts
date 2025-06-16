@@ -27,37 +27,43 @@ export default [
                 .execute();
 
             //equipment
-            await trx
-                .insertInto('article_equipment')
-                .values(
-                    input.equipment.map((eq) => ({
-                        article_id: uuid,
-                        equipment_id: eq
-                    }))
-                )
-                .execute();
+            if (input.equipment.length > 0) {
+                await trx
+                    .insertInto('article_equipment')
+                    .values(
+                        input.equipment.map((eq) => ({
+                            article_id: uuid,
+                            equipment_id: eq
+                        }))
+                    )
+                    .execute();
+            }
 
             //images
-            await trx
-                .insertInto('gallery_image')
-                .values(
-                    input.images.map((image) => ({
-                        ...image,
-                        article_id: uuid
-                    }))
-                )
-                .execute();
+            if (input.images.length > 0) {
+                await trx
+                    .insertInto('gallery_image')
+                    .values(
+                        input.images.map((image) => ({
+                            ...image,
+                            article_id: uuid
+                        }))
+                    )
+                    .execute();
+            }
 
             //exposures
-            await trx
-                .insertInto('exposure')
-                .values(
-                    input.exposures.map((exposure) => ({
-                        ...exposure,
-                        article_id: uuid
-                    }))
-                )
-                .execute();
+            if (input.exposures.length > 0) {
+                await trx
+                    .insertInto('exposure')
+                    .values(
+                        input.exposures.map((exposure) => ({
+                            ...exposure,
+                            article_id: uuid
+                        }))
+                    )
+                    .execute();
+            }
 
             await trx.commit().execute();
             return {
