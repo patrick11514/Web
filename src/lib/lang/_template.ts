@@ -15,6 +15,12 @@ export const r = z.array(
     )
 );
 
+export const languagable = z.object({
+    1: _,
+    2: _,
+    other: _
+});
+
 export const _extensions = extensions.map((ext) => `.${ext}`).join(', ');
 
 export default o({
@@ -163,7 +169,17 @@ export default o({
         updated: _,
         created: _,
         readMore: _,
-        more: _
+        more: _,
+        back: _,
+        totalExposure: _,
+        article: _,
+        details: _,
+        equipment: _,
+        exposureSummary: _,
+        framesCount: languagable,
+        exposureDetails: _,
+        equipmentDetails: _,
+        images: _
     }),
     errors: o({
         internal: _,

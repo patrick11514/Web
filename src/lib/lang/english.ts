@@ -198,7 +198,21 @@ export default lang.parse({
         updated: 'Updated',
         created: 'Created',
         readMore: 'Read more',
-        more: 'more'
+        more: 'more',
+        back: 'Back to gallery',
+        totalExposure: 'Total exposure',
+        article: 'Article',
+        details: 'Technical details',
+        equipment: 'Equipment',
+        exposureSummary: 'Exposure summary',
+        framesCount: {
+            '1': 'frames',
+            '2': 'frames',
+            other: 'frames'
+        },
+        exposureDetails: 'Exposure details',
+        equipmentDetails: 'Equipment details',
+        images: 'Images'
     },
     errors: {
         internal: 'Internal Server Error, please try again later.',

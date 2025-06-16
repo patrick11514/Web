@@ -198,7 +198,21 @@ export default lang.parse({
         updated: 'Aktualizováno',
         created: 'Vytvořeno',
         readMore: 'Čti dále',
-        more: 'více'
+        more: 'více',
+        back: 'Zpět na galerii',
+        totalExposure: 'Celkový čas expozice',
+        article: 'Článek',
+        details: 'Technické detaily',
+        equipment: 'Použité vybavení',
+        exposureSummary: 'Souhrn expozic',
+        framesCount: {
+            '1': 'snímek',
+            '2': 'snímky',
+            other: 'snímků'
+        },
+        exposureDetails: 'Detaily expozic',
+        equipmentDetails: 'Detaily vybavení',
+        images: 'Obrázky'
     },
     errors: {
         internal: 'Něco se nepovedlo, zkus to prosím zachvíli znova.',
