@@ -4,7 +4,6 @@
     import { getState } from '$/lib/state.svelte';
     import Image from '$/components/utility/Image.svelte';
     import H2 from '$/components/headers/H2.svelte';
-    import Markdown from '$/components/utility/Markdown.svelte';
     import Icon from '$/components/utility/Icon.svelte';
     import { formatDate } from '$/lib/functions';
 
@@ -46,7 +45,7 @@
                                 {formatDate(post.updated_at, false)}
                             {/if}
                         </div>
-                        <div class="font-medium cursor-pointer">{_lang.readMore} <Icon name="bi-arrow-right" /></div>
+                        <a href="/{_state.selectedLang}/gallery/{post.id}" class="cursor-pointer font-medium">{_lang.readMore} <Icon name="bi-arrow-right" /></a>
                     </div>
                 </div>
             </div>
