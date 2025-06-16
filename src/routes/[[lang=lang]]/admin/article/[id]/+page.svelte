@@ -208,7 +208,7 @@
             {_lang.back}
         </a>
 
-        <H1 class="border-b-text mb-4 w-max border-b-2 text-center font-bold">{editing ? _lang.editTitle : _lang.createTitle}</H1>
+        <H1 class="mb-4">{editing ? _lang.editTitle : _lang.createTitle}</H1>
         <Card>
             {@render subTitle(_lang.details.title)}
             <FormItem for="title" label={_lang.details.titleInput} variant="small">

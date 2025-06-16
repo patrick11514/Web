@@ -127,7 +127,7 @@
 </script>
 
 {#snippet title(text: string)}
-    <H1 class="border-b-text mb-4 max-w-max border-b-2 text-center font-bold">{text}</H1>
+    <H1 class="mb-4">{text}</H1>
 {/snippet}
 
 {#snippet info(text: string)}

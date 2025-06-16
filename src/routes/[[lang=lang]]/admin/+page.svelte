@@ -28,7 +28,7 @@
 
 <section class="flex h-full flex-1 flex-col md:flex-row">
     <div class="flex flex-1 flex-col items-center">
-        <H1 class="font-poppins w-max font-bold"><Icon name="bi-bar-chart" /> {_state.lang.admin.main.stats}</H1>
+        <H1><Icon name="bi-bar-chart" /> {_state.lang.admin.main.stats}</H1>
         <h3><span class="font-bold">{_state.lang.admin.main.today}</span>: {data.today}</h3>
         <h3><span class="font-bold">{_state.lang.admin.main.week}</span>: {data.week}</h3>
         <div class="mx-auto w-[95%] md:w-lg">
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="mx-auto flex max-w-1/2 flex-col items-center md:m-0">
-        <H1 class="font-poppins w-max font-bold"><Icon name="bi-hearts" class="text-red-500" /> Cat of the day :)</H1>
+        <H1><Icon name="bi-hearts" class="text-red-500" /> Cat of the day :)</H1>
         <img class="h-auto md:max-w-2/3" src="https://cataas.com/cat" alt="Random cat" />
     </div>
 </section>

@@ -35,7 +35,7 @@
 </script>
 
 <form method="POST" use:enhance={login} class="m-auto flex w-[70%] max-w-2xl flex-col md:w-[60%] lg:w-[50%]">
-    <H1 class="font-poppins text-center font-bold">{_state.lang.admin.login.title}</H1>
+    <H1 class="mx-auto">{_state.lang.admin.login.title}</H1>
     <FormItem for="username" label={_state.lang.admin.login.username} error={usernameError}>
         <Input id="username" placeholder={_state.lang.admin.login.username} name="username" error={usernameError} />
     </FormItem>

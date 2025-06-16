@@ -5,6 +5,6 @@
     const { children, class: cls = '', ...props }: SvelteHTMLElements['h1'] = $props();
 </script>
 
-<h1 class={twMerge('text-3xl lg:text-4xl', clsx(cls))} {...props}>
+<h1 class={twMerge('border-b-text font-poppins max-w-max border-b-2 text-center text-3xl font-bold lg:text-4xl', clsx(cls))} {...props}>
     {@render children?.()}
 </h1>

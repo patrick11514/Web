@@ -23,7 +23,7 @@
 <section class="mx-auto flex w-full flex-1 p-4 lg:w-[90%] xl:w-[80%]">
     <div class="border-text flex w-full flex-col items-start rounded-md border-2 p-4">
         <div class="flex w-full items-center justify-between">
-            <H1 class="border-b-text mb-4 w-max border-b-2 text-center font-bold">{_lang.title}</H1>
+            <H1 class="mb-4">{_lang.title}</H1>
             <Button onclick={() => goto(`/${_state.selectedLang}/admin/article/new`)}>{_lang.create}</Button>
         </div>
         {#if data.articles.length === 0}
