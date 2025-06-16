@@ -28,7 +28,8 @@
         {
             name: _state.lang.navigation.gallery,
             icon: 'bi-image-fill',
-            path: '/gallery'
+            path: '/gallery',
+            matchStart: true
         },
         {
             name: _state.lang.navigation.login,
@@ -64,7 +65,13 @@
     ] satisfies AdminItem[]);
 
     const getNavItem = (path: string): NavItem | AdminItem | null => {
-        const mainNav = Navigation.find((item) => item.path === path) || null;
+        const mainNav =
+            Navigation.find((item) => {
+                if (item.matchStart) {
+                    return path.startsWith(item.path);
+                }
+                return item.path === path;
+            }) || null;
         if (mainNav) {
             return mainNav;
         }
@@ -127,6 +134,13 @@
             return true;
         })
     );
+
+    const _isActive = (item: NavItem | AdminItem) => {
+        if (item.matchStart) {
+            return _state.path.startsWith(item.path);
+        }
+        return _state.path === item.path;
+    };
 </script>
 
 <svelte:head>
@@ -145,7 +159,7 @@
     <div class="flex-1"></div>
     <div class="mx-auto flex justify-center gap-8 font-bold">
         {#each filteredNavigation as item, index (index)}
-            {@const isActive = _state.path === item.path}
+            {@const isActive = _isActive(item)}
             <a
                 href="/{selectedLanguage}{item.path}"
                 class={{
@@ -173,7 +187,7 @@
         <div class="flex-1"></div>
         <div class="mx-auto flex justify-center gap-8 font-bold">
             {#each filteredAdminNavigation as item, index (index)}
-                {@const isActive = _state.path === item.path}
+                {@const isActive = _isActive(item)}
                 <a
                     href="/{selectedLanguage}{item.path}"
                     class={{
@@ -210,7 +224,7 @@
             {/each}
         </select>
         {#each filteredNavigation as item, index (index)}
-            {@const isActive = _state.path === item.path}
+            {@const isActive = _isActive(item)}
             <a
                 onclick={() => (mobileOpened = false)}
                 href="/{selectedLanguage}/{item.path}"
@@ -228,7 +242,7 @@
         {#if _state.userState.logged && _state.path.startsWith('/admin')}
             <hr class="bg-text h-1 w-full" />
             {#each filteredAdminNavigation as item, index (index)}
-                {@const isActive = _state.path === item.path}
+                {@const isActive = _isActive(item)}
                 <a
                     onclick={() => (mobileOpened = false)}
                     href="/{selectedLanguage}/{item.path}"

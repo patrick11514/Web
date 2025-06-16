@@ -21,8 +21,8 @@ export const load = (async ({ params, url, cookies }) => {
     }
 
     setState({
-        selectedLang: params.lang as keyof typeof languages,
-    })
+        selectedLang: params.lang as keyof typeof languages
+    });
 
     const lang = params.lang as keyof typeof languages;
     return {
