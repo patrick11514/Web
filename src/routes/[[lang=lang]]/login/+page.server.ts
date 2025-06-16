@@ -1,7 +1,7 @@
 import { Server } from '$/lib/server/server';
-import { redirect, type Actions } from '@sveltejs/kit';
+import { type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { getUserState } from '$/lib/server/functions';
+import { getUserState, redirect } from '$/lib/server/functions';
 
 export const load = (async ({ cookies, url }) => {
     const userState = getUserState(cookies);
