@@ -9,6 +9,7 @@ import { z } from 'zod';
 export default [
     loggedProcedure.POST.input(FormDataInput).query(async ({ input }) => {
         const lang_key = input.get('lang_key') as string | null;
+        const priority = input.get('priority') as string | null;
 
         if (!lang_key) {
             return fail(401, {
@@ -16,11 +17,19 @@ export default [
                 message: 'types.form' satisfies ErrorPath
             } satisfies ActionsResponse);
         }
+        if (!priority || isNaN(Number(priority))) {
+            return fail(401, {
+                status: false,
+                message: 'types.priority' satisfies ErrorPath
+            } satisfies ActionsResponse);
+        }
+
         try {
             await conn
                 .insertInto('equipment_type')
                 .values({
-                    lang_key
+                    lang_key,
+                    priority: Number(priority)
                 })
                 .execute();
 
@@ -38,6 +47,7 @@ export default [
     loggedProcedure.PATCH.input(FormDataInput).query(async ({ input }) => {
         const id = input.get('id') as string | null;
         const lang_key = input.get('lang_key') as string | null;
+        const priority = input.get('priority') as string | null;
 
         if (!id || isNaN(Number(id))) {
             return fail(401, {
@@ -53,11 +63,19 @@ export default [
             } satisfies ActionsResponse);
         }
 
+        if (!priority || isNaN(Number(priority))) {
+            return fail(401, {
+                status: false,
+                message: 'types.priority' satisfies ErrorPath
+            } satisfies ActionsResponse);
+        }
+
         try {
             await conn
                 .updateTable('equipment_type')
                 .set({
-                    lang_key
+                    lang_key,
+                    priority: Number(priority)
                 })
                 .where('id', '=', Number(id))
                 .execute();

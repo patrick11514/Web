@@ -60,6 +60,7 @@ export default o({
                 title: _,
                 addTitle: _,
                 translateKey: _,
+                priority: _,
                 placeholder: _,
                 button: _,
                 success: _,
@@ -162,7 +163,8 @@ export default o({
         }),
         types: o({
             form: _,
-            empty: _
+            empty: _,
+            priority: _
         }),
         equipment: o({
             form: _,

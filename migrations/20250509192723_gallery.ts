@@ -7,6 +7,7 @@ export const up = async (conn: Kysely<any>) => {
         .createTable('equipment_type')
         .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
         .addColumn('lang_key', 'varchar(64)', (col) => col.notNull())
+        .addColumn('priority', 'integer', (col) => col.notNull().defaultTo(0))
         .execute();
 
     await conn.schema

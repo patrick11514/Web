@@ -12,6 +12,12 @@
     import { invalidateAll } from '$app/navigation';
     import Select from '$/components/form/Select.svelte';
     import Dialog from '$/components/utility/Dialog.svelte';
+    import Table from '$/components/table/Table.svelte';
+    import THead from '$/components/table/THead.svelte';
+    import Tr from '$/components/table/Tr.svelte';
+    import Th from '$/components/table/Th.svelte';
+    import TBody from '$/components/table/TBody.svelte';
+    import Td from '$/components/table/Td.svelte';
 
     const _state = getState();
     const _lang = $derived(_state.lang.admin.equipment);
@@ -42,6 +48,7 @@
     let typeEditing = $state<null | {
         id: number;
         lang_key: string;
+        priority: number;
     }>(null);
 
     const typeDelete = async (id: number) => {
@@ -149,6 +156,9 @@
         <FormItem for="key" label={_lang.types.translateKey}>
             <Input id="key" name="lang_key" type="text" placeholder={_lang.types.translateKey} value={typeEditing!.lang_key} required />
         </FormItem>
+        <FormItem for="priority" label={_lang.types.priority}>
+            <Input id="priority" name="priority" type="number" value={typeEditing!.priority} min={0} required />
+        </FormItem>
         <Button type="submit">{_lang.types.edit.button}</Button>
     </form>
 </Dialog>
@@ -189,6 +199,9 @@
     >
         <FormItem for="key" label={_lang.types.translateKey}>
             <Input id="key" name="lang_key" type="text" required />
+        </FormItem>
+        <FormItem for="priority" label={_lang.types.priority}>
+            <Input id="priority" name="priority" type="number" value={0} min={0} required />
         </FormItem>
         <Button type="submit">{_lang.types.button}</Button>
     </form>
@@ -236,36 +249,39 @@
                 {@render info(_lang.types.empty)}
             {:else}
                 <div class="border-text w-full rounded-md border-2">
-                    <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-xl lg:text-2xl [&_tr]:border-b-2">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>{_lang.types.translateKey}</th>
-                                <th>{_lang.actions}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="[&_tr:last-child]:border-b-0">
+                    <Table class="text-center">
+                        <THead>
+                            <Tr>
+                                <Th>Id</Th>
+                                <Th>{_lang.types.translateKey}</Th>
+                                <Th>{_lang.types.priority}</Th>
+                                <Th>{_lang.actions}</Th>
+                            </Tr>
+                        </THead>
+                        <TBody>
                             {#each data.types as type (type.id.toString())}
-                                <tr>
-                                    <td class="font-bold">{type.id} </td>
-                                    <td>{type.lang_key}</td>
-                                    <td class="flex justify-center gap-2">
+                                <Tr>
+                                    <Td class="font-bold">{type.id}</Td>
+                                    <Td>{type.lang_key}</Td>
+                                    <Td>{type.priority}</Td>
+                                    <Td class="flex justify-center gap-2">
                                         <Icon
                                             onclick={() =>
                                                 (typeEditing = {
                                                     id: type.id,
-                                                    lang_key: type.lang_key || ''
+                                                    lang_key: type.lang_key || '',
+                                                    priority: type.priority || 0
                                                 })}
                                             name="bi-pencil-fill"
                                             class="cursor-pointer"
                                         />
 
                                         <Icon onclick={() => typeDelete(type.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
-                                    </td>
-                                </tr>
+                                    </Td>
+                                </Tr>
                             {/each}
-                        </tbody>
-                    </table>
+                        </TBody>
+                    </Table>
                 </div>
             {/if}
         </div>
@@ -279,24 +295,24 @@
                 {@render info(_lang.equipment.empty)}
             {:else}
                 <div class="border-text w-full rounded-md border-2">
-                    <table class="[&_tr]:border-b-text w-full table-auto border-collapse text-xl lg:text-2xl [&_tr]:border-b-2">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>{_lang.equipment.name}</th>
-                                <th>{_lang.equipment.type}</th>
-                                <th>{_lang.equipment.link}</th>
-                                <th>{_lang.actions}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="[&_tr:last-child]:border-b-0">
+                    <Table>
+                        <THead>
+                            <Tr>
+                                <Th>Id</Th>
+                                <Th>{_lang.equipment.name}</Th>
+                                <Th>{_lang.equipment.type}</Th>
+                                <Th>{_lang.equipment.link}</Th>
+                                <Th>{_lang.actions}</Th>
+                            </Tr>
+                        </THead>
+                        <TBody>
                             {#each data.equipment as equipment (equipment.id.toString())}
-                                <tr>
-                                    <td class="font-bold">{equipment.id} </td>
-                                    <td>{equipment.name}</td>
-                                    <td class="pr-2">{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</td>
-                                    <td>{equipment.link}</td>
-                                    <td class="flex justify-center gap-2">
+                                <Tr>
+                                    <Td class="font-bold">{equipment.id}</Td>
+                                    <Td>{equipment.name}</Td>
+                                    <Td class="pr-2">{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</Td>
+                                    <Td>{equipment.link}</Td>
+                                    <Td class="flex justify-center gap-2">
                                         <Icon
                                             onclick={() => {
                                                 equipmentEditing = {
@@ -311,11 +327,11 @@
                                         />
 
                                         <Icon onclick={() => equipmentDelete(equipment.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
-                                    </td>
-                                </tr>
+                                    </Td>
+                                </Tr>
                             {/each}
-                        </tbody>
-                    </table>
+                        </TBody>
+                    </Table>
                 </div>
             {/if}
         </div>

@@ -95,6 +95,7 @@ export default lang.parse({
                 title: 'Typy vybavení',
                 addTitle: 'Přidání nového typu',
                 translateKey: 'Překlad',
+                priority: 'Priorita',
                 placeholder: 'Název typu vybavení',
                 button: 'Přidat',
                 success: 'Nový typ vybavení byl přidán!',
@@ -197,7 +198,8 @@ export default lang.parse({
         },
         types: {
             form: 'Vyplň prosím název typu vybavení.',
-            empty: 'Překladový klíč nesmí být prázdný.'
+            empty: 'Překladový klíč nesmí být prázdný.',
+            priority: 'Priorita musí být číslo >=0.'
         },
         equipment: {
             form: 'Vyplň prosím všechny údaje.',

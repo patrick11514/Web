@@ -95,6 +95,7 @@ export default lang.parse({
                 title: 'Equipment Types',
                 addTitle: 'Editing equipment type',
                 translateKey: 'Translate',
+                priority: 'Priority',
                 placeholder: 'Type name',
                 button: 'Add Type',
                 success: 'New type was successfully added!',
@@ -197,7 +198,8 @@ export default lang.parse({
         },
         types: {
             form: 'Please fill eqipment type name.',
-            empty: 'Translation key cannot be empty.'
+            empty: 'Translation key cannot be empty.',
+            priority: 'Priority must be a number >=0.'
         },
         equipment: {
             form: 'Please fill in the form',
