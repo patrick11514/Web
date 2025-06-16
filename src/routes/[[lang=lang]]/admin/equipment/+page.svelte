@@ -18,6 +18,7 @@
     import Th from '$/components/table/Th.svelte';
     import TBody from '$/components/table/TBody.svelte';
     import Td from '$/components/table/Td.svelte';
+    import H1 from '$/components/headers/H1.svelte';
 
     const _state = getState();
     const _lang = $derived(_state.lang.admin.equipment);
@@ -126,7 +127,7 @@
 </script>
 
 {#snippet title(text: string)}
-    <h1 class="border-b-text mb-4 max-w-max border-b-2 text-center text-3xl font-bold lg:text-4xl">{text}</h1>
+    <H1 class="border-b-text mb-4 max-w-max border-b-2 text-center font-bold">{text}</H1>
 {/snippet}
 
 {#snippet info(text: string)}

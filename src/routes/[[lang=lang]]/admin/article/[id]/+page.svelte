@@ -22,6 +22,7 @@
     import THead from '$/components/table/THead.svelte';
     import { goto } from '$app/navigation';
     import { articleSchema } from '$/types/schemes';
+    import H1 from '$/components/headers/H1.svelte';
 
     const { data }: PageProps = $props();
 
@@ -207,7 +208,7 @@
             {_lang.back}
         </a>
 
-        <h1 class="border-b-text mb-4 w-max border-b-2 text-center text-3xl font-bold lg:text-4xl">{editing ? _lang.editTitle : _lang.createTitle}</h1>
+        <H1 class="border-b-text mb-4 w-max border-b-2 text-center font-bold">{editing ? _lang.editTitle : _lang.createTitle}</H1>
         <Card>
             {@render subTitle(_lang.details.title)}
             <FormItem for="title" label={_lang.details.titleInput} variant="small">

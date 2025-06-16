@@ -1,5 +1,6 @@
 <script lang="ts">
     import Button from '$/components/form/Button.svelte';
+    import H1 from '$/components/headers/H1.svelte';
     import Table from '$/components/table/Table.svelte';
     import TBody from '$/components/table/TBody.svelte';
     import Td from '$/components/table/Td.svelte';
@@ -22,7 +23,7 @@
 <section class="mx-auto flex w-full flex-1 p-4 lg:w-[90%] xl:w-[80%]">
     <div class="border-text flex w-full flex-col items-start rounded-md border-2 p-4">
         <div class="flex w-full items-center justify-between">
-            <h1 class="border-b-text mb-4 w-max border-b-2 text-center text-3xl font-bold lg:text-4xl">{_lang.title}</h1>
+            <H1 class="border-b-text mb-4 w-max border-b-2 text-center font-bold">{_lang.title}</H1>
             <Button onclick={() => goto(`/${_state.selectedLang}/admin/article/new`)}>{_lang.create}</Button>
         </div>
         {#if data.articles.length === 0}

@@ -2,6 +2,7 @@
     import Button from '$/components/form/Button.svelte';
     import FormItem from '$/components/form/FormItem.svelte';
     import Input from '$/components/form/Input.svelte';
+    import H1 from '$/components/headers/H1.svelte';
     import { compareErrors, resolveError } from '$/lib/lang';
     import { getState } from '$/lib/state.svelte';
     import { enhance } from '$app/forms';
@@ -34,7 +35,7 @@
 </script>
 
 <form method="POST" use:enhance={login} class="m-auto flex w-[70%] max-w-2xl flex-col md:w-[60%] lg:w-[50%]">
-    <h1 class="font-poppins text-center text-3xl font-bold lg:text-4xl">{_state.lang.admin.login.title}</h1>
+    <H1 class="font-poppins text-center font-bold">{_state.lang.admin.login.title}</H1>
     <FormItem for="username" label={_state.lang.admin.login.username} error={usernameError}>
         <Input id="username" placeholder={_state.lang.admin.login.username} name="username" error={usernameError} />
     </FormItem>

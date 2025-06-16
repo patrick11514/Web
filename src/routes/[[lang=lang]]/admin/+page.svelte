@@ -1,4 +1,5 @@
 <script lang="ts">
+    import H1 from '$/components/headers/H1.svelte';
     import Chart from '$/components/utility/Chart.svelte';
     import Icon from '$/components/utility/Icon.svelte';
     import { getState } from '$/lib/state.svelte';
@@ -27,7 +28,7 @@
 
 <section class="flex h-full flex-1 flex-col md:flex-row">
     <div class="flex flex-1 flex-col items-center">
-        <h1 class="font-poppins w-max text-3xl font-bold lg:text-4xl"><Icon name="bi-bar-chart" /> {_state.lang.admin.main.stats}</h1>
+        <H1 class="font-poppins w-max font-bold"><Icon name="bi-bar-chart" /> {_state.lang.admin.main.stats}</H1>
         <h3><span class="font-bold">{_state.lang.admin.main.today}</span>: {data.today}</h3>
         <h3><span class="font-bold">{_state.lang.admin.main.week}</span>: {data.week}</h3>
         <div class="mx-auto w-[95%] md:w-lg">
@@ -35,7 +36,7 @@
         </div>
     </div>
     <div class="mx-auto flex max-w-1/2 flex-col items-center md:m-0">
-        <h1 class="font-poppins w-max text-3xl font-bold lg:text-4xl"><Icon name="bi-hearts" class="text-red-500" /> Cat of the day :)</h1>
+        <H1 class="font-poppins w-max font-bold"><Icon name="bi-hearts" class="text-red-500" /> Cat of the day :)</H1>
         <img class="h-auto md:max-w-2/3" src="https://cataas.com/cat" alt="Random cat" />
     </div>
 </section>
