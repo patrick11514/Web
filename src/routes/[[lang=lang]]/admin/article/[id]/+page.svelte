@@ -284,7 +284,7 @@
                                 <Image name={image.name} alt={image.alt_text} />
                                 <span class="border-t-text border-t-2 p-1 font-bold">{image.alt_text}</span>
                                 <div
-                                    class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center bg-black/75 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                                    class="bg-background/75 absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                                 >
                                     <Icon
                                         onclick={() => deleteImage(image.name)}

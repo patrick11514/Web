@@ -16,7 +16,7 @@ export const load = (async () => {
         .select(['gallery_image.article_id', 'gallery_image.name', 'gallery_image.alt_text'])
         .execute();
 
-    const articles = await conn.selectFrom('article').selectAll().orderBy('created_at', "desc").execute();
+    const articles = await conn.selectFrom('article').selectAll().orderBy('created_at', 'desc').execute();
 
     return {
         articles: articles.map((article) => ({
