@@ -5,7 +5,7 @@
     import Image from '$/components/utility/Image.svelte';
     import H2 from '$/components/headers/H2.svelte';
     import Icon from '$/components/utility/Icon.svelte';
-    import { formatDate } from '$/lib/functions';
+    import { formatDate, sToHHMM } from '$/lib/functions';
 
     const { data }: PageProps = $props();
     const _state = getState();
@@ -23,6 +23,12 @@
             <div class="group border-text flex aspect-[4/5] w-[calc(50%_-_0.5rem)] flex-col rounded-md border-2 lg:w-md xl:w-lg">
                 <div class="relative h-1/2 flex-1/2 overflow-hidden">
                     <Image class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" name={post.images[0].name} alt={post.images[0].alt_text} />
+                    <div class="absolute top-0 left-0 flex w-full justify-end p-4">
+                        <div class="rounded-full bg-black/75 px-2 py-1 text-base font-medium">
+                            <Icon name="bi-clock" />
+                            {sToHHMM(post.exposures.filter((ex) => ex.type === 'light').reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0))}
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-1/2 flex-col gap-2 bg-black p-4">
                     <H2>{post.title}</H2>

@@ -43,3 +43,10 @@ export const formatDate = (date: Date | string, time = true) => {
 
     return new Intl.DateTimeFormat(locale, options).format(date);
 };
+
+export const sToHHMM = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
+};
