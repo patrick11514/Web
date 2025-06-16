@@ -3,6 +3,7 @@ import { Server } from '$/lib/server/server';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { getUserState } from '$/lib/server/functions';
+import { setState } from '$/lib/state.svelte';
 
 export const load = (async ({ params, url, cookies }) => {
     if (!params.lang) {
@@ -18,6 +19,10 @@ export const load = (async ({ params, url, cookies }) => {
 
         redirect(302, `/cs${path}`);
     }
+
+    setState({
+        selectedLang: params.lang as keyof typeof languages,
+    })
 
     const lang = params.lang as keyof typeof languages;
     return {
