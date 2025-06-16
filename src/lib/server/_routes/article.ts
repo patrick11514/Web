@@ -40,17 +40,22 @@ export default [
             }
 
             //images
-            if (input.images.length > 0) {
-                await trx
-                    .insertInto('gallery_image')
-                    .values(
-                        input.images.map((image) => ({
-                            ...image,
-                            article_id: uuid
-                        }))
-                    )
-                    .execute();
+            if (input.images.length === 0) {
+                return {
+                    status: false,
+                    code: 400,
+                    message: 'article.noImages' satisfies ErrorPath
+                } satisfies ErrorApiResponse;
             }
+            await trx
+                .insertInto('gallery_image')
+                .values(
+                    input.images.map((image) => ({
+                        ...image,
+                        article_id: uuid
+                    }))
+                )
+                .execute();
 
             //exposures
             if (input.exposures.length > 0) {
@@ -138,6 +143,14 @@ export default [
                     .execute();
             }
             //images
+            if (input.images.length === 0) {
+                return {
+                    status: false,
+                    code: 400,
+                    message: 'article.noImages' satisfies ErrorPath
+                } satisfies ErrorApiResponse;
+            }
+            //
             const originalImages = await conn.selectFrom('gallery_image').select(['name']).where('article_id', '=', input.id).execute();
             const imageNames = originalImages.map((img) => img.name);
             const toAddImages = input.images.filter((img) => !imageNames.includes(img.name));
