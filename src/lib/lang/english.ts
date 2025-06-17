@@ -72,7 +72,8 @@ export default lang.parse({
             ' 🌌 Outside of programming, I enjoy astrophotography — you can find my images in ',
             {
                 text: 'my gallery',
-                link: '/gallery'
+                link: '/en/gallery',
+                blank: false
             },
             '!'
         ]

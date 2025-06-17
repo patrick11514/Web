@@ -72,7 +72,8 @@ export default lang.parse({
             ' 🌌 Mimo programování se věnuji také astrofotografii – moje snímky najdeš v ',
             {
                 text: 'mé galerii',
-                link: '/gallery'
+                link: '/cs/gallery',
+                blank: false
             },
             '!'
         ]

@@ -15,7 +15,7 @@
             {@html part}
         {/if}
     {:else}
-        <Link link={part.link} target="_blank">
+        <Link link={part.link} target={part.blank === undefined || part.blank === true ? '_blank' : undefined}>
             {part.text}
         </Link>
     {/if}

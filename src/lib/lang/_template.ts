@@ -10,7 +10,8 @@ export const r = z.array(
     z.string().or(
         o({
             link: z.string(),
-            text: z.string()
+            text: z.string(),
+            blank: z.boolean().optional()
         })
     )
 );
