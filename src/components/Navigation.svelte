@@ -212,7 +212,7 @@
 />
 
 {#if mobileOpened}
-    <div class="bg-background fixed top-0 left-0 flex h-screen w-screen flex-col items-center gap-4 text-2xl md:hidden">
+    <div class="bg-background fixed top-0 left-0 z-50 flex h-screen w-screen flex-col items-center gap-4 text-2xl md:hidden">
         <Icon
             onclick={() => (mobileOpened = false)}
             name="bi-x-lg"
@@ -227,7 +227,7 @@
             {@const isActive = _isActive(item)}
             <a
                 onclick={() => (mobileOpened = false)}
-                href="/{selectedLanguage}/{item.path}"
+                href="/{selectedLanguage}{item.path}"
                 class={{
                     'text-3xl font-bold transition-colors duration-200 ease-in-out': true,
                     'text-primary': isActive,
@@ -245,7 +245,7 @@
                 {@const isActive = _isActive(item)}
                 <a
                     onclick={() => (mobileOpened = false)}
-                    href="/{selectedLanguage}/{item.path}"
+                    href="/{selectedLanguage}{item.path}"
                     class={{
                         'text-3xl font-bold transition-colors duration-200 ease-in-out': true,
                         'text-primary': isActive,
