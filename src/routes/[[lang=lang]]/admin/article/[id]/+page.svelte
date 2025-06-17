@@ -149,11 +149,6 @@
             exposure_time_s: exposureDuration,
             article_id: article.id ?? ''
         });
-
-        exposureDate = undefined;
-        exposureType = 'light';
-        exposureCount = 1;
-        exposureDuration = 30;
     };
 
     const articleAdd = async () => {
