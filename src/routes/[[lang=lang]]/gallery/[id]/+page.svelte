@@ -62,10 +62,13 @@
                     {/if}
                 </div>
                 <span class="text-center">{data.post.images[selectedImage].alt_text}</span>
-                <Dots count={data.post.images.length} bind:index={selectedImage} />
+
+                {#if data.post.images.length > 1}
+                    <Dots count={data.post.images.length} bind:index={selectedImage} />
+                {/if}
             </div>
 
-            <div class="border-text flex flex-col gap-4 rounded-md border-2 p-4">
+            <div class="border-text bg-background flex flex-col gap-4 rounded-md border-2 p-4">
                 <H3 class="font-bold">{_lang.equipment}</H3>
                 <ul class="text-xl">
                     {#each data.post.equipment as equipment (equipment.id)}
@@ -79,7 +82,7 @@
                 </ul>
             </div>
 
-            <div class="border-text flex flex-col gap-4 rounded-md border-2 p-4">
+            <div class="border-text bg-background flex flex-col gap-4 rounded-md border-2 p-4">
                 <H3 class="font-bold">{_lang.exposureSummary}</H3>
                 <div class="grid grid-cols-2 grid-rows-2 gap-4">
                     {#each ['light', 'dark', 'bias', 'flat'] as const as type (type)}
@@ -115,8 +118,12 @@
                 <H1>{_lang.images}</H1>
                 <div class="flex flex-wrap gap-4">
                     {#each data.post.images as image (image.id)}
-                        <a href="/image/{image.name}?format=jpg" target="_blank" class="border-text relative aspect-[4/3] w-full rounded-md border-2 md:w-1/2 lg:w-1/3">
-                            <Image name={image.name} alt={image.alt_text} class="h-full w-full object-cover" />
+                        <a
+                            href="/image/{image.name}?format=jpg"
+                            target="_blank"
+                            class="group border-text relative aspect-[4/3] w-full overflow-hidden rounded-md border-2 md:w-1/2 lg:w-1/3"
+                        >
+                            <Image name={image.name} alt={image.alt_text} class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" />
                             <span class="bg-background/75 absolute bottom-0 left-0 w-full p-2">
                                 {image.alt_text}
                             </span>
