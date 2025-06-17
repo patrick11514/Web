@@ -71,7 +71,7 @@
             <div class="border-text bg-background flex flex-col gap-4 rounded-md border-2 p-4">
                 <H3 class="font-bold">{_lang.equipment}</H3>
                 <ul class="text-xl">
-                    {#each data.post.equipment as equipment (equipment.id)}
+                    {#each data.post.equipment as equipment (equipment.name)}
                         <li>
                             <a href={equipment.link} target="_blank" class="flex items-center gap-2">
                                 <div class="bg-text inline-block h-2 w-2 rounded-full"></div>
@@ -161,7 +161,7 @@
                 <div class="flex flex-col gap-2">
                     <H2 class="font-bold">{_lang.equipmentDetails}</H2>
                     <div class="flex flex-wrap gap-2">
-                        {#each data.post.equipment as equipment (equipment.id)}
+                        {#each data.post.equipment as equipment (equipment.name)}
                             <div class="border-text flex w-full flex-col gap-1 rounded-md border-2 p-4 md:w-[calc(50%_-_0.5rem)]">
                                 <H3 class="font-bold">{equipment.name}</H3>
                                 <span class="text-text-muted">{resolveTranslation(equipment.lang_key, _state.lang)}</span>

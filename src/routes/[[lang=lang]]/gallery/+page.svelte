@@ -20,7 +20,10 @@
     <H1 class="mx-auto mb-8">{_lang.title}</H1>
     <div class="flex flex-wrap justify-center gap-4 p-4">
         {#each data.posts as post (post.id)}
-            <div class="group border-text flex aspect-[4/5] w-full flex-col rounded-md border-2 sm:w-[calc(50%_-_0.5rem)] lg:w-md xl:w-lg">
+            <a
+                href="/{_state.selectedLang}/gallery/{post.id}"
+                class="group border-text flex aspect-[4/5] w-full flex-col rounded-md border-2 sm:w-[calc(50%_-_0.5rem)] lg:w-md xl:w-lg"
+            >
                 <div class="relative h-1/2 flex-1/2 overflow-hidden">
                     <Image class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" name={post.images[0].name} alt={post.images[0].alt_text} />
                     <div class="absolute top-0 left-0 flex w-full justify-end p-4">
@@ -51,10 +54,10 @@
                                 {formatDate(post.updated_at, false)}
                             {/if}
                         </div>
-                        <a href="/{_state.selectedLang}/gallery/{post.id}" class="cursor-pointer font-medium">{_lang.readMore} <Icon name="bi-arrow-right" /></a>
+                        <button class="cursor-pointer font-medium">{_lang.readMore} <Icon name="bi-arrow-right" /></button>
                     </div>
                 </div>
-            </div>
+            </a>
         {/each}
     </div>
 </section>
