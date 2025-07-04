@@ -7,114 +7,114 @@ import type { ErrorPath } from '$/lib/lang';
 import { z } from 'zod';
 
 export default [
-    loggedProcedure.POST.input(FormDataInput).query(async ({ input }) => {
-        const lang_key = input.get('lang_key') as string | null;
-        const priority = input.get('priority') as string | null;
+  loggedProcedure.POST.input(FormDataInput).query(async ({ input }) => {
+    const lang_key = input.get('lang_key') as string | null;
+    const priority = input.get('priority') as string | null;
 
-        if (!lang_key) {
-            return fail(401, {
-                status: false,
-                message: 'types.form' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
-        if (!priority || isNaN(Number(priority))) {
-            return fail(401, {
-                status: false,
-                message: 'types.priority' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
+    if (!lang_key) {
+      return fail(401, {
+        status: false,
+        message: 'types.form' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
+    if (!priority || isNaN(Number(priority))) {
+      return fail(401, {
+        status: false,
+        message: 'types.priority' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
 
-        try {
-            await conn
-                .insertInto('equipment_type')
-                .values({
-                    lang_key,
-                    priority: Number(priority)
-                })
-                .execute();
+    try {
+      await conn
+        .insertInto('equipment_type')
+        .values({
+          lang_key,
+          priority: Number(priority)
+        })
+        .execute();
 
-            return {
-                status: true
-            } satisfies Response;
-        } catch (err) {
-            console.error(err);
-            return fail(500, {
-                status: false,
-                message: 'internal' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
-    }),
-    loggedProcedure.PATCH.input(FormDataInput).query(async ({ input }) => {
-        const id = input.get('id') as string | null;
-        const lang_key = input.get('lang_key') as string | null;
-        const priority = input.get('priority') as string | null;
+      return {
+        status: true
+      } satisfies Response;
+    } catch (err) {
+      console.error(err);
+      return fail(500, {
+        status: false,
+        message: 'internal' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
+  }),
+  loggedProcedure.PATCH.input(FormDataInput).query(async ({ input }) => {
+    const id = input.get('id') as string | null;
+    const lang_key = input.get('lang_key') as string | null;
+    const priority = input.get('priority') as string | null;
 
-        if (!id || isNaN(Number(id))) {
-            return fail(401, {
-                status: false,
-                message: 'internal' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
+    if (!id || isNaN(Number(id))) {
+      return fail(401, {
+        status: false,
+        message: 'internal' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
 
-        if (!lang_key || lang_key.trim().length === 0) {
-            return fail(401, {
-                status: false,
-                message: 'types.empty' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
+    if (!lang_key || lang_key.trim().length === 0) {
+      return fail(401, {
+        status: false,
+        message: 'types.empty' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
 
-        if (!priority || isNaN(Number(priority))) {
-            return fail(401, {
-                status: false,
-                message: 'types.priority' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
+    if (!priority || isNaN(Number(priority))) {
+      return fail(401, {
+        status: false,
+        message: 'types.priority' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
 
-        try {
-            await conn
-                .updateTable('equipment_type')
-                .set({
-                    lang_key,
-                    priority: Number(priority)
-                })
-                .where('id', '=', Number(id))
-                .execute();
+    try {
+      await conn
+        .updateTable('equipment_type')
+        .set({
+          lang_key,
+          priority: Number(priority)
+        })
+        .where('id', '=', Number(id))
+        .execute();
 
-            return {
-                status: true
-            } satisfies Response;
-        } catch (err) {
-            console.error(err);
-            return fail(500, {
-                status: false,
-                message: 'internal' satisfies ErrorPath
-            } satisfies ActionsResponse);
-        }
-    }),
-    loggedProcedure.DELETE.input(z.number()).query(async ({ input }) => {
-        const id = input;
+      return {
+        status: true
+      } satisfies Response;
+    } catch (err) {
+      console.error(err);
+      return fail(500, {
+        status: false,
+        message: 'internal' satisfies ErrorPath
+      } satisfies ActionsResponse);
+    }
+  }),
+  loggedProcedure.DELETE.input(z.number()).query(async ({ input }) => {
+    const id = input;
 
-        if (isNaN(Number(id))) {
-            return {
-                status: false,
-                code: 400,
-                message: 'internal' satisfies ErrorPath
-            } satisfies ErrorApiResponse;
-        }
+    if (isNaN(Number(id))) {
+      return {
+        status: false,
+        code: 400,
+        message: 'internal' satisfies ErrorPath
+      } satisfies ErrorApiResponse;
+    }
 
-        try {
-            await conn.deleteFrom('equipment_type').where('id', '=', Number(id)).execute();
+    try {
+      await conn.deleteFrom('equipment_type').where('id', '=', Number(id)).execute();
 
-            return {
-                status: true
-            } satisfies Response;
-        } catch (err) {
-            console.error(err);
-            return {
-                status: false,
-                code: 500,
-                message: 'internal' satisfies ErrorPath
-            } satisfies ErrorApiResponse;
-        }
-    })
+      return {
+        status: true
+      } satisfies Response;
+    } catch (err) {
+      console.error(err);
+      return {
+        status: false,
+        code: 500,
+        message: 'internal' satisfies ErrorPath
+      } satisfies ErrorApiResponse;
+    }
+  })
 ];

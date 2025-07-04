@@ -6,11 +6,11 @@ import upload from './_routes/upload';
 import article from './_routes/article';
 
 export const r = router({
-    login,
-    types,
-    equipment,
-    upload,
-    article
+  login,
+  types,
+  equipment,
+  upload,
+  article
 });
 
 export type AppRouter = typeof r;

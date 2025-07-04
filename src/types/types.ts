@@ -4,29 +4,29 @@ import type { Selectable } from 'kysely';
 import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 
 export type FormElement<$Attrs> = {
-    class?: ClassValue;
-    error?: string;
+  class?: ClassValue;
+  error?: string;
 } & $Attrs;
 
 export type UserData = Omit<Selectable<Account>, 'password'>;
 
 export type UserState =
-    | {
-          logged: false;
-      }
-    | {
-          logged: true;
-          data: UserData;
-      };
+  | {
+      logged: false;
+    }
+  | {
+      logged: true;
+      data: UserData;
+    };
 
 export type ActionsResponse = Omit<ErrorApiResponse, 'code'>;
 
 export type Response = {
-    status: true;
+  status: true;
 };
 
 export type ResponseWithData<$Data> = Response & {
-    data: $Data;
+  data: $Data;
 };
 
 export type ImageExtension = 'jpg' | 'jpeg' | 'png' | 'webp' | 'tiff';

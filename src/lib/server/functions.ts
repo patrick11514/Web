@@ -12,66 +12,66 @@ import { FILE_FOLDER } from '$env/static/private';
 const randomBytesAsync = promisify(crypto.randomBytes);
 
 export const getUserState = (cookies: Cookies): UserState => {
-    const session = cookies.get('session');
-    if (!session) {
-        return {
-            logged: false
-        };
-    }
-
-    const data = jwt.getCookie<UserData>(session);
-
-    if (!data) {
-        return {
-            logged: false
-        };
-    }
-
+  const session = cookies.get('session');
+  if (!session) {
     return {
-        logged: true,
-        data
+      logged: false
     };
+  }
+
+  const data = jwt.getCookie<UserData>(session);
+
+  if (!data) {
+    return {
+      logged: false
+    };
+  }
+
+  return {
+    logged: true,
+    data
+  };
 };
 
 type Params = Parameters<typeof _redirect>;
 
 export const redirect = (status: Params[0], location: Params[1]) => {
-    const state = getState();
-    _redirect(status, `/${state.selectedLang || 'cs'}${location}`);
+  const state = getState();
+  _redirect(status, `/${state.selectedLang || 'cs'}${location}`);
 };
 
 export const isDirectory = async (path: string) => {
-    try {
-        const stats = await fs.stat(path);
-        return stats.isDirectory();
-    } catch {
-        return false;
-    }
+  try {
+    const stats = await fs.stat(path);
+    return stats.isDirectory();
+  } catch {
+    return false;
+  }
 };
 
 export const isFile = async (path: string) => {
-    try {
-        const stats = await fs.stat(path);
-        return stats.isFile();
-    } catch {
-        return false;
-    }
+  try {
+    const stats = await fs.stat(path);
+    return stats.isFile();
+  } catch {
+    return false;
+  }
 };
 
 export const uploadFile = async (file: File) => {
-    const arrayBuffer = await file.arrayBuffer();
-    const path = Path.parse(file.name);
+  const arrayBuffer = await file.arrayBuffer();
+  const path = Path.parse(file.name);
 
-    if (!extensions.includes(path.ext.substring(1) as ImageExtension)) {
-        return undefined;
-    }
+  if (!extensions.includes(path.ext.substring(1) as ImageExtension)) {
+    return undefined;
+  }
 
-    const name = (await randomBytesAsync(16)).toString('hex') + path.ext;
+  const name = (await randomBytesAsync(16)).toString('hex') + path.ext;
 
-    if (!(await isDirectory(FILE_FOLDER))) {
-        await fs.mkdir(FILE_FOLDER, { recursive: true });
-    }
+  if (!(await isDirectory(FILE_FOLDER))) {
+    await fs.mkdir(FILE_FOLDER, { recursive: true });
+  }
 
-    await fs.writeFile(Path.join(FILE_FOLDER, name), Buffer.from(arrayBuffer));
-    return name;
+  await fs.writeFile(Path.join(FILE_FOLDER, name), Buffer.from(arrayBuffer));
+  return name;
 };

@@ -2,51 +2,51 @@ import { browser } from '$app/environment';
 import Swal, { type SweetAlertOptions } from 'sweetalert2';
 
 export const sleep = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 export const SwalAlert = <$Type = unknown>(data: SweetAlertOptions) => {
-    if (!browser) {
-        return {
-            isConfirmed: false
-        } as const;
-    }
+  if (!browser) {
+    return {
+      isConfirmed: false
+    } as const;
+  }
 
-    return Swal.fire<$Type>({
-        toast: true,
-        position: 'top-end',
-        timer: 2000,
-        timerProgressBar: true,
-        showCancelButton: false,
-        showConfirmButton: false,
-        ...data
-    });
+  return Swal.fire<$Type>({
+    toast: true,
+    position: 'top-end',
+    timer: 2000,
+    timerProgressBar: true,
+    showCancelButton: false,
+    showConfirmButton: false,
+    ...data
+  });
 };
 
 export const formatDate = (date: Date | string, time = true) => {
-    if (typeof date === 'string') {
-        date = new Date(date);
-    }
+  if (typeof date === 'string') {
+    date = new Date(date);
+  }
 
-    const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        ...(time && {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        })
-    };
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    ...(time && {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })
+  };
 
-    const locale = navigator.language || 'cs-CZ';
+  const locale = navigator.language || 'cs-CZ';
 
-    return new Intl.DateTimeFormat(locale, options).format(date);
+  return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
 export const sToHHMM = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
 
-    return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
+  return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
 };

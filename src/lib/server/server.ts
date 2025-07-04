@@ -3,7 +3,7 @@ import { context } from './context';
 import { r } from './routes';
 
 export const Server = new APIServer({
-    router: r,
-    path: '/api',
-    context
+  router: r,
+  path: '/api',
+  context
 });

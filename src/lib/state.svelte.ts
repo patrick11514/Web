@@ -5,25 +5,25 @@ import type { UserState } from '$/types/types';
 type Language = z.infer<typeof template>;
 
 type State = {
-    lang: Language;
-    selectedLang: string;
-    languages: Record<
-        string,
-        {
-            name: string;
-            flag: string;
-        }
-    >;
-    path: string;
-    userState: UserState;
+  lang: Language;
+  selectedLang: string;
+  languages: Record<
+    string,
+    {
+      name: string;
+      flag: string;
+    }
+  >;
+  path: string;
+  userState: UserState;
 };
 
 const state = $state({}) as State;
 
 export const setState = (newState: Partial<State>) => {
-    Object.assign(state, newState);
+  Object.assign(state, newState);
 };
 
 export const getState = () => {
-    return state as State;
+  return state as State;
 };
