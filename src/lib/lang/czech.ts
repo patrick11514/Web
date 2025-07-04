@@ -215,6 +215,20 @@ export default lang.parse({
     equipmentDetails: 'Detaily vybavení',
     images: 'Obrázky'
   },
+  contact: {
+    title: 'Spoj se se mnou',
+    visit: 'Navštívit',
+    send: 'Napsat',
+    descriptions: {
+      github: 'Koukni na můj GitHub, kde najdeš repa s mými projekty',
+      email: 'Napiš mi email, pokud máš nějaké dotazy, nebo máš zájem o spolupráci',
+      linkedin: 'Spoj se se mnout na LinkedInu, zde najdeš mé profesní zkušenosti a dovednosti',
+      instagram: 'Sleduj mě na Instagramu, kde sdílím své astrofotografie a další zajímavosti',
+      twitch: 'Sleduj mě na Twitch, kde streamuji programování, nebo hraní her',
+      discord: 'Přidej si mě na Discordu, zde jsem nejvíce aktivní a nejrychleji ti odpovím',
+      discordServer: 'Pokud tě zajímá dění okolo mě, určitě se připoj na můj Discord server'
+    }
+  },
   errors: {
     internal: 'Něco se nepovedlo, zkus to prosím zachvíli znova.',
     login: {

@@ -215,6 +215,20 @@ export default lang.parse({
     equipmentDetails: 'Equipment details',
     images: 'Images'
   },
+  contact: {
+    title: 'Get in Touch',
+    visit: 'Visit',
+    send: 'Send',
+    descriptions: {
+      github: 'Check out my GitHub, where you can find repositories with my projects',
+      email: 'Email me if you have any questions or are interested in collaboration',
+      linkedin: 'Connect with me on LinkedIn, where you can find my professional experience and skills',
+      instagram: 'Follow me on Instagram, where I share my astrophotography and other interesting things',
+      twitch: 'Watch me on Twitch, where I stream programming or gaming',
+      discord: 'Add me on Discord, I am most active there and will respond to you the fastest',
+      discordServer: 'If you are interested in what I am up to, definitely join my Discord server'
+    }
+  },
   errors: {
     internal: 'Internal Server Error, please try again later.',
     login: {

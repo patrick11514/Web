@@ -7,224 +7,238 @@ const _ = z.string();
 const o = z.object;
 // RICH TEXT
 export const r = z.array(
-    z.string().or(
-        o({
-            link: z.string(),
-            text: z.string(),
-            blank: z.boolean().optional()
-        })
-    )
+  z.string().or(
+    o({
+      link: z.string(),
+      text: z.string(),
+      blank: z.boolean().optional()
+    })
+  )
 );
 
 export const languagable = z.object({
-    1: _,
-    2: _,
-    other: _
+  1: _,
+  2: _,
+  other: _
 });
 
 export const _extensions = extensions.map((ext) => `.${ext}`).join(', ');
 
 export default o({
-    default_desc: _,
-    yes: _,
-    no: _,
-    navigation: o({
-        home: _,
-        gallery: _,
-        admin: _,
-        login: _
-    }),
-    adminNavigation: o({
-        home: _,
-        equipment: _,
-        articles: _
-    }),
-    error: o({
-        title: _,
-        message: _,
-        sub_message: _,
-        go_home: _
+  default_desc: _,
+  yes: _,
+  no: _,
+  navigation: o({
+    home: _,
+    gallery: _,
+    admin: _,
+    login: _
+  }),
+  adminNavigation: o({
+    home: _,
+    equipment: _,
+    articles: _
+  }),
+  error: o({
+    title: _,
+    message: _,
+    sub_message: _,
+    go_home: _
+  }),
+  main: o({
+    age: _,
+    text: r
+  }),
+  admin: o({
+    login: o({
+      title: _,
+      username: _,
+      password: _,
+      submit: _
     }),
     main: o({
-        age: _,
-        text: r
+      stats: _,
+      today: _,
+      week: _
     }),
-    admin: o({
-        login: o({
-            title: _,
-            username: _,
-            password: _,
-            submit: _
-        }),
-        main: o({
-            stats: _,
-            today: _,
-            week: _
-        }),
-        equipment: o({
-            actions: _,
-            types: o({
-                title: _,
-                addTitle: _,
-                translateKey: _,
-                priority: _,
-                placeholder: _,
-                button: _,
-                success: _,
-                empty: _,
-                editSuccess: _,
-                deleteSuccess: _,
-                edit: o({
-                    title: _,
-                    button: _
-                }),
-                delete: o({
-                    question: _
-                })
-            }),
-            equipment: o({
-                title: _,
-                addTitle: _,
-                type: _,
-                name: _,
-                link: _,
-                button: _,
-                success: _,
-                empty: _,
-                editSuccess: _,
-                deleteSuccess: _,
-                edit: o({
-                    title: _,
-                    button: _
-                }),
-                delete: o({
-                    question: _
-                })
-            })
-        }),
-        article: o({
-            title: _,
-            description: _,
-            create: _,
-            empty: _,
-            image: _,
-            articleTitle: _,
-            published: _,
-            lastEdit: _,
-            actions: _,
-            form: o({
-                back: _,
-                editTitle: _,
-                createTitle: _,
-                details: o({
-                    title: _,
-                    titleInput: _,
-                    titlePlaceholder: _,
-                    description: _,
-                    descriptionPlaceholder: _,
-                    content: _,
-                    editContent: _,
-                    previewContent: _,
-                    contentPlaceholder: _
-                }),
-                equipment: o({
-                    title: _,
-                    select: _,
-                    empty: _
-                }),
-                images: o({
-                    title: _,
-                    upload: _,
-                    descriptionPlaceholder: _,
-                    browse: _,
-                    button: _,
-                    alt: _,
-                    empty: _,
-                    noImage: _,
-                    multiple: _,
-                    confirmDelete: _
-                }),
-                exposures: o({
-                    title: _,
-                    date: _,
-                    type: _,
-                    count: _,
-                    seconds: _,
-                    button: _,
-                    time: _,
-                    total: _,
-                    empty: _,
-                    frames: _
-                }),
-                cancel: _,
-                save: _,
-                create: _,
-                created: _,
-                updated: _
-            })
-        })
-    }),
-    gallery: o({
+    equipment: o({
+      actions: _,
+      types: o({
         title: _,
-        description: _,
-        updated: _,
-        created: _,
-        readMore: _,
-        more: _,
-        back: _,
-        totalExposure: _,
-        article: _,
-        details: _,
-        equipment: _,
-        exposureSummary: _,
-        framesCount: languagable,
-        exposureDetails: _,
-        equipmentDetails: _,
-        images: _
-    }),
-    errors: o({
-        internal: _,
-        login: o({
-            form: _,
-            username: _,
-            password: _
+        addTitle: _,
+        translateKey: _,
+        priority: _,
+        placeholder: _,
+        button: _,
+        success: _,
+        empty: _,
+        editSuccess: _,
+        deleteSuccess: _,
+        edit: o({
+          title: _,
+          button: _
         }),
-        types: o({
-            form: _,
-            empty: _,
-            priority: _
+        delete: o({
+          question: _
+        })
+      }),
+      equipment: o({
+        title: _,
+        addTitle: _,
+        type: _,
+        name: _,
+        link: _,
+        button: _,
+        success: _,
+        empty: _,
+        editSuccess: _,
+        deleteSuccess: _,
+        edit: o({
+          title: _,
+          button: _
+        }),
+        delete: o({
+          question: _
+        })
+      })
+    }),
+    article: o({
+      title: _,
+      description: _,
+      create: _,
+      empty: _,
+      image: _,
+      articleTitle: _,
+      published: _,
+      lastEdit: _,
+      actions: _,
+      form: o({
+        back: _,
+        editTitle: _,
+        createTitle: _,
+        details: o({
+          title: _,
+          titleInput: _,
+          titlePlaceholder: _,
+          description: _,
+          descriptionPlaceholder: _,
+          content: _,
+          editContent: _,
+          previewContent: _,
+          contentPlaceholder: _
         }),
         equipment: o({
-            form: _,
-            url: _
+          title: _,
+          select: _,
+          empty: _
         }),
-        upload: o({
-            missing: _,
-            error: _,
-            invalidFile: _,
-            extension: _,
-            notFound: _
+        images: o({
+          title: _,
+          upload: _,
+          descriptionPlaceholder: _,
+          browse: _,
+          button: _,
+          alt: _,
+          empty: _,
+          noImage: _,
+          multiple: _,
+          confirmDelete: _
         }),
-        article: o({
-            notFound: _,
-            noImages: _
-        })
-    }),
-    equipmentType: o({
-        telescope: _,
-        camera: _,
-        mount: _,
-        filter: _,
-        barlow: _,
-        reducer: _,
-        guidescope: _,
-        phone: _,
-        focuser: _
-    }),
-    frames: o({
-        light: _,
-        dark: _,
-        flat: _,
-        bias: _
+        exposures: o({
+          title: _,
+          date: _,
+          type: _,
+          count: _,
+          seconds: _,
+          button: _,
+          time: _,
+          total: _,
+          empty: _,
+          frames: _
+        }),
+        cancel: _,
+        save: _,
+        create: _,
+        created: _,
+        updated: _
+      })
     })
+  }),
+  gallery: o({
+    title: _,
+    description: _,
+    updated: _,
+    created: _,
+    readMore: _,
+    more: _,
+    back: _,
+    totalExposure: _,
+    article: _,
+    details: _,
+    equipment: _,
+    exposureSummary: _,
+    framesCount: languagable,
+    exposureDetails: _,
+    equipmentDetails: _,
+    images: _
+  }),
+  contact: o({
+    title: _,
+    visit: _,
+    send: _,
+    descriptions: o({
+      github: _,
+      email: _,
+      linkedin: _,
+      instagram: _,
+      twitch: _,
+      discord: _,
+      discordServer: _
+    })
+  }),
+  errors: o({
+    internal: _,
+    login: o({
+      form: _,
+      username: _,
+      password: _
+    }),
+    types: o({
+      form: _,
+      empty: _,
+      priority: _
+    }),
+    equipment: o({
+      form: _,
+      url: _
+    }),
+    upload: o({
+      missing: _,
+      error: _,
+      invalidFile: _,
+      extension: _,
+      notFound: _
+    }),
+    article: o({
+      notFound: _,
+      noImages: _
+    })
+  }),
+  equipmentType: o({
+    telescope: _,
+    camera: _,
+    mount: _,
+    filter: _,
+    barlow: _,
+    reducer: _,
+    guidescope: _,
+    phone: _,
+    focuser: _
+  }),
+  frames: o({
+    light: _,
+    dark: _,
+    flat: _,
+    bias: _
+  })
 });
