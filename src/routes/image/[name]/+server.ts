@@ -6,10 +6,23 @@ import sharp from 'sharp';
 import { isDirectory, isFile } from '$/lib/server/functions';
 import { extensions, type ImageExtension } from '$/types/types';
 
+/*eslint-disable no-console*/
+
 const CACHE_FOLDER = '.cache';
 const DEFAULT_IMAGE_QUALITY = 75;
 
 export const GET = (async ({ params, setHeaders, url }) => {
+  const start = new Date();
+  let lastEntry = new Date();
+
+  const log = (message: string) => {
+    const now = new Date();
+    const diff = now.getTime() - lastEntry.getTime();
+    console.log(`[${params.name}] [${now.toISOString()}] ${message} (+${diff}ms)`);
+    lastEntry = now;
+  };
+
+  log(`GET /files/${params.name} started`);
   if (!params.name) {
     error(400, 'Name is required');
   }
@@ -75,6 +88,7 @@ export const GET = (async ({ params, setHeaders, url }) => {
     const cachePath = Path.join(CACHE_FOLDER, cacheModifiedName);
 
     if (!(await isFile(cachePath))) {
+      log(`Processing image: ${params.name} with scale ${scale}% and format ${fileExtension}`);
       let image = sharp(content);
 
       const imageOptions: sharp.JpegOptions & sharp.PngOptions & sharp.WebpOptions & sharp.TiffOptions = {
@@ -102,15 +116,20 @@ export const GET = (async ({ params, setHeaders, url }) => {
       const newWidth = meta.width ? Math.round(meta.width * (scale / 100)) : undefined;
       const newHeight = meta.height ? Math.round(meta.height * (scale / 100)) : undefined;
 
+      log('Created, and resizing image to ' + newWidth + 'x' + newHeight);
+
       image = image.resize(newWidth, newHeight);
 
+      log(`Saving processed image to cache: ${cachePath}`);
       const imageBuffer = await image.toBuffer();
       await fs.writeFile(cachePath, imageBuffer);
+      log(`Image saved to cache: ${cachePath}`);
     }
 
     content = await fs.readFile(cachePath);
     filePath = cachePath;
   }
+  log('statting to get file info');
   const fileInfo = await fs.stat(filePath);
 
   setHeaders({
@@ -118,6 +137,9 @@ export const GET = (async ({ params, setHeaders, url }) => {
     'Content-Length': fileInfo.size.toString(),
     'Cache-Control': 'public, max-age=31536000, immutable'
   });
+
+  const end = new Date();
+  log(`GET /files/${params.name} completed in ${end.getTime() - start.getTime()}ms`);
 
   return new Response(content);
 }) satisfies RequestHandler;
