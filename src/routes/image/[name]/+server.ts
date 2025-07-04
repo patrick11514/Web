@@ -6,23 +6,53 @@ import sharp from 'sharp';
 import { isDirectory, isFile } from '$/lib/server/functions';
 import { extensions, type ImageExtension } from '$/types/types';
 
-/*eslint-disable no-console*/
-
 const CACHE_FOLDER = '.cache';
 const DEFAULT_IMAGE_QUALITY = 75;
 
+type CacheEntry = {
+  buffer: Buffer;
+  timestamp: number;
+};
+
+class MemoryCache {
+  private cache: Map<string, CacheEntry> = new Map();
+  private maxEntries = 500;
+  private maxSize = 200 * 1024 * 1024; // 200 MB
+
+  private getCacheSize(): number {
+    let size = 0;
+    for (const value of this.cache.values()) {
+      size += value.buffer.length;
+    }
+    return size;
+  }
+
+  get(key: string) {
+    const entry = this.cache.get(key);
+    if (!entry) return undefined;
+
+    entry.timestamp = Date.now();
+    return entry.buffer;
+  }
+
+  set(key: string, value: Buffer) {
+    if (this.getCacheSize() + value.length > this.maxSize || this.cache.size >= this.maxEntries) {
+      const oldest = [...this.cache.entries()].sort((a, b) => a[1].timestamp - b[1].timestamp)[0];
+      if (oldest) {
+        this.cache.delete(oldest[0]);
+      }
+    }
+
+    this.cache.set(key, {
+      buffer: value,
+      timestamp: Date.now()
+    });
+  }
+}
+
+const memoryCache = new MemoryCache();
+
 export const GET = (async ({ params, setHeaders, url }) => {
-  const start = new Date();
-  let lastEntry = new Date();
-
-  const log = (message: string) => {
-    const now = new Date();
-    const diff = now.getTime() - lastEntry.getTime();
-    console.log(`[${params.name}] [${now.toISOString()}] ${message} (+${diff}ms)`);
-    lastEntry = now;
-  };
-
-  log(`GET /files/${params.name} started`);
   if (!params.name) {
     error(400, 'Name is required');
   }
@@ -45,8 +75,6 @@ export const GET = (async ({ params, setHeaders, url }) => {
   if (!(await isFile(filePath))) {
     error(404, 'File not found');
   }
-
-  let content = await fs.readFile(filePath);
 
   const searchParams = url.searchParams;
   let fileExtension = Path.extname(filePath).substring(1).toLowerCase();
@@ -79,6 +107,8 @@ export const GET = (async ({ params, setHeaders, url }) => {
     }
   }
 
+  let content: Buffer;
+
   if (modified) {
     if (!(await isDirectory(CACHE_FOLDER))) {
       await fs.mkdir(CACHE_FOLDER);
@@ -88,7 +118,8 @@ export const GET = (async ({ params, setHeaders, url }) => {
     const cachePath = Path.join(CACHE_FOLDER, cacheModifiedName);
 
     if (!(await isFile(cachePath))) {
-      log(`Processing image: ${params.name} with scale ${scale}% and format ${fileExtension}`);
+      //here we don't want to assign the out of scope variable `content`
+      const content = await fs.readFile(filePath);
       let image = sharp(content);
 
       const imageOptions: sharp.JpegOptions & sharp.PngOptions & sharp.WebpOptions & sharp.TiffOptions = {
@@ -116,20 +147,27 @@ export const GET = (async ({ params, setHeaders, url }) => {
       const newWidth = meta.width ? Math.round(meta.width * (scale / 100)) : undefined;
       const newHeight = meta.height ? Math.round(meta.height * (scale / 100)) : undefined;
 
-      log('Created, and resizing image to ' + newWidth + 'x' + newHeight);
-
       image = image.resize(newWidth, newHeight);
 
-      log(`Saving processed image to cache: ${cachePath}`);
       const imageBuffer = await image.toBuffer();
       await fs.writeFile(cachePath, imageBuffer);
-      log(`Image saved to cache: ${cachePath}`);
     }
 
-    content = await fs.readFile(cachePath);
+    if (memoryCache.get(cachePath)) {
+      content = memoryCache.get(cachePath)!;
+    } else {
+      content = await fs.readFile(cachePath);
+      memoryCache.set(cachePath, content);
+    }
     filePath = cachePath;
+  } else {
+    if (memoryCache.get(filePath)) {
+      content = memoryCache.get(filePath)!;
+    } else {
+      content = await fs.readFile(filePath);
+      memoryCache.set(filePath, content);
+    }
   }
-  log('statting to get file info');
   const fileInfo = await fs.stat(filePath);
 
   setHeaders({
@@ -137,9 +175,6 @@ export const GET = (async ({ params, setHeaders, url }) => {
     'Content-Length': fileInfo.size.toString(),
     'Cache-Control': 'public, max-age=31536000, immutable'
   });
-
-  const end = new Date();
-  log(`GET /files/${params.name} completed in ${end.getTime() - start.getTime()}ms`);
 
   return new Response(content);
 }) satisfies RequestHandler;
