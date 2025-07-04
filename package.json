@@ -68,7 +68,11 @@
     "zod": "^3.24.4"
   },
   "lint-staged": {
-    "src/**/*.{ts,svelte},migrations/**/*.ts": [
+    "src/**/*.{ts,svelte}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "migrations/**/*.ts": [
       "prettier --write",
       "eslint --fix"
     ]
