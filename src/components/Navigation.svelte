@@ -37,6 +37,11 @@
       path: '/contact'
     },
     {
+      name: _state.lang.navigation.about,
+      icon: 'bi-info-circle-fill',
+      path: '/about'
+    },
+    {
       name: _state.lang.navigation.login,
       icon: 'bi-person-fill',
       path: '/login',
