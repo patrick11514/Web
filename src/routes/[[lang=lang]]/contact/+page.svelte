@@ -77,8 +77,8 @@
   ] as const satisfies Platform[];
 </script>
 
-<section class="flex h-full w-full flex-1 flex-col p-4">
-  <H1 class="mx-auto mt-4 mb-4">{lang.title}</H1>
+<section class="flex h-full w-full flex-1 flex-col px-4">
+  <H1 class="mx-auto mb-8">{lang.title}</H1>
   <div class="flex w-full flex-wrap items-stretch justify-center gap-2">
     {#each platforms as platform (`${platform.name}-${platform.tag}`)}
       <a
