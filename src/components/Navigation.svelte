@@ -32,7 +32,7 @@
       matchStart: true
     },
     {
-      name: 'Contact',
+      name: _state.lang.navigation.contact,
       icon: 'bi-envelope-fill',
       path: '/contact'
     },

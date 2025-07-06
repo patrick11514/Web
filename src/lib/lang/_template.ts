@@ -32,7 +32,9 @@ export default o({
     home: _,
     gallery: _,
     admin: _,
-    login: _
+    login: _,
+    contact: _,
+    about: _
   }),
   adminNavigation: o({
     home: _,
@@ -195,6 +197,9 @@ export default o({
       discord: _,
       discordServer: _
     })
+  }),
+  about: o({
+    title: _
   }),
   errors: o({
     internal: _,

@@ -10,7 +10,9 @@ export default lang.parse({
     home: 'Home',
     gallery: 'Gallery',
     admin: 'Administration',
-    login: 'Login'
+    login: 'Login',
+    contact: 'Contact',
+    about: 'About Me'
   },
   adminNavigation: {
     home: 'Dashboard',
@@ -228,6 +230,9 @@ export default lang.parse({
       discord: 'Add me on Discord, I am most active there and will respond to you the fastest',
       discordServer: 'If you are interested in what I am up to, definitely join my Discord server'
     }
+  },
+  about: {
+    title: 'Here you will find something about me'
   },
   errors: {
     internal: 'Internal Server Error, please try again later.',

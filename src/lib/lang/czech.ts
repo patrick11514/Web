@@ -10,7 +10,9 @@ export default lang.parse({
     home: 'Domů',
     gallery: 'Galerie',
     admin: 'Administrace',
-    login: 'Přihlášení'
+    login: 'Přihlášení',
+    contact: 'Kontakt',
+    about: 'O mně'
   },
   adminNavigation: {
     home: 'Panel',
@@ -228,6 +230,9 @@ export default lang.parse({
       discord: 'Přidej si mě na Discordu, zde jsem nejvíce aktivní a nejrychleji ti odpovím',
       discordServer: 'Pokud tě zajímá dění okolo mě, určitě se připoj na můj Discord server'
     }
+  },
+  about: {
+    title: 'Zde najdeš něco málo o mně'
   },
   errors: {
     internal: 'Něco se nepovedlo, zkus to prosím zachvíli znova.',
