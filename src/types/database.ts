@@ -57,6 +57,12 @@ export interface GalleryImage {
   name: string;
 }
 
+export interface Translations {
+  key: string;
+  lang: string;
+  text: string;
+}
+
 export interface Visitors {
   date: Generated<Date>;
   id: Generated<number>;
@@ -73,5 +79,6 @@ export interface DB {
   equipment_type: EquipmentType;
   exposure: Exposure;
   gallery_image: GalleryImage;
+  translations: Translations;
   visitors: Visitors;
 }
