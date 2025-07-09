@@ -10,6 +10,7 @@
   const { data }: PageProps = $props();
   const _state = getState();
   const _lang = $derived(_state.lang.gallery);
+  const _langDynamic = $derived(data.dynamicTranslations);
 </script>
 
 {#snippet badge(text: string)}
@@ -22,7 +23,11 @@
     {#each data.posts as post (post.id)}
       <a href="/{_state.selectedLang}/gallery/{post.id}" class="group border-text flex aspect-[4/5] w-full flex-col rounded-md border-2 sm:w-[calc(50%_-_0.5rem)] lg:w-md xl:w-lg">
         <div class="relative h-1/2 flex-1/2 overflow-hidden">
-          <Image class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" name={post.images[0].name} alt={post.images[0].alt_text} />
+          <Image
+            class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+            name={post.images[0].name}
+            alt={_langDynamic[post.images[0].alt_text]}
+          />
           <div class="absolute top-0 left-0 flex w-full justify-end p-4">
             <div class="bg-background/75 rounded-full px-2 py-1 text-base font-medium">
               <Icon name="bi-clock" />
@@ -31,8 +36,8 @@
           </div>
         </div>
         <div class="bg-background flex flex-1/2 flex-col gap-2 p-4">
-          <H2>{post.title}</H2>
-          <p class="text-text-muted">{post.description}</p>
+          <H2>{_langDynamic[post.title]}</H2>
+          <p class="text-text-muted">{_langDynamic[post.description]}</p>
           <div class="flex w-full flex-wrap gap-2">
             {#each post.equipment.slice(0, 3) as equipment (equipment.id)}
               {@render badge(equipment.name)}

@@ -20,6 +20,7 @@
   const { data }: PageProps = $props();
   const _state = getState();
   const _lang = $derived(_state.lang.gallery);
+  const _langDynamic = $derived(data.dynamicTranslations);
   const _frames = $derived(_state.lang.admin.article.form.exposures);
 
   let selectedImage = $state(0);
@@ -30,7 +31,7 @@
 
 <section class="flex flex-1 flex-col gap-4 p-4">
   <a href="/{_state.selectedLang}/gallery" class="font-bold"><Icon name="bi-arrow-left" class="px-4" /> {_lang.back}</a>
-  <H1>{data.post.title}</H1>
+  <H1>{_langDynamic[data.post.title]}</H1>
   <div class="text-text-muted flex flex-wrap gap-4 font-medium">
     <div><Icon name="bi-calendar" /> {_lang.created} {formatDate(data.post.created_at, false)}</div>
     <div><Icon name="bi-clock" /> {_lang.updated} {formatDate(data.post.updated_at, false)}</div>
@@ -43,7 +44,7 @@
     <div class="flex flex-1/3 flex-col gap-8">
       <div class="border-text bg-background flex aspect-[5/4] flex-col gap-4 rounded-md border-2 p-4">
         <div class="relative h-full overflow-hidden">
-          <Image name={data.post.images[selectedImage].name} alt={data.post.images[selectedImage].alt_text} class="h-full w-full object-cover" />
+          <Image name={data.post.images[selectedImage].name} alt={_langDynamic[data.post.images[selectedImage].alt_text]} class="h-full w-full object-cover" />
           {#if data.post.images.length > 1}
             <div class="absolute top-0 left-0 flex h-full w-full items-center justify-between p-4">
               <button
@@ -61,7 +62,7 @@
             </div>
           {/if}
         </div>
-        <span class="text-center">{data.post.images[selectedImage].alt_text}</span>
+        <span class="text-center">{_langDynamic[data.post.images[selectedImage].alt_text]}</span>
 
         {#if data.post.images.length > 1}
           <Dots count={data.post.images.length} bind:index={selectedImage} />
@@ -113,15 +114,15 @@
         </button>
       </div>
       {#if section === 'article'}
-        <Markdown class="w-full max-w-full" content={data.post.content_md} />
+        <Markdown class="w-full max-w-full" content={_langDynamic[data.post.content_md]} />
         <hr />
         <H1>{_lang.images}</H1>
         <div class="flex flex-wrap gap-4">
           {#each data.post.images as image (image.id)}
             <a href="/image/{image.name}?format=jpg" target="_blank" class="group border-text relative aspect-[4/3] w-full overflow-hidden rounded-md border-2 md:w-1/2 lg:w-1/3">
-              <Image name={image.name} alt={image.alt_text} class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" />
+              <Image name={image.name} alt={_langDynamic[image.alt_text]} class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" />
               <span class="bg-background/75 absolute bottom-0 left-0 w-full p-2">
-                {image.alt_text}
+                {_langDynamic[image.alt_text]}
               </span>
             </a>
           {/each}

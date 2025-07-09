@@ -1,8 +1,10 @@
-import { redirect } from '$/lib/server/functions';
+import { gatherTranslations, redirect } from '$/lib/server/functions';
 import { conn } from '$/lib/server/variables';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, parent }) => {
+  const parentData = await parent();
+
   const post = await conn.selectFrom('article').selectAll().where('id', '=', params.id).executeTakeFirst();
   if (!post) {
     return redirect(302, '/gallery');
@@ -24,6 +26,7 @@ export const load = (async ({ params }) => {
       images,
       exposures,
       equipment
-    }
+    },
+    dynamicTranslations: await gatherTranslations([post.title, post.description, post.content_md, ...images.map((image) => image.alt_text)], parentData.selectedLang)
   };
 }) satisfies PageServerLoad;
