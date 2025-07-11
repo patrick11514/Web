@@ -6,10 +6,10 @@ import { v4 } from 'uuid';
 export const up = async (conn: Kysely<any>) => {
   await conn.schema
     .createTable('translations')
-    .addColumn('key', 'uuid', (col) => col.primaryKey())
-    .addColumn('lang', 'varchar(2)', (col) => col.notNull())
+    .addColumn('key', 'uuid')
+    .addColumn('lang', 'varchar(2)')
     .addColumn('text', 'text', (col) => col.notNull())
-    .addUniqueConstraint('translations_lang_key', ['lang', 'key'])
+    .addPrimaryKeyConstraint('pk_translations', ['key', 'lang'])
     .execute();
 
   //now we need to migrate posts texts into translations table
