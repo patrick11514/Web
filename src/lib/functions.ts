@@ -50,3 +50,19 @@ export const sToHHMM = (seconds: number) => {
 
   return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
 };
+
+export const resolveObject = (path: string, _path: object) => {
+  const parts = path.split('.');
+
+  for (const part of parts) {
+    if (_path[part as keyof typeof _path]) {
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      _path = _path[part as keyof typeof _path] as any;
+    } else {
+      // If the path does not exist, return the original error string
+      return path;
+    }
+  }
+
+  return _path as unknown as string;
+};

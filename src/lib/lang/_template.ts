@@ -28,6 +28,7 @@ export default o({
   default_desc: _,
   yes: _,
   no: _,
+  language: _,
   navigation: o({
     home: _,
     gallery: _,

@@ -30,4 +30,33 @@ export type ResponseWithData<$Data> = Response & {
 };
 
 export type ImageExtension = 'jpg' | 'jpeg' | 'png' | 'webp' | 'tiff';
-export const extensions = ['jpg', 'jpeg', 'png', 'webp', 'tiff'] satisfies ImageExtension[];
+export const extensions = [
+  'jpg',
+  'jpeg',
+  'png',
+  'webp',
+  'tiff'
+] satisfies ImageExtension[];
+
+export type DePromise<$Promise> =
+  $Promise extends Promise<infer $Inner> ? $Inner : $Promise;
+
+//Ty chatGPT :)
+export type Path<
+  T,
+  P extends string = '',
+  Depth extends number[] = [] // depth counter
+> = Depth['length'] extends 5 // <-- limit depth to 5 levels (adjust as needed)
+  ? P
+  : T extends string | number | boolean
+    ? P
+    : //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      T extends Record<string, any>
+      ? {
+          [K in keyof T]: Path<
+            T[K],
+            `${P}${P extends '' ? '' : '.'}${K & string}`,
+            [...Depth, 1] // increase depth
+          >;
+        }[keyof T]
+      : P;

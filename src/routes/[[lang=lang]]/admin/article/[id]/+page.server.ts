@@ -3,6 +3,10 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Insertable } from 'kysely';
 import type { Article, Exposure, GalleryImage } from '$/types/database';
+import {
+  constructEmptyTranslations,
+  gatherTranslationsAll
+} from '$/lib/server/functions';
 
 export const load = (async ({ params }) => {
   const equipmentData = await conn.selectFrom('equipment').selectAll().execute();
@@ -25,18 +29,33 @@ export const load = (async ({ params }) => {
         exposures: Insertable<Exposure>[];
         equipment: number[];
       },
-      ...baseData
+      ...baseData,
+      dynamicTranslations: constructEmptyTranslations()
     };
 
-  const article = await conn.selectFrom('article').selectAll().where('id', '=', params.id).executeTakeFirst();
+  const article = await conn
+    .selectFrom('article')
+    .selectAll()
+    .where('id', '=', params.id)
+    .executeTakeFirst();
 
   if (!article) {
     redirect(302, `/${params.lang ?? 'cs'}/admin/article`);
   }
 
-  const images = await conn.selectFrom('gallery_image').selectAll().where('article_id', '=', params.id).orderBy('id', 'asc').execute();
+  const images = await conn
+    .selectFrom('gallery_image')
+    .selectAll()
+    .where('article_id', '=', params.id)
+    .orderBy('id', 'asc')
+    .execute();
 
-  const exposures = await conn.selectFrom('exposure').selectAll().where('article_id', '=', params.id).orderBy('id', 'asc').execute();
+  const exposures = await conn
+    .selectFrom('exposure')
+    .selectAll()
+    .where('article_id', '=', params.id)
+    .orderBy('id', 'asc')
+    .execute();
 
   const equipment = await conn
     .selectFrom('article_equipment')
@@ -52,6 +71,12 @@ export const load = (async ({ params }) => {
       exposures,
       equipment: equipment.map((e) => e.equipment_id)
     },
-    ...baseData
+    ...baseData,
+    dynamicTranslations: await gatherTranslationsAll([
+      article.title,
+      article.description,
+      article.content_md,
+      ...images.map((image) => image.alt_text)
+    ])
   };
 }) satisfies PageServerLoad;

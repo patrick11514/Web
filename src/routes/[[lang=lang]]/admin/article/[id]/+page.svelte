@@ -11,7 +11,7 @@
   import Button from '$/components/form/Button.svelte';
   import { API } from '$/lib/api';
   import { formatDate, SwalAlert } from '$/lib/functions';
-  import { resolveError } from '$/lib/lang';
+  import { languages, resolveError, transformIntoLanguagable } from '$/lib/lang';
   import Image from '$/components/utility/Image.svelte';
   import DatePicker from '$/components/form/DatePicker.svelte';
   import Table from '$/components/table/Table.svelte';
@@ -23,18 +23,24 @@
   import { goto } from '$app/navigation';
   import { articleSchema } from '$/types/schemes';
   import H1 from '$/components/headers/H1.svelte';
+  import H3 from '$/components/headers/H3.svelte';
+  import TranslationAvailability from '$/components/utility/TranslationAvailability.svelte';
 
   const { data }: PageProps = $props();
-
-  let article = $state(data.article);
-
-  const editing = $derived('id' in data.article);
+  const { dynamicTranslations } = data;
 
   const _state = getState();
   const _lang = $derived(_state.lang.admin.article.form);
 
-  let showPreview = $state(false);
+  let selectedLang = $state(_state.selectedLang as keyof typeof languages);
 
+  const ArticleTranslates = $state(
+    transformIntoLanguagable(data.article, dynamicTranslations)
+  );
+  let article = $derived(ArticleTranslates[selectedLang]);
+
+  const editing = $derived('id' in data.article);
+  let showPreview = $state(false);
   let selectedEquipment = $state<null | number>(null);
 
   $effect(() => {
@@ -99,6 +105,7 @@
     }
 
     article.images.push({
+      id: -1,
       name: response.data,
       alt_text: imageDescription,
       article_id: ''
@@ -143,6 +150,7 @@
 
   const addExposure = () => {
     article.exposures.push({
+      id: -1,
       type: exposureType,
       date: exposureDate ?? new Date(),
       count: exposureCount,
@@ -203,22 +211,56 @@
       {_lang.back}
     </a>
 
-    <H1 class="mb-4">{editing ? _lang.editTitle : _lang.createTitle}</H1>
+    <div class="flex w-full items-center justify-between">
+      <H1 class="mb-4">{editing ? _lang.editTitle : _lang.createTitle}</H1>
+      <div class="flex items-center gap-2">
+        <H3 class="text-text-muted"
+          ><Icon name="bi-translate" /> {_state.lang.language}:</H3
+        >
+        {#each Object.entries(languages) as [lang, data] (lang)}
+          <Button onclick={() => (selectedLang = lang)}>
+            {data.flag}
+            {data.name}
+          </Button>
+        {/each}
+      </div>
+    </div>
     <Card>
       {@render subTitle(_lang.details.title)}
       <FormItem for="title" label={_lang.details.titleInput} variant="small">
-        <Input id="title" placeholder={_lang.details.titlePlaceholder} bind:value={article.title} max={56} />
+        <Input
+          id="title"
+          placeholder={_lang.details.titlePlaceholder}
+          bind:value={article.title}
+          max={56}
+        />
+        {#snippet right()}
+          <TranslationAvailability object={ArticleTranslates} path="title" />
+        {/snippet}
       </FormItem>
       <FormItem for="desc" label={_lang.details.description} variant="small">
-        <Input id="desc" placeholder={_lang.details.descriptionPlaceholder} bind:value={article.description} max={128} />
+        <Input
+          id="desc"
+          placeholder={_lang.details.descriptionPlaceholder}
+          bind:value={article.description}
+          max={128}
+        />
       </FormItem>
       <FormItem for="content" label={_lang.details.content} variant="small">
         {#snippet right()}
-          <div>{showPreview ? _lang.details.previewContent : _lang.details.editContent} <input type="checkbox" bind:checked={showPreview} /></div>
+          <div>
+            {showPreview ? _lang.details.previewContent : _lang.details.editContent}
+            <input type="checkbox" bind:checked={showPreview} />
+          </div>
         {/snippet}
 
         {#if !showPreview}
-          <TextArea id="content" rows={10} placeholder={_lang.details.contentPlaceholder} bind:value={article.content_md} />
+          <TextArea
+            id="content"
+            rows={10}
+            placeholder={_lang.details.contentPlaceholder}
+            bind:value={article.content_md}
+          />
         {:else}
           <Markdown content={article.content_md} />
         {/if}
@@ -236,10 +278,17 @@
         <h2 class="font-bold">{_lang.equipment.empty}</h2>
       {:else}
         <div class="flex flex-wrap gap-2">
-          {#each data.equipment.filter((item) => article.equipment.includes(item.id)) as item (item.id)}
+          {#each data.equipment.filter( (item) => article.equipment.includes(item.id) ) as item (item.id)}
             <div class="border-text rounded-md border-2 px-2 py-1 font-bold">
               {item.name}
-              <Icon onclick={() => (article.equipment = article.equipment.filter((_item) => _item !== item.id))} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+              <Icon
+                onclick={() =>
+                  (article.equipment = article.equipment.filter(
+                    (_item) => _item !== item.id
+                  ))}
+                name="bi-trash-fill"
+                class="cursor-pointer text-red-500"
+              />
             </div>
           {/each}
         </div>
@@ -249,7 +298,12 @@
       {@render subTitle(_lang.images.title)}
       <FormItem for="image" label={_lang.images.upload} class="gap-2" variant="small">
         <div class="flex flex-row items-center justify-stretch gap-2">
-          <Input type="text" class="flex-1" placeholder={_lang.images.descriptionPlaceholder} bind:value={imageDescription} />
+          <Input
+            type="text"
+            class="flex-1"
+            placeholder={_lang.images.descriptionPlaceholder}
+            bind:value={imageDescription}
+          />
           <label
             for="image"
             class="border-secondary hover:border-primary font-roboto w-max cursor-pointer rounded-md border-2 px-4 py-1 text-xl font-bold transition-all duration-200 active:translate-y-0.5 disabled:grayscale lg:text-2xl"
@@ -257,7 +311,13 @@
             <Icon name="bi-upload" />
             {_lang.images.browse}
           </label>
-          <input type="file" accept="image/*" class="hidden" id="image" bind:files={imageFiles} />
+          <input
+            type="file"
+            accept="image/*"
+            class="hidden"
+            id="image"
+            bind:files={imageFiles}
+          />
         </div>
         <Button
           onclick={(ev) => {
@@ -271,13 +331,21 @@
         {:else}
           <div class="flex flex-wrap gap-2">
             {#each article.images as image (image.name)}
-              <div class="border-text group relative flex max-w-[30%] flex-col rounded-md border-2 font-bold [&>picture]:m-auto">
+              <div
+                class="border-text group relative flex max-w-[30%] flex-col rounded-md border-2 font-bold [&>picture]:m-auto"
+              >
                 <Image name={image.name} alt={image.alt_text} />
-                <span class="border-t-text border-t-2 p-1 font-bold">{image.alt_text}</span>
+                <span class="border-t-text border-t-2 p-1 font-bold"
+                  >{image.alt_text}</span
+                >
                 <div
                   class="bg-background/75 absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 >
-                  <Icon onclick={() => deleteImage(image.name)} name="bi-trash-fill" class="cursor-pointer rounded-md border-2 border-red-600 bg-red-500 px-2 py-1" />
+                  <Icon
+                    onclick={() => deleteImage(image.name)}
+                    name="bi-trash-fill"
+                    class="cursor-pointer rounded-md border-2 border-red-600 bg-red-500 px-2 py-1"
+                  />
                 </div>
               </div>
             {/each}
@@ -299,10 +367,20 @@
             <option value="bias">{_state.lang.frames.bias}</option>
           </Select>
         </FormItem>
-        <FormItem class="flex-1" for="count" label={_lang.exposures.count} variant="small">
+        <FormItem
+          class="flex-1"
+          for="count"
+          label={_lang.exposures.count}
+          variant="small"
+        >
           <Input id="count" type="number" min={1} bind:value={exposureCount} />
         </FormItem>
-        <FormItem class="flex-1" for="duration" label={_lang.exposures.seconds} variant="small">
+        <FormItem
+          class="flex-1"
+          for="duration"
+          label={_lang.exposures.seconds}
+          variant="small"
+        >
           <Input id="duration" type="number" min={1} bind:value={exposureDuration} />
         </FormItem>
       </div>
@@ -344,7 +422,10 @@
                   <Td>{exposure.count * exposure.exposure_time_s}</Td>
                   <Td>
                     <Icon
-                      onclick={() => (article.exposures = article.exposures.filter((_, _idx) => _idx !== idx))}
+                      onclick={() =>
+                        (article.exposures = article.exposures.filter(
+                          (_, _idx) => _idx !== idx
+                        ))}
                       name="bi-trash-fill"
                       class="cursor-pointer text-2xl text-red-500"
                     />
@@ -359,17 +440,25 @@
       <div class="bg-divider flex items-center justify-between rounded-md p-4">
         {#each ['light', 'dark', 'flat', 'bias'] as const as type (type)}
           <div class="flex flex-col">
-            <span class="text-xl font-medium lg:text-2xl">{_state.lang.frames[type]} {_lang.exposures.frames}</span>
+            <span class="text-xl font-medium lg:text-2xl"
+              >{_state.lang.frames[type]} {_lang.exposures.frames}</span
+            >
             <span class="text-2xl font-extrabold lg:text-3xl">
-              {article.exposures.filter((ex) => ex.type === type).reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0)}s
+              {article.exposures
+                .filter((ex) => ex.type === type)
+                .reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0)}s
             </span>
           </div>
         {/each}
       </div>
     </Card>
     <div class="flex w-full justify-end gap-2">
-      <Button onclick={() => goto(`/${_state.selectedLang}/admin/article`)}>{_lang.cancel}</Button>
-      <Button onclick={() => (editing ? articleEdit() : articleAdd())} class="bg-primary">{editing ? _lang.save : _lang.create}</Button>
+      <Button onclick={() => goto(`/${_state.selectedLang}/admin/article`)}
+        >{_lang.cancel}</Button
+      >
+      <Button onclick={() => (editing ? articleEdit() : articleAdd())} class="bg-primary"
+        >{editing ? _lang.save : _lang.create}</Button
+      >
     </div>
   </div>
 </section>

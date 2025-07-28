@@ -6,6 +6,7 @@ export default lang.parse({
     'Hello, I am Patrik, a student and programmer who enjoys astrophotography in my free time. I create websites and applications using the SvelteKit framework. I am open to creating other applications, for example in NodeJS or other frameworks like Vue.js or React.',
   yes: 'Yes',
   no: 'No',
+  language: 'Language',
   navigation: {
     home: 'Home',
     gallery: 'Gallery',
@@ -197,7 +198,8 @@ export default lang.parse({
   },
   gallery: {
     title: 'Astro-Gallery',
-    description: 'Here you can find astrophotographs taken by me, along with descriptions and details about the exposures.',
+    description:
+      'Here you can find astrophotographs taken by me, along with descriptions and details about the exposures.',
     updated: 'Updated',
     created: 'Created',
     readMore: 'Read more',
@@ -224,11 +226,15 @@ export default lang.parse({
     descriptions: {
       github: 'Check out my GitHub, where you can find repositories with my projects',
       email: 'Email me if you have any questions or are interested in collaboration',
-      linkedin: 'Connect with me on LinkedIn, where you can find my professional experience and skills',
-      instagram: 'Follow me on Instagram, where I share my astrophotography and other interesting things',
+      linkedin:
+        'Connect with me on LinkedIn, where you can find my professional experience and skills',
+      instagram:
+        'Follow me on Instagram, where I share my astrophotography and other interesting things',
       twitch: 'Watch me on Twitch, where I stream programming or gaming',
-      discord: 'Add me on Discord, I am most active there and will respond to you the fastest',
-      discordServer: 'If you are interested in what I am up to, definitely join my Discord server'
+      discord:
+        'Add me on Discord, I am most active there and will respond to you the fastest',
+      discordServer:
+        'If you are interested in what I am up to, definitely join my Discord server'
     }
   },
   about: {

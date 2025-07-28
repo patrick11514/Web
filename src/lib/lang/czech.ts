@@ -6,6 +6,7 @@ export default lang.parse({
     'Ahoj, jsem Patrik, student a programátor, který se ve volném čase věnuje astrofotografování. Věnuji se tvorbě webových stránek a aplikací ve frameworku SvelteKit. Nebráním se tvorbě jiných aplikací, například v NodeJS, nebo jiných frameworkcích, jako jsou Vue.js, nebo React.',
   yes: 'Ano',
   no: 'Ne',
+  language: 'Jazyk',
   navigation: {
     home: 'Domů',
     gallery: 'Galerie',
@@ -197,7 +198,8 @@ export default lang.parse({
   },
   gallery: {
     title: 'Astro-Galerie',
-    description: 'Zde nalezneš astrofotografie pořízené mnou, společně s popisy a detaily o expozicích.',
+    description:
+      'Zde nalezneš astrofotografie pořízené mnou, společně s popisy a detaily o expozicích.',
     updated: 'Aktualizováno',
     created: 'Vytvořeno',
     readMore: 'Čti dále',
@@ -224,11 +226,15 @@ export default lang.parse({
     descriptions: {
       github: 'Koukni na můj GitHub, kde najdeš repa s mými projekty',
       email: 'Napiš mi email, pokud máš nějaké dotazy, nebo máš zájem o spolupráci',
-      linkedin: 'Spoj se se mnout na LinkedInu, zde najdeš mé profesní zkušenosti a dovednosti',
-      instagram: 'Sleduj mě na Instagramu, kde sdílím své astrofotografie a další zajímavosti',
+      linkedin:
+        'Spoj se se mnout na LinkedInu, zde najdeš mé profesní zkušenosti a dovednosti',
+      instagram:
+        'Sleduj mě na Instagramu, kde sdílím své astrofotografie a další zajímavosti',
       twitch: 'Sleduj mě na Twitch, kde streamuji programování, nebo hraní her',
-      discord: 'Přidej si mě na Discordu, zde jsem nejvíce aktivní a nejrychleji ti odpovím',
-      discordServer: 'Pokud tě zajímá dění okolo mě, určitě se připoj na můj Discord server'
+      discord:
+        'Přidej si mě na Discordu, zde jsem nejvíce aktivní a nejrychleji ti odpovím',
+      discordServer:
+        'Pokud tě zajímá dění okolo mě, určitě se připoj na můj Discord server'
     }
   },
   about: {

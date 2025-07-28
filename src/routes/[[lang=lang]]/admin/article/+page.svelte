@@ -18,16 +18,21 @@
 
   const _state = getState();
   const _lang = $derived(_state.lang.admin.article);
+  const _dynamicLang = $derived(data.dynamicTranslations);
 </script>
 
 <section class="mx-auto flex w-full flex-1 p-4 lg:w-[90%] xl:w-[80%]">
   <div class="border-text flex w-full flex-col items-start rounded-md border-2 p-4">
     <div class="flex w-full items-center justify-between">
       <H1 class="mb-4">{_lang.title}</H1>
-      <Button onclick={() => goto(`/${_state.selectedLang}/admin/article/new`)}>{_lang.create}</Button>
+      <Button onclick={() => goto(`/${_state.selectedLang}/admin/article/new`)}
+        >{_lang.create}</Button
+      >
     </div>
     {#if data.articles.length === 0}
-      <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"><Icon name="bi-ban-fill" class="text-red-500" /> {_lang.empty}</span>
+      <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"
+        ><Icon name="bi-ban-fill" class="text-red-500" /> {_lang.empty}</span
+      >
     {:else}
       <div class="border-text w-full rounded-md border-2">
         <Table>
@@ -48,17 +53,29 @@
                 <Td class="font-bold">{article.id}</Td>
                 <Td class="w-1/12">
                   {#if article.preview}
-                    <Image class="mx-auto" name={article.preview.name} alt={article.preview.alt_text} />
+                    <Image
+                      class="mx-auto"
+                      name={article.preview.name}
+                      alt={article.preview.alt_text}
+                    />
                   {/if}
                 </Td>
-                <Td>{article.title}</Td>
-                <Th>{article.description}</Th>
+                <Td>{_dynamicLang[article.title]}</Td>
+                <Th>{_dynamicLang[article.description]}</Th>
                 <Td>{formatDate(article.created_at)}</Td>
                 <Td>{formatDate(article.updated_at)}</Td>
                 <Td>
-                  <Icon onclick={() => goto(`/${_state.selectedLang}/admin/article/${article.id}`)} name="bi-pencil-fill" class="cursor-pointer" />
-
-                  <Icon onclick={() => {}} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                  <Icon
+                    onclick={() =>
+                      goto(`/${_state.selectedLang}/admin/article/${article.id}`)}
+                    name="bi-pencil-fill"
+                    class="cursor-pointer"
+                  />
+                  <Icon
+                    onclick={() => {}}
+                    name="bi-trash-fill"
+                    class="cursor-pointer text-red-500"
+                  />
                 </Td>
               </Tr>
             {/each}
