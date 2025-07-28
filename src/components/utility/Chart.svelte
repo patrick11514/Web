@@ -1,16 +1,19 @@
 <script lang="ts">
-  import { Chart, type ChartConfiguration, type ChartData, type ChartTypeRegistry } from 'chart.js/auto';
+  import {
+    Chart,
+    type ChartConfiguration,
+    type ChartData,
+    type ChartTypeRegistry
+  } from 'chart.js/auto';
   import { onMount } from 'svelte';
 
-  const {
-    type,
-    data,
-    options = {}
-  }: {
+  type ChartProps = {
     type: ChartConfiguration['type'];
     data: ChartData<keyof ChartTypeRegistry, { x: string | number; y: number }[]>;
     options?: ChartConfiguration['options'];
-  } = $props();
+  };
+
+  const { type, data, options = {} }: ChartProps = $props();
 
   let canvas: HTMLCanvasElement;
 

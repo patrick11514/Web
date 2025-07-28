@@ -1,5 +1,10 @@
 <script lang="ts">
-  let { count, index = $bindable() }: { count: number; index: number } = $props();
+  type DotsProps = {
+    count: number;
+    index: number;
+  };
+
+  let { count, index = $bindable() }: DotsProps = $props();
 </script>
 
 <div class="flex items-center justify-center gap-2 text-4xl">

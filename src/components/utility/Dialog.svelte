@@ -2,7 +2,13 @@
   import type { Snippet } from 'svelte';
   import ClickOutside from './clickOutside.svelte';
 
-  let { children, opened = $bindable(false), onClose = () => {} }: { children: Snippet; opened: boolean; onClose?: () => void } = $props();
+  type DialogProps = {
+    children: Snippet;
+    opened: boolean;
+    onClose?: () => void;
+  };
+
+  let { children, opened = $bindable(false), onClose = () => {} }: DialogProps = $props();
 </script>
 
 {#if opened}

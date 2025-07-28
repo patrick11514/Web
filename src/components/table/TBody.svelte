@@ -3,7 +3,9 @@
   import type { SvelteHTMLElements } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  const { children, class: cls = '', ...props }: SvelteHTMLElements['tbody'] = $props();
+  type TBodyProps = SvelteHTMLElements['tbody'];
+
+  const { children, class: cls = '', ...props }: TBodyProps = $props();
 </script>
 
 <tbody class={twMerge('[&_tr:last-child]:border-b-0', clsx(cls))} {...props}>

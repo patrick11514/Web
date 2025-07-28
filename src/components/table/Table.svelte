@@ -3,7 +3,9 @@
   import type { HTMLTableAttributes } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  const { children, class: cls = '', ...props }: HTMLTableAttributes = $props();
+  type TableProps = HTMLTableAttributes;
+
+  const { children, class: cls = '', ...props }: TableProps = $props();
 </script>
 
 <div class="w-full overflow-x-auto">

@@ -2,10 +2,15 @@
   import { resolveObject } from '$/lib/functions';
   import { languages } from '$/lib/lang';
   import type { Path } from '$/types/types';
-  import Icon from './Icon.svelte';
   import { validate } from 'uuid';
+  import Icon from './Icon.svelte';
 
-  const { object, path }: { object: Record<string, $Type>; path: Path<$Type> } = $props();
+  type TranslationAvailabilityProps<$Type extends object> = {
+    object: Record<string, $Type>;
+    path: Path<$Type>;
+  };
+
+  const { object, path }: TranslationAvailabilityProps<$Type> = $props();
 
   const _languages = Object.entries(languages);
 </script>

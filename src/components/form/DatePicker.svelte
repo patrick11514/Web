@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { clsx } from 'clsx';
-  import { twMerge } from 'tailwind-merge';
   import type { FormElement } from '$/types/types';
+  import { clsx } from 'clsx';
   import { untrack } from 'svelte';
+  import { twMerge } from 'tailwind-merge';
 
   const toDate = (date = new Date()) => {
     return date.toISOString().split('T')[0];
@@ -11,6 +11,15 @@
   const toDateTime = (date = new Date()) => {
     return date.toISOString().slice(0, 16);
   };
+
+  type DatePickerProps = FormElement<{
+    value?: Date;
+    id?: string;
+    name?: string;
+    placeholder?: string;
+    type?: 'date' | 'datetime-local';
+    required?: boolean;
+  }>;
 
   let {
     value = $bindable(),
@@ -21,14 +30,7 @@
     class: cls,
     error = undefined,
     required = false
-  }: FormElement<{
-    value?: Date;
-    id?: string;
-    name?: string;
-    placeholder?: string;
-    type?: 'date' | 'datetime-local';
-    required?: boolean;
-  }> = $props();
+  }: DatePickerProps = $props();
 
   let rawValue = $state(type === 'date' ? toDate(value) : toDateTime(value));
 

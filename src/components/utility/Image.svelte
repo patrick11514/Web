@@ -2,9 +2,19 @@
   import type { ImageExtension } from '$/types/types';
   import type { ClassValue } from 'svelte/elements';
 
-  const { class: cls, alt, name, quality = 75, format = 'jpg' }: { class?: ClassValue; alt: string; name: string; quality?: number; format?: ImageExtension } = $props();
+  type ImageProps = {
+    class?: ClassValue;
+    alt: string;
+    name: string;
+    quality?: number;
+    format?: ImageExtension;
+  };
 
-  let src = $derived(name.includes('/') ? name : `/image/${name}?format=${format}&quality=${quality}`);
+  const { class: cls, alt, name, quality = 75, format = 'jpg' }: ImageProps = $props();
+
+  let src = $derived(
+    name.includes('/') ? name : `/image/${name}?format=${format}&quality=${quality}`
+  );
 </script>
 
 <picture>

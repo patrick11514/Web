@@ -2,7 +2,12 @@
   import type { BootstrapIcon } from '$/types/bootstrap_icons';
   import type { SvelteHTMLElements } from 'svelte/elements';
 
-  const { children, class: cls = '', name, ...rest }: SvelteHTMLElements['i'] & { class?: string; name: BootstrapIcon } = $props();
+  type IconProps = SvelteHTMLElements['i'] & {
+    class?: string;
+    name: BootstrapIcon;
+  };
+
+  const { children, class: cls = '', name, ...rest }: IconProps = $props();
 </script>
 
 <i {...rest} role="button" tabindex="-1" class="bi {name} {cls}">

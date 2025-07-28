@@ -1,10 +1,11 @@
 <script lang="ts">
   import { clsx } from 'clsx';
-  import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  const { children, class: cls, ...rest }: { children: Snippet } & HTMLButtonAttributes = $props();
+  type ButtonProps = HTMLButtonAttributes;
+
+  const { children, class: cls, ...rest }: ButtonProps = $props();
 </script>
 
 <button
@@ -14,5 +15,5 @@
     clsx(cls)
   )}
 >
-  {@render children()}
+  {@render children?.()}
 </button>

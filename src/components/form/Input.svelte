@@ -1,7 +1,7 @@
 <script lang="ts">
+  import type { FormElement } from '$/types/types';
   import { clsx } from 'clsx';
   import { twMerge } from 'tailwind-merge';
-  import type { FormElement } from '$/types/types';
 
   type NumberInput = {
     type: 'number';
@@ -17,6 +17,15 @@
     max?: number;
   };
 
+  type InputProps = FormElement<
+    (NumberInput | TextInput) & {
+      id?: string;
+      name?: string;
+      placeholder?: string;
+      required?: boolean;
+    }
+  >;
+
   let {
     value = $bindable(),
     id,
@@ -27,14 +36,7 @@
     error = undefined,
     required = false,
     ...props
-  }: FormElement<
-    (NumberInput | TextInput) & {
-      id?: string;
-      name?: string;
-      placeholder?: string;
-      required?: boolean;
-    }
-  > = $props();
+  }: InputProps = $props();
 </script>
 
 <input

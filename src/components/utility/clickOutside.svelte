@@ -10,7 +10,12 @@
       const target = event.target as HTMLElement | null;
       if (!target) return;
 
-      if (node && !node.contains(target) && !event.defaultPrevented && !ignore.some((cls) => target.classList.contains(cls))) {
+      if (
+        node &&
+        !node.contains(target) &&
+        !event.defaultPrevented &&
+        !ignore.some((cls) => target.classList.contains(cls))
+      ) {
         clickoutside();
       }
     };
@@ -24,17 +29,19 @@
     };
   }
 
+  type ClickOutsideProps = {
+    children: Snippet;
+    class?: ClassValue;
+    clickoutside: () => void;
+    ignore?: string[];
+  };
+
   const {
     children,
     class: cls = '',
     clickoutside,
     ignore = []
-  }: {
-    children: Snippet;
-    class?: ClassValue;
-    clickoutside: () => void;
-    ignore?: string[];
-  } = $props();
+  }: ClickOutsideProps = $props();
 </script>
 
 <div class={cls} use:clickOutside>{@render children()}</div>

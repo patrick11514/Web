@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { BootstrapIcon } from '$/types/bootstrap_icons';
-  import Icon from './utility/Icon.svelte';
   import { getState } from '$/lib/state.svelte';
-  import { page } from '$app/state';
+  import type { BootstrapIcon } from '$/types/bootstrap_icons';
   import { goto } from '$app/navigation';
+  import { page } from '$app/state';
   import { untrack } from 'svelte';
+  import Icon from './utility/Icon.svelte';
 
   type NavItem = {
     name: string;

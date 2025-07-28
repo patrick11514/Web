@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { SvelteHTMLElements } from 'svelte/elements';
 
-  const { children, class: cls = '', ...props }: SvelteHTMLElements['thead'] = $props();
+  type THeadProps = SvelteHTMLElements['thead'];
+
+  const { children, class: cls = '', ...props }: THeadProps = $props();
 </script>
 
 <thead class={cls} {...props}>
