@@ -99,14 +99,30 @@ export const up = async (conn: Kysely<any>) => {
   }
 
   await sql`ALTER TABLE article CHANGE title title UUID NOT NULL`.execute(conn);
-  await sql`ALTER TABLE article CHANGE description description UUID NOT NULL`.execute(conn);
+  await sql`ALTER TABLE article CHANGE description description UUID NOT NULL`.execute(
+    conn
+  );
   await sql`ALTER TABLE article CHANGE content_md content_md UUID NOT NULL`.execute(conn);
-  await sql`ALTER TABLE gallery_image CHANGE alt_text alt_text UUID NOT NULL`.execute(conn);
+  await sql`ALTER TABLE gallery_image CHANGE alt_text alt_text UUID NOT NULL`.execute(
+    conn
+  );
 
-  await conn.schema.alterTable('article').addForeignKeyConstraint('title_fk', ['title'], 'translations', ['key']).execute();
-  await conn.schema.alterTable('article').addForeignKeyConstraint('description_fk', ['description'], 'translations', ['key']).execute();
-  await conn.schema.alterTable('article').addForeignKeyConstraint('content_md_fk', ['content_md'], 'translations', ['key']).execute();
-  await conn.schema.alterTable('gallery_image').addForeignKeyConstraint('alt_text_fk', ['alt_text'], 'translations', ['key']).execute();
+  await conn.schema
+    .alterTable('article')
+    .addForeignKeyConstraint('title_fk', ['title'], 'translations', ['key'])
+    .execute();
+  await conn.schema
+    .alterTable('article')
+    .addForeignKeyConstraint('description_fk', ['description'], 'translations', ['key'])
+    .execute();
+  await conn.schema
+    .alterTable('article')
+    .addForeignKeyConstraint('content_md_fk', ['content_md'], 'translations', ['key'])
+    .execute();
+  await conn.schema
+    .alterTable('gallery_image')
+    .addForeignKeyConstraint('alt_text_fk', ['alt_text'], 'translations', ['key'])
+    .execute();
 };
 
 export const down = async (conn: Kysely<any>) => {
@@ -117,14 +133,26 @@ export const down = async (conn: Kysely<any>) => {
   await sql`ALTER TABLE gallery_image DROP FOREIGN KEY alt_text_fk`.execute(conn);
   // then we need to move the content_md back to article table
   const articles = await conn.selectFrom('article').selectAll().execute();
-  const translations = await conn.selectFrom('translations').selectAll().where('lang', '=', 'cs').execute();
+  const translations = await conn
+    .selectFrom('translations')
+    .selectAll()
+    .where('lang', '=', 'cs')
+    .execute();
 
   await sql`ALTER TABLE article CHANGE title title varchar(56) NOT NULL`.execute(conn);
-  await sql`ALTER TABLE article CHANGE description description varchar(128) NOT NULL`.execute(conn);
+  await sql`ALTER TABLE article CHANGE description description varchar(128) NOT NULL`.execute(
+    conn
+  );
   await sql`ALTER TABLE article CHANGE content_md content_md text NOT NULL`.execute(conn);
-  await sql`ALTER TABLE gallery_image CHANGE alt_text alt_text varchar(256) NOT NULL`.execute(conn);
+  await sql`ALTER TABLE gallery_image CHANGE alt_text alt_text varchar(256) NOT NULL`.execute(
+    conn
+  );
 
-  const updateCol = async (type: 'title' | 'description' | 'content_md', id: string, key: string) => {
+  const updateCol = async (
+    type: 'title' | 'description' | 'content_md',
+    id: string,
+    key: string
+  ) => {
     const value = translations.find((t) => t.key === key);
     if (value) {
       await conn

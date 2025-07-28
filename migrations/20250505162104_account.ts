@@ -1,7 +1,7 @@
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 
+import * as bcrypt from 'bcrypt';
 import { Kysely } from 'kysely';
-import bcrypt from 'bcrypt';
 
 export const up = async (conn: Kysely<any>) => {
   await conn.schema
@@ -15,7 +15,10 @@ export const up = async (conn: Kysely<any>) => {
     .insertInto('account')
     .values({
       username: process.env.DEFAULT_USERNAME!,
-      password: bcrypt.hashSync(process.env.DEFAULT_PASSWORD!, parseInt(process.env.HASH_ROUNDS!))
+      password: bcrypt.hashSync(
+        process.env.DEFAULT_PASSWORD!,
+        parseInt(process.env.HASH_ROUNDS!)
+      )
     })
     .execute();
 };

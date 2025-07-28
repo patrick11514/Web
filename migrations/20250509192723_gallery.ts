@@ -13,7 +13,9 @@ export const up = async (conn: Kysely<any>) => {
   await conn.schema
     .createTable('equipment')
     .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
-    .addColumn('type_id', 'integer', (col) => col.notNull().references('equipment_type.id'))
+    .addColumn('type_id', 'integer', (col) =>
+      col.notNull().references('equipment_type.id')
+    )
     .addColumn('name', 'varchar(128)', (col) => col.notNull())
     .addColumn('link', 'varchar(512)', (col) => col.notNull())
     .execute();
@@ -32,7 +34,9 @@ export const up = async (conn: Kysely<any>) => {
     .createTable('article_equipment')
     .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
     .addColumn('article_id', 'uuid', (col) => col.notNull().references('article.id'))
-    .addColumn('equipment_id', 'integer', (col) => col.notNull().references('equipment.id'))
+    .addColumn('equipment_id', 'integer', (col) =>
+      col.notNull().references('equipment.id')
+    )
     .execute();
 
   await conn.schema
