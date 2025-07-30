@@ -9,23 +9,44 @@
     label: string;
     placeholder?: string;
     class?: string;
+    type?: 'text' | 'email' | 'password' | 'number';
+    value?: string | number | undefined | null;
   };
-  const { name, label, placeholder, class: cls = '' }: InputProps = $props();
 
-  const context = getFormContext();
+  let {
+    name,
+    label,
+    placeholder,
+    class: cls = '',
+    type,
+    value = $bindable('')
+  }: InputProps = $props();
+
+  const context = getFormContext(false);
 
   const id = `form-${name}`;
+
+  let formValue = $state(context?.data[name] ?? value);
+
+  $effect(() => {
+    if (context) {
+      context.data[name] = formValue;
+    } else {
+      value = formValue as typeof value;
+    }
+  });
 </script>
 
-<FormItem for={id} error={context.errors()[name]} {label}>
+<FormItem for={id} error={context?.errors()[name]} {label}>
   <input
     {id}
     {name}
-    bind:value={context.data[name]}
+    {type}
+    bind:value={formValue}
     {placeholder}
     class={twMerge(
       'border-secondary focus:border-primary font-roboto placeholder:font-roboto placeholder:text-text rounded-md border-2 px-2 py-1 text-xl font-bold transition-colors duration-200 outline-none placeholder:font-bold lg:text-2xl',
-      context.errors()[name] !== undefined ? 'border-red-500' : '',
+      context?.errors()[name] !== undefined ? 'border-red-500' : '',
       clsx(cls)
     )}
   />
