@@ -3,39 +3,52 @@
 @config "../tailwindcss.config.js";
 
 @theme {
-    /* Base Colors */
-    --color-background: oklch(0.1 0.005 260);
-    --color-text: oklch(0.85 0.01 260);
+  /* Base Colors */
+  --color-background: oklch(0.1 0.005 260);
+  --color-text: oklch(0.85 0.01 260);
 
-    /* Text Variants (cool, tuned to background) */
-    --color-text-muted: oklch(0.6 0.005 260);
-    --color-text-strong: oklch(0.95 0.01 260);
-    --color-text-inverse: oklch(0.15 0.005 260);
+  /* Text Variants (cool, tuned to background) */
+  --color-text-muted: oklch(0.6 0.005 260);
+  --color-text-strong: oklch(0.95 0.01 260);
+  --color-text-inverse: oklch(0.15 0.005 260);
 
-    /* Primary Color Group (warm hue 35) */
-    --color-primary: oklch(0.75 0.23 35);
-    --color-primary-text: oklch(0.85 0.14 65);
+  /* Primary Color Group (warm hue 35) */
+  --color-primary: oklch(0.75 0.23 35);
+  --color-primary-text: oklch(0.85 0.14 65);
 
-    /* Secondary Color Group (warm hue 55) */
-    --color-secondary: oklch(0.8 0.17 55);
-    --color-secondary-text: oklch(0.7 0.01 260); /* cool-muted */
+  /* Secondary Color Group (warm hue 55) */
+  --color-secondary: oklch(0.8 0.17 55);
+  --color-secondary-text: oklch(0.7 0.01 260); /* cool-muted */
 
-    /* Grays (cool neutral, hue 260) */
-    --color-gray-950: oklch(0.12 0.002 260);
-    --color-gray-900: oklch(0.16 0.003 260);
-    --color-gray-800: oklch(0.25 0.004 260);
-    --color-gray-600: oklch(0.4 0.006 260);
-    --color-gray-400: oklch(0.6 0.008 260);
-    --color-gray-200: oklch(0.75 0.01 260);
-    --color-gray-50: oklch(0.9 0.015 260);
+  /* Grays (cool neutral, hue 260) */
+  --color-gray-950: oklch(0.12 0.002 260);
+  --color-gray-900: oklch(0.16 0.003 260);
+  --color-gray-800: oklch(0.25 0.004 260);
+  --color-gray-600: oklch(0.4 0.006 260);
+  --color-gray-400: oklch(0.6 0.008 260);
+  --color-gray-200: oklch(0.75 0.01 260);
+  --color-gray-50: oklch(0.9 0.015 260);
 
-    /* UI / Surface Colors */
-    --color-border: oklch(0.2 0.004 260);
-    --color-divider: oklch(0.3 0.005 260);
-    --color-surface: oklch(0.18 0.004 260);
+  /* Primary color spectrum */
+  --color-primary-50: oklch(0.98 0.04 35);
+  --color-primary-100: oklch(0.94 0.08 35);
+  --color-primary-200: oklch(0.87 0.13 35);
+  --color-primary-300: oklch(0.8 0.18 35);
+  --color-primary-400: oklch(0.73 0.21 35);
+  --color-primary-500: oklch(0.75 0.23 35); /* base */
+  --color-primary-600: oklch(0.65 0.2 35);
+  --color-primary-700: oklch(0.53 0.16 35);
+  --color-primary-800: oklch(0.42 0.12 35);
+  --color-primary-900: oklch(0.32 0.08 35);
+  --color-primary-950: oklch(0.23 0.05 35);
 
-    --font-roboto: 'Roboto', sans-serif;
-    --font-ubuntu: 'Ubuntu', sans-serif;
-    --font-poppins: 'Poppins', sans-serif;
-    --font-ephesis: 'Ephesis', cursive;
+  /* UI / Surface Colors */
+  --color-border: oklch(0.2 0.004 260);
+  --color-divider: oklch(0.3 0.005 260);
+  --color-surface: oklch(0.18 0.004 260);
+
+  --font-roboto: 'Roboto', sans-serif;
+  --font-ubuntu: 'Ubuntu', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-ephesis: 'Ephesis', cursive;
 }

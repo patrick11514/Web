@@ -55,7 +55,7 @@ export const resolveObject = (path: string, _path: object) => {
   const parts = path.split('.');
 
   for (const part of parts) {
-    if (_path[part as keyof typeof _path]) {
+    if (_path[part as keyof typeof _path] !== undefined) {
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
       _path = _path[part as keyof typeof _path] as any;
     } else {
