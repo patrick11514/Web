@@ -23,18 +23,7 @@
     class: cls = ''
   }: FormItemProps = $props();
 
-  let labelClass = $state('');
-
-  switch (variant) {
-    case 'normal':
-      labelClass = 'text-2xl lg:text-3xl';
-
-      break;
-
-    case 'small':
-      labelClass = 'text-xl lg:text-2xl';
-      break;
-  }
+  const labelClass = variant === 'small' ? 'text-xl lg:text-2xl' : 'text-2xl lg:text-3xl';
 </script>
 
 <div class={twMerge('flex w-full flex-col', clsx(cls))}>

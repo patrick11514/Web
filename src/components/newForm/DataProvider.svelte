@@ -1,22 +1,18 @@
-<script lang="ts" generics="$Value = unknown">
+<script lang="ts" generics="T = unknown">
   import { getFormContext, getValue, setValue } from './Form.svelte';
 
-  // Bridges an external bound value with an internal form field (multi-lang aware)
-  type DataProviderProps<$Value> = {
+  type DataProviderProps = {
     name: string;
-    value?: $Value;
+    value?: T;
   };
 
-  let {
-    name,
-    value = $bindable(undefined as unknown as $Value)
-  }: DataProviderProps<$Value> = $props();
+  let { name, value = $bindable(undefined as T) }: DataProviderProps = $props();
 
   const context = getFormContext();
 
   // Sync from context -> external binding
   $effect(() => {
-    const ctxVal = getValue(context, name) as $Value;
+    const ctxVal = getValue(context, name) as T;
     if (!Object.is(ctxVal, value)) value = ctxVal;
   });
 

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { HTMLButtonAttributes } from 'svelte/elements';
+  import type { SvelteHTMLElements } from 'svelte/elements';
   import BaseButton from '../form/Button.svelte';
   import { getFormContext } from './Form.svelte';
 
-  type ButtonProps = HTMLButtonAttributes;
+  type ButtonProps = SvelteHTMLElements['button'];
 
   const {
     children,

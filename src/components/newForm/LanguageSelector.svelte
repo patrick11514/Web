@@ -6,12 +6,14 @@
   import Button from './Button.svelte';
   import { getFormContext } from './Form.svelte';
 
-  const _state = getState();
   const context = getFormContext();
 </script>
 
 <div class="flex items-center gap-2">
-  <H3 class="text-text-muted"><Icon name="bi-translate" /> {_state.lang.language}:</H3>
+  <H3 class="text-text-muted">
+    <Icon name="bi-translate" />
+    {getState().lang.language}:
+  </H3>
   {#each Object.entries(languages) as [lang, data] (lang)}
     <Button
       type="button"

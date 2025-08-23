@@ -2,7 +2,6 @@
   import { languages } from '../../lib/lang/index';
 
   type Language = keyof typeof languages;
-
   type Errors = Record<string, string | undefined>;
 
   type BaseFormContext = {
@@ -41,10 +40,9 @@
 
   export const getError = (context: FormContext, name: string) => {
     if (context.multiLang) {
-      //eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const errors = context.errors() as any;
+      const errors = context.errors() as Record<Language, Errors> | Errors;
       if (context.multiLangKeys.includes(name)) {
-        return (errors[context.lang.selectedLanguage] as Errors)[name];
+        return (errors as Record<Language, Errors>)[context.lang.selectedLanguage][name];
       }
     }
     return context.errors()[name];
@@ -73,46 +71,40 @@
   };
 
   type ObjectToErrorObject<
-    $Object extends Record<string, unknown>,
-    $MultiLang extends boolean
-  > = $MultiLang extends true
+    T extends Record<string, unknown>,
+    IsMultiLang extends boolean
+  > = IsMultiLang extends true
     ? {
-        [$LangKey in keyof typeof languages]: {
-          [$Key in keyof $Object]?: string | undefined;
+        [LangKey in keyof typeof languages]: {
+          [Key in keyof T]?: string | undefined;
         };
       }
     : {
-        [$Key in keyof $Object]?: string | undefined;
+        [Key in keyof T]?: string | undefined;
       };
 
   export type FormAction<
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    $Type extends SubmitFunction<any, any>,
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    $ZodSchema extends z.ZodType<any>,
-    $MultiLang extends boolean
+    TSubmitFunction extends SubmitFunction<any, any>,
+    ZodSchema extends z.ZodType<Record<string, unknown>>,
+    IsMultiLang extends boolean
   > =
-    $Type extends SubmitFunction<infer $Success, infer $Error>
+    TSubmitFunction extends SubmitFunction<infer Success, infer Error>
       ? (opts: {
-          result: ActionResult<$Success, $Error>;
-          /**
-           * Call this to get the default behavior of a form submission response.
-           * @param options Set `reset: false` if you don't want the `<form>` values to be reset after a successful submission.
-           * @param invalidateAll Set `invalidateAll: false` if you don't want the action to call `invalidateAll` after submission.
-           */
+          result: ActionResult<Success, Error>;
           update: (options?: {
             reset?: boolean;
             invalidateAll?: boolean;
           }) => Promise<void>;
         }) => Awaitable<void | Partial<
-          ObjectToErrorObject<z.infer<$ZodSchema>, $MultiLang>
+          ObjectToErrorObject<z.infer<ZodSchema>, IsMultiLang>
         >>
       : never;
 </script>
 
 <script
   lang="ts"
-  generics="$DataType extends Record<string, unknown>, $MultiLang extends boolean = false, $MultiLangKeys extends $MultiLang extends true ? keyof $DataType : never = never"
+  generics="FormDataType extends Record<string, unknown>, IsMultiLang extends boolean = false, MultiLangKeys extends IsMultiLang extends true ? keyof FormDataType : never = never"
 >
   import { getState } from '$/lib/state.svelte';
   import { enhance } from '$app/forms';
@@ -122,44 +114,40 @@
   import { twMerge } from 'tailwind-merge';
   import { z } from 'zod';
 
-  /**
-   * The form will get the default data values
-   * For strings it can be empty string
-   * For numbers it can be null, because in NumberInput we don't want any default value (empty input)
-   * For booleans it can be either true or false
-   */
-  type DefaultValue<$T> = {
-    [$Key in keyof $T]: $T[$Key] extends number ? number | null : $T[$Key];
+  type DefaultValue<T> = {
+    [Key in keyof T]: T[Key] extends number ? number | null : T[Key];
   };
 
   type DataType<
-    $DataType,
-    $Keys extends keyof $DataType,
-    $MultiLang extends boolean
-  > = $MultiLang extends true
-    ? Omit<DefaultValue<$DataType>, $Keys> &
-        Record<Language, Pick<DefaultValue<$DataType>, $Keys>>
-    : DefaultValue<$DataType>;
+    Data,
+    Keys extends keyof Data,
+    IsMultiLang extends boolean
+  > = IsMultiLang extends true
+    ? Omit<DefaultValue<Data>, Keys> & Record<Language, Pick<DefaultValue<Data>, Keys>>
+    : DefaultValue<Data>;
 
   type FormProps = {
     class?: string;
-    schema: z.ZodType<$DataType>;
+    schema: z.ZodType<FormDataType>;
     isValid?: boolean;
     isDirty?: boolean;
-    data: DataType<$DataType, $MultiLangKeys, $MultiLang>;
-    onSubmit?: (data: $DataType) => void;
-    children?: Snippet;
-    multiLang?: $MultiLang;
-    multiLangKeys?: $MultiLangKeys[];
+    data: DataType<FormDataType, MultiLangKeys, IsMultiLang>;
+    onSubmit?: (data: FormDataType) => void;
+    multiLang?: IsMultiLang;
+    multiLangKeys?: MultiLangKeys[];
     reset?: () => void;
     method?: 'post' | 'get';
     action?: string;
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onAction?: FormAction<SubmitFunction<any, any>, typeof schema, $MultiLang>;
+    onAction?: FormAction<
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      SubmitFunction<any, any>,
+      typeof schema,
+      IsMultiLang
+    >;
+    children?: Snippet;
   };
 
   const reset = () => {
-    //reset the form
     isValid = false;
     isDirty = false;
     data = { ...defaultData };
@@ -173,9 +161,8 @@
     data: defaultData = $bindable(),
     onSubmit,
     isDirty = $bindable(false),
-    multiLang = false as $MultiLang,
-    multiLangKeys = [] as $MultiLangKeys[],
-    //we only provide the reset function to outside
+    multiLang = false as IsMultiLang,
+    multiLangKeys = [] as MultiLangKeys[],
     reset: _ = $bindable(reset),
     onAction,
     method = 'post',
@@ -186,9 +173,10 @@
     throw new Error('multiLangKeys must be provided when multiLang is true');
   }
 
-  type DataValue = DefaultValue<$DataType>;
-  let data = $state<DataType<$DataType, $MultiLangKeys, $MultiLang>>({ ...defaultData });
-
+  type DataValue = DefaultValue<FormDataType>;
+  let data = $state<DataType<FormDataType, MultiLangKeys, IsMultiLang>>({
+    ...defaultData
+  });
   let submited = $state(false);
 
   let errors = $state<Errors | Record<Language, Errors>>(
@@ -222,23 +210,23 @@
     });
   });
 
-  const getValue = (key: keyof $DataType, forLanguage?: Language) => {
+  const getValue = (key: keyof FormDataType, forLanguage?: Language) => {
     if (multiLang) {
-      return (data as Record<Language, DefaultValue<$DataType>>)[
+      return (data as Record<Language, DefaultValue<FormDataType>>)[
         forLanguage ?? lang.selectedLanguage
       ][key];
     } else {
-      return (data as DefaultValue<$DataType>)[key];
+      return (data as DefaultValue<FormDataType>)[key];
     }
   };
 
-  const getDefaultValue = (key: keyof $DataType, forLanguage?: Language) => {
+  const getDefaultValue = (key: keyof FormDataType, forLanguage?: Language) => {
     if (multiLang) {
-      return (defaultData as Record<Language, DefaultValue<$DataType>>)[
+      return (defaultData as Record<Language, DefaultValue<FormDataType>>)[
         forLanguage ?? lang.selectedLanguage
       ][key];
     } else {
-      return (defaultData as DefaultValue<$DataType>)[key];
+      return (defaultData as DefaultValue<FormDataType>)[key];
     }
   };
 
@@ -255,14 +243,13 @@
   };
 
   const processErrors = (
-    result: z.ZodSafeParseResult<$DataType>,
+    result: z.ZodSafeParseResult<FormDataType>,
     forLanguage?: Language,
     allErrors = false
   ) => {
     let count = 0;
 
     isValid = result.success;
-    // Reset errors only if we are not collecting all errors
     if (!allErrors) resetErrors();
 
     if (result.error) {
@@ -279,12 +266,11 @@
           allErrors === false &&
           !submited
         ) {
-          // If the data is the same as the default, we don't want to show the error
           continue;
         }
         const message = error.code === 'invalid_type' ? _lang : error.message;
         if (multiLang) {
-          if (multiLangKeys.includes(path as $MultiLangKeys)) {
+          if (multiLangKeys.includes(path as MultiLangKeys)) {
             (errors as Record<Language, Errors>)[forLanguage ?? lang.selectedLanguage][
               path
             ] = message;
@@ -306,8 +292,8 @@
     let totalErrors = 0;
     if (multiLang) {
       totalErrors = langs
-        .map((lang) => data[lang]) //Select data
-        .map((data) => schema.safeParse(data)) //Parse data
+        .map((lang) => data[lang])
+        .map((data) => schema.safeParse(data))
         .map((result, index) => processErrors(result, langs[index], reportError))
         .reduce((acc, count) => acc + count, 0);
     } else {
@@ -319,17 +305,16 @@
   const onSubmitHandler = () => {
     if (collectErrors() === 0 && onSubmit) {
       submited = true;
-      onSubmit({ ...(data as $DataType) });
+      onSubmit({ ...(data as FormDataType) });
     }
   };
 
   setContext('formContext', {
-    //here functions will provide the reactivity
     errors: () => errors,
     defaultData,
-    // eslint-disable-next-line svelte/no-unused-svelte-ignore
-    // svelte-ignore state_referenced_locally
-    data,
+    get data() {
+      return data;
+    },
     onSubmitHandler,
     lang,
     multiLang,
@@ -344,9 +329,6 @@
 
     submited = true;
 
-    //reset formData
-    //Note: we need to call Array.from(), because the iterator is not stable
-    //so since we removed the data, we skipped some keys
     Array.from(formData.keys()).forEach((key) => {
       formData.delete(key);
     });
@@ -354,12 +336,10 @@
     const sanitizeData = (value: unknown) =>
       typeof value === 'object' ? JSON.stringify(value) : (value as string);
 
-    //not put my data into formData
-    //for multilang, the data will be LANG:FIELD + VALUE
     if (multiLang) {
       for (const langOrKey in data) {
         if (langOrKey in languages) {
-          const langData = (data as Record<Language, DefaultValue<$DataType>>)[
+          const langData = (data as Record<Language, DefaultValue<FormDataType>>)[
             langOrKey as Language
           ];
           for (const key in langData) {
@@ -367,13 +347,13 @@
             formData.append(`${langOrKey}:${key}`, sanitizeData(value));
           }
         } else {
-          const value = (data as DefaultValue<$DataType>)[langOrKey];
+          const value = (data as DefaultValue<FormDataType>)[langOrKey];
           formData.append(langOrKey, sanitizeData(value));
         }
       }
     } else {
       for (const key in data) {
-        const value = (data as DefaultValue<$DataType>)[key];
+        const value = (data as DefaultValue<FormDataType>)[key];
         formData.append(key, sanitizeData(value));
       }
     }
@@ -390,20 +370,20 @@
       }
 
       if (multiLang) {
+        const multiLangResult = customResult as Record<Language, Record<string, string>>;
         for (const _lang in languages) {
           const lang = _lang as Language;
-          if (!(lang in customResult)) continue;
-          for (const key in customResult[lang]) {
-            // @ts-expect-error Here we know that we assign string or undefined
-            errors[lang][key] = customResult[lang][key];
+          if (!(lang in multiLangResult)) continue;
+          for (const key in multiLangResult[lang]) {
+            (errors as Record<Language, Errors>)[lang][key] = multiLangResult[lang][key];
           }
         }
         return;
       }
 
-      for (const key in customResult) {
-        // @ts-expect-error Here we know that we assign string or undefined
-        errors[key] = customResult[key];
+      const singleLangResult = customResult as Record<string, string>;
+      for (const key in singleLangResult) {
+        (errors as Errors)[key] = singleLangResult[key];
       }
     };
   }) satisfies SubmitFunction;

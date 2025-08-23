@@ -1,13 +1,13 @@
 <script lang="ts">
   import clsx from 'clsx';
-  import type { HTMLSelectAttributes } from 'svelte/elements';
+  import type { Snippet } from 'svelte';
+  import type { SvelteHTMLElements } from 'svelte/elements';
   import BaseSelect from '../form/Select.svelte';
   import { getError, getFormContext, getValue, setValue } from './Form.svelte';
   import FormItem from './FormItem.svelte';
   import TranslationAvailability from './TranslationAvailability.svelte';
 
-  import type { Snippet } from 'svelte';
-  type SelectProps = HTMLSelectAttributes & {
+  type SelectProps = SvelteHTMLElements['select'] & {
     name: string;
     label: string;
     variant?: 'small' | 'normal';
@@ -24,11 +24,9 @@
   }: SelectProps = $props();
 
   const context = getFormContext();
-
   const id = `form-${name}`;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let formValue = $state<any>(getValue(context, name));
+  let formValue = $state<unknown>(getValue(context, name));
 
   $effect(() => {
     formValue = getValue(context, name);
@@ -52,7 +50,7 @@
   <BaseSelect
     {id}
     {name}
-    bind:value={formValue}
+    bind:value={formValue as string}
     error={getError(context, name)}
     class={clsx(cls)}
   >

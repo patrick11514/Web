@@ -11,7 +11,7 @@
     label: string;
     placeholder?: string;
     class?: string;
-    type?: 'text' | 'email' | 'password' | 'number';
+    type?: 'text' | 'email' | 'password';
     variant?: 'small' | 'normal';
     right?: Snippet;
   };
@@ -27,11 +27,9 @@
   }: InputProps = $props();
 
   const context = getFormContext();
-
   const id = `form-${name}`;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let formValue = $state<any>(getValue(context, name));
+  let formValue = $state<unknown>(getValue(context, name));
 
   $effect(() => {
     formValue = getValue(context, name);
@@ -56,7 +54,7 @@
     {id}
     {name}
     {type}
-    bind:value={formValue}
+    bind:value={formValue as string}
     {placeholder}
     error={getError(context, name)}
     class={clsx(cls)}

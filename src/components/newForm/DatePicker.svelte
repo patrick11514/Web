@@ -1,10 +1,10 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import BaseDatePicker from '../form/DatePicker.svelte';
   import { getError, getFormContext, getValue, setValue } from './Form.svelte';
   import FormItem from './FormItem.svelte';
   import TranslationAvailability from './TranslationAvailability.svelte';
 
-  import type { Snippet } from 'svelte';
   type DatePickerProps = {
     name: string;
     label: string;
@@ -26,11 +26,9 @@
   }: DatePickerProps = $props();
 
   const context = getFormContext();
-
   const id = `form-${name}`;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let formValue = $state<any>(getValue(context, name));
+  let formValue = $state<unknown>(getValue(context, name));
 
   $effect(() => {
     formValue = getValue(context, name);
@@ -55,7 +53,7 @@
     {id}
     {name}
     {type}
-    bind:value={formValue}
+    bind:value={formValue as Date}
     {placeholder}
     error={getError(context, name)}
     class={cls}

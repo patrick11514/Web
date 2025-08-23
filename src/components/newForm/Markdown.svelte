@@ -22,7 +22,7 @@
 
   const context = getFormContext();
   const id = `form-${name}`;
-  const value = $derived(() => (getValue(context, name) ?? '') as string);
+  const value = $derived((getValue(context, name) ?? '') as string);
 </script>
 
 <FormItem for={id} error={getError(context, name)} {label} {variant} class={cls}>
@@ -32,5 +32,5 @@
     {/if}
   {/snippet}
 
-  <Markdown content={value()} />
+  <Markdown content={value} />
 </FormItem>

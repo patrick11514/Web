@@ -1,5 +1,6 @@
 <script lang="ts">
   import clsx from 'clsx';
+  import type { Snippet } from 'svelte';
   import { untrack } from 'svelte';
   import type { SvelteHTMLElements } from 'svelte/elements';
   import BaseTextArea from '../form/TextArea.svelte';
@@ -7,7 +8,6 @@
   import FormItem from './FormItem.svelte';
   import TranslationAvailability from './TranslationAvailability.svelte';
 
-  import type { Snippet } from 'svelte';
   type TextAreaProps = SvelteHTMLElements['textarea'] & {
     name: string;
     label: string;
@@ -25,19 +25,22 @@
   }: TextAreaProps = $props();
 
   const context = getFormContext();
-
   const id = `form-${name}`;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let formValue = $state<any>(
+  let formValue = $state<unknown>(
     context.multiLang
-      ? context.data[context.lang.selectedLanguage][name]
+      ? (context.data[context.lang.selectedLanguage] as Record<string, unknown>)[name]
       : context.data[name]
   );
 
   $effect(() => {
     if (context.multiLang) {
-      context.data[untrack(() => context.lang.selectedLanguage)][name] = formValue;
+      (
+        context.data[untrack(() => context.lang.selectedLanguage)] as Record<
+          string,
+          unknown
+        >
+      )[name] = formValue;
     } else {
       context.data[name] = formValue;
     }
@@ -48,7 +51,9 @@
       untrack(
         () =>
           (formValue = context.multiLang
-            ? context.data[context.lang.selectedLanguage][name]
+            ? (context.data[context.lang.selectedLanguage] as Record<string, unknown>)[
+                name
+              ]
             : context.data[name])
       );
     }
@@ -68,7 +73,7 @@
   <BaseTextArea
     {id}
     {name}
-    bind:value={formValue}
+    bind:value={formValue as string}
     {placeholder}
     error={getError(context, name)}
     class={clsx(cls)}
