@@ -1,7 +1,7 @@
+import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
+import type { Selectable } from 'kysely';
 import type { ClassValue } from 'svelte/elements';
 import type { Account } from './database';
-import type { Selectable } from 'kysely';
-import type { ErrorApiResponse } from '@patrick115/sveltekitapi';
 
 export type FormElement<$Attrs> = {
   class?: ClassValue;
@@ -60,3 +60,6 @@ export type Path<
           >;
         }[keyof T]
       : P;
+
+//eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const NROT = <$Type extends readonly any[]>(array: $Type) => array as [...$Type];

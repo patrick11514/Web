@@ -6,26 +6,25 @@
   type Errors = Record<string, string | undefined>;
 
   type BaseFormContext = {
-    defaultData: Record<string, unknown>;
     onSubmitHandler: () => void;
+    multiLangKeys: string[];
+    data: Record<string, unknown>;
+    defaultData: Record<string, unknown>;
+    errors: () => Errors;
   };
 
   export type MultiLangFormContext = BaseFormContext & {
-    data: Record<Language, Record<string, unknown>>;
     multiLang: true;
     lang: {
       selectedLanguage: Language;
     };
-    errors: () => Record<Language, Errors>;
   };
 
   export type NonMultiLangFormContext = BaseFormContext & {
-    data: Record<string, unknown>;
     multiLang: false;
     lang: {
       selectedLanguage: Language;
     };
-    errors: () => Errors;
   };
 
   type FormContext = MultiLangFormContext | NonMultiLangFormContext;
@@ -42,26 +41,35 @@
 
   export const getError = (context: FormContext, name: string) => {
     if (context.multiLang) {
-      return context.errors()[context.lang.selectedLanguage][name];
-    } else {
-      return context.errors()[name];
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const errors = context.errors() as any;
+      if (context.multiLangKeys.includes(name)) {
+        return (errors[context.lang.selectedLanguage] as Errors)[name];
+      }
     }
+    return context.errors()[name];
   };
 
   export const setValue = (context: FormContext, name: string, value: unknown) => {
     if (context.multiLang) {
-      context.data[context.lang.selectedLanguage][name] = value;
-    } else {
-      context.data[name] = value;
+      if (context.multiLangKeys.includes(name)) {
+        (context.data[context.lang.selectedLanguage] as Record<string, unknown>)[name] =
+          value;
+        return;
+      }
     }
+    context.data[name] = value;
   };
 
   export const getValue = (context: FormContext, name: string) => {
     if (context.multiLang) {
-      return context.data[context.lang.selectedLanguage][name];
-    } else {
-      return context.data[name];
+      if (context.multiLangKeys.includes(name)) {
+        return (context.data[context.lang.selectedLanguage] as Record<string, unknown>)[
+          name
+        ];
+      }
     }
+    return context.data[name];
   };
 
   type ObjectToErrorObject<
@@ -77,10 +85,11 @@
         [$Key in keyof $Object]?: string | undefined;
       };
 
-  export type FormFunction<
+  export type FormAction<
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
     $Type extends SubmitFunction<any, any>,
-    $ZodSchema extends ZodSchema,
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    $ZodSchema extends z.ZodType<any>,
     $MultiLang extends boolean
   > =
     $Type extends SubmitFunction<infer $Success, infer $Error>
@@ -103,7 +112,7 @@
 
 <script
   lang="ts"
-  generics="$DataType extends Record<string, unknown>, $MultiLang extends boolean = false"
+  generics="$DataType extends Record<string, unknown>, $MultiLang extends boolean = false, $MultiLangKeys extends $MultiLang extends true ? keyof $DataType : never = never"
 >
   import { getState } from '$/lib/state.svelte';
   import { enhance } from '$app/forms';
@@ -111,7 +120,7 @@
   import type { ActionResult, SubmitFunction } from '@sveltejs/kit';
   import { getContext, setContext, untrack, type Snippet } from 'svelte';
   import { twMerge } from 'tailwind-merge';
-  import { z, type SafeParseReturnType, type ZodSchema } from 'zod';
+  import { z } from 'zod';
 
   /**
    * The form will get the default data values
@@ -123,31 +132,37 @@
     [$Key in keyof $T]: $T[$Key] extends number ? number | null : $T[$Key];
   };
 
+  type DataType<
+    $DataType,
+    $Keys extends keyof $DataType,
+    $MultiLang extends boolean
+  > = $MultiLang extends true
+    ? Omit<DefaultValue<$DataType>, $Keys> &
+        Record<Language, Pick<DefaultValue<$DataType>, $Keys>>
+    : DefaultValue<$DataType>;
+
   type FormProps = {
     class?: string;
-    schema: ZodSchema<$DataType>;
+    schema: z.ZodType<$DataType>;
     isValid?: boolean;
     isDirty?: boolean;
-    data: DefaultValue<$DataType>;
+    data: DataType<$DataType, $MultiLangKeys, $MultiLang>;
     onSubmit?: (data: $DataType) => void;
     children?: Snippet;
     multiLang?: $MultiLang;
+    multiLangKeys?: $MultiLangKeys[];
     reset?: () => void;
     method?: 'post' | 'get';
     action?: string;
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onAction?: FormFunction<SubmitFunction<any, any>, typeof schema, $MultiLang>;
+    onAction?: FormAction<SubmitFunction<any, any>, typeof schema, $MultiLang>;
   };
 
   const reset = () => {
     //reset the form
     isValid = false;
     isDirty = false;
-    data = multiLang
-      ? Object.fromEntries(
-          Object.keys(languages).map((lang) => [lang, { ...defaultData }])
-        )
-      : { ...defaultData };
+    data = { ...defaultData };
   };
 
   let {
@@ -159,6 +174,7 @@
     onSubmit,
     isDirty = $bindable(false),
     multiLang = false as $MultiLang,
+    multiLangKeys = [] as $MultiLangKeys[],
     //we only provide the reset function to outside
     reset: _ = $bindable(reset),
     onAction,
@@ -166,14 +182,12 @@
     action
   }: FormProps = $props();
 
+  if (multiLang && multiLangKeys.length === 0) {
+    throw new Error('multiLangKeys must be provided when multiLang is true');
+  }
+
   type DataValue = DefaultValue<$DataType>;
-  let data = $state<DataValue | Record<Language, DataValue>>(
-    multiLang
-      ? Object.fromEntries(
-          Object.keys(languages).map((lang) => [lang, { ...defaultData }])
-        )
-      : { ...defaultData }
-  );
+  let data = $state<DataType<$DataType, $MultiLangKeys, $MultiLang>>({ ...defaultData });
 
   let submited = $state(false);
 
@@ -191,6 +205,8 @@
   );
 
   const _state = getState();
+  const _lang = $derived(_state.lang.error.invalid_type_number);
+
   // We need to wrap selectedLanguage in object, to ensure reactivity, when transporting in context
   let lang = $state({
     selectedLanguage: _state.selectedLang as Language
@@ -206,13 +222,23 @@
     });
   });
 
-  const getValue = (key: keyof $DataType) => {
+  const getValue = (key: keyof $DataType, forLanguage?: Language) => {
     if (multiLang) {
-      return (data as Record<Language, DefaultValue<$DataType>>)[lang.selectedLanguage][
-        key
-      ];
+      return (data as Record<Language, DefaultValue<$DataType>>)[
+        forLanguage ?? lang.selectedLanguage
+      ][key];
     } else {
       return (data as DefaultValue<$DataType>)[key];
+    }
+  };
+
+  const getDefaultValue = (key: keyof $DataType, forLanguage?: Language) => {
+    if (multiLang) {
+      return (defaultData as Record<Language, DefaultValue<$DataType>>)[
+        forLanguage ?? lang.selectedLanguage
+      ][key];
+    } else {
+      return (defaultData as DefaultValue<$DataType>)[key];
     }
   };
 
@@ -229,7 +255,7 @@
   };
 
   const processErrors = (
-    result: SafeParseReturnType<$DataType, $DataType>,
+    result: z.ZodSafeParseResult<$DataType>,
     forLanguage?: Language,
     allErrors = false
   ) => {
@@ -240,26 +266,34 @@
     if (!allErrors) resetErrors();
 
     if (result.error) {
-      const zodErrors = result.error.errors;
+      const zodErrors = result.error.issues;
       for (const error of zodErrors) {
         const path = error.path[0] as string;
-        const isDefaultValue = defaultData[path] === '' || defaultData[path] === null;
+        const isDefaultValue =
+          getDefaultValue(path, forLanguage) === '' ||
+          getDefaultValue(path, forLanguage) === null;
         if (
-          (isDefaultValue ? getValue(path) === defaultData[path] : false) &&
+          (isDefaultValue
+            ? getValue(path, forLanguage) === getDefaultValue(path, forLanguage)
+            : false) &&
           allErrors === false &&
           !submited
         ) {
           // If the data is the same as the default, we don't want to show the error
           continue;
         }
-        const message = error.code === 'invalid_type' ? 'TODO' : error.message;
+        const message = error.code === 'invalid_type' ? _lang : error.message;
         if (multiLang) {
-          (errors as Record<Language, Errors>)[forLanguage ?? lang.selectedLanguage][
-            path
-          ] = message;
-        } else {
-          (errors as Errors)[path] = message;
+          if (multiLangKeys.includes(path as $MultiLangKeys)) {
+            (errors as Record<Language, Errors>)[forLanguage ?? lang.selectedLanguage][
+              path
+            ] = message;
+            ++count;
+            continue;
+          }
         }
+
+        (errors as Errors)[path] = message;
         ++count;
       }
     }
@@ -298,7 +332,8 @@
     data,
     onSubmitHandler,
     lang,
-    multiLang
+    multiLang,
+    multiLangKeys
   });
 
   const enhanceFunction = (({ formData, cancel }) => {
@@ -316,20 +351,30 @@
       formData.delete(key);
     });
 
+    const sanitizeData = (value: unknown) =>
+      typeof value === 'object' ? JSON.stringify(value) : (value as string);
+
     //not put my data into formData
     //for multilang, the data will be LANG:FIELD + VALUE
     if (multiLang) {
-      for (const langKey in data) {
-        const langData = (data as Record<Language, DefaultValue<$DataType>>)[
-          langKey as Language
-        ];
-        for (const key in langData) {
-          formData.append(`${langKey}:${key}`, String(langData[key]));
+      for (const langOrKey in data) {
+        if (langOrKey in languages) {
+          const langData = (data as Record<Language, DefaultValue<$DataType>>)[
+            langOrKey as Language
+          ];
+          for (const key in langData) {
+            const value = langData[key];
+            formData.append(`${langOrKey}:${key}`, sanitizeData(value));
+          }
+        } else {
+          const value = (data as DefaultValue<$DataType>)[langOrKey];
+          formData.append(langOrKey, sanitizeData(value));
         }
       }
     } else {
       for (const key in data) {
-        formData.append(key, String((data as DefaultValue<$DataType>)[key]));
+        const value = (data as DefaultValue<$DataType>)[key];
+        formData.append(key, sanitizeData(value));
       }
     }
 

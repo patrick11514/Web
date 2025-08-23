@@ -20,9 +20,10 @@
   {#each _languages as [lang, langData] (lang)}
     {@const error = errors[lang][path]}
     {@const value = data[lang][path]}
-    {@const isDefaultValue = defaultValue[path] === '' || defaultValue[path] === null}
+    {@const isDefaultValue =
+      defaultValue[lang][path] === '' || defaultValue[lang][path] === null}
     {@const isValid =
-      error === undefined && (isDefaultValue ? value !== defaultValue[path] : true)}
+      error === undefined && (isDefaultValue ? value !== defaultValue[lang][path] : true)}
     <div class="border-text rounded-full border-2 px-2 py-1">
       <Icon
         name={isValid ? 'bi-check' : 'bi-x'}

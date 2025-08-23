@@ -1,17 +1,18 @@
 <script lang="ts">
-  import clsx from 'clsx';
-  import { twMerge } from 'tailwind-merge';
+  import BaseDatePicker from '../form/DatePicker.svelte';
   import { getError, getFormContext, getValue, setValue } from './Form.svelte';
   import FormItem from './FormItem.svelte';
   import TranslationAvailability from './TranslationAvailability.svelte';
 
+  import type { Snippet } from 'svelte';
   type DatePickerProps = {
     name: string;
     label: string;
     placeholder?: string;
     class?: string;
     type?: 'date' | 'datetime-local';
-    value?: string | undefined | null;
+    variant?: 'small' | 'normal';
+    right?: Snippet;
   };
 
   let {
@@ -20,51 +21,43 @@
     placeholder,
     class: cls = '',
     type = 'date',
-    value = $bindable('')
+    variant,
+    right: _right
   }: DatePickerProps = $props();
 
-  const context = getFormContext(false);
+  const context = getFormContext();
 
   const id = `form-${name}`;
 
-  let formValue = $state(
-    context
-      ? context.multiLang
-        ? context.data[context.lang.selectedLanguage][name]
-        : context.data[name]
-      : value
-  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let formValue = $state<any>(getValue(context, name));
 
   $effect(() => {
     formValue = getValue(context, name);
   });
 
   $effect(() => {
-    if (context) {
-      setValue(context, name, formValue);
-    } else {
-      value = formValue as typeof value;
-    }
+    setValue(context, name, formValue);
   });
 </script>
 
-<FormItem for={id} error={getError(context, name)} {label}>
+<FormItem for={id} error={getError(context, name)} {label} {variant}>
   {#snippet right()}
+    {#if _right}
+      {@render _right()}
+    {/if}
     {#if context.multiLang}
       <TranslationAvailability {context} path={name} />
     {/if}
   {/snippet}
 
-  <input
+  <BaseDatePicker
     {id}
     {name}
     {type}
     bind:value={formValue}
     {placeholder}
-    class={twMerge(
-      'border-secondary focus:border-primary font-roboto placeholder:font-roboto placeholder:text-text rounded-md border-2 px-2 py-1 text-xl font-bold transition-colors duration-200 outline-none placeholder:font-bold lg:text-2xl',
-      getError(context, name) !== undefined ? 'border-red-500' : '',
-      clsx(cls)
-    )}
+    error={getError(context, name)}
+    class={cls}
   />
 </FormItem>
