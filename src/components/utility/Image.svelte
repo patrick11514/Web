@@ -8,12 +8,12 @@
 </script>
 
 <picture>
-  <!--mobile!-->
-  <source srcset="{src}&scale=50" type="image/{format}" sizes="(max-width: 640px)" />
-  <!--tablet!-->
-  <source srcset="{src}&scale=75" type="image/{format}" sizes="(max-width: 1024px)" />
-  <!--desktop!-->
+  <!--mobile - screens up to 640px!-->
+  <source srcset="{src}&scale=50" type="image/{format}" media="(max-width: 640px)" />
+  <!--tablet - screens up to 1024px!-->
+  <source srcset="{src}&scale=75" type="image/{format}" media="(max-width: 1024px)" />
+  <!--desktop - larger screens!-->
   <source srcset={src} type="image/{format}" />
   <!--fallback!-->
-  <img class={cls} {alt} {src} loading="lazy" decoding="async" />
+  <img class={cls} {alt} {src} loading="lazy" decoding="async" fetchpriority="low" />
 </picture>
