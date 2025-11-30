@@ -5,7 +5,10 @@ import sharp from 'sharp';
 
 const formats = ['jpg', 'jpeg', 'png', 'webp', 'tiff'];
 
-export const GET = (async ({ params, setHeaders, url }) => {
+// Cache duration: 1 year in seconds
+const CACHE_MAX_AGE = 31536000;
+
+export const GET = (async ({ params, url }) => {
     if (params.name == null) {
         throw error(404, 'Not found');
     }
@@ -17,8 +20,6 @@ export const GET = (async ({ params, setHeaders, url }) => {
     if (!fs.existsSync(filePath)) {
         throw error(404, 'Not found');
     }
-
-    let file = fs.readFileSync(filePath);
 
     const searchParams = url.searchParams;
     let fileExtension = path.extname(filePath);
@@ -60,7 +61,8 @@ export const GET = (async ({ params, setHeaders, url }) => {
         const cachePath = path.join('.cache', cacheModifiedName);
 
         if (!fs.existsSync(cachePath)) {
-            let image = sharp(file);
+            // Use streaming to process the image
+            const image = sharp(filePath);
 
             const imageOptions: sharp.JpegOptions & sharp.PngOptions & sharp.WebpOptions & sharp.TiffOptions = {
                 quality: 75
@@ -69,16 +71,16 @@ export const GET = (async ({ params, setHeaders, url }) => {
             switch (fileExtension) {
                 case 'jpeg':
                 case 'jpg':
-                    image = image.jpeg(imageOptions);
+                    image.jpeg(imageOptions);
                     break;
                 case 'png':
-                    image = image.png(imageOptions);
+                    image.png(imageOptions);
                     break;
                 case 'webp':
-                    image = image.webp(imageOptions);
+                    image.webp(imageOptions);
                     break;
                 case 'tiff':
-                    image = image.tiff(imageOptions);
+                    image.tiff(imageOptions);
                     break;
             }
 
@@ -87,28 +89,48 @@ export const GET = (async ({ params, setHeaders, url }) => {
             const newWidth = meta.width ? Math.round(meta.width * (scale / 100)) : undefined;
             const newHeight = meta.height ? Math.round(meta.height * (scale / 100)) : undefined;
 
-            image = image.resize({
+            image.resize({
                 width: newWidth,
                 height: newHeight
             });
 
-            const imageBuffer = await image.toBuffer();
-
-            fs.writeFileSync(cachePath, imageBuffer);
+            await image.toFile(cachePath);
         }
 
-        file = fs.readFileSync(cachePath);
         filePath = cachePath;
     }
 
     const fileInfo = fs.statSync(filePath);
+    const contentType = 'image/' + (fileExtension.startsWith('.') ? fileExtension.slice(1) : fileExtension);
 
-    setHeaders({
-        'Content-Type': 'image/' + fileExtension.startsWith('.') ? fileExtension.slice(1) : fileExtension,
-        'Content-Length': fileInfo.size.toString(),
-        'Last-Modified': fileInfo.mtime.toUTCString(),
-        'Cache-Control': 'public, max-age=86400'
+    // Create a readable stream for efficient memory usage
+    const stream = fs.createReadStream(filePath);
+
+    // Convert Node.js readable stream to web ReadableStream
+    const webStream = new ReadableStream({
+        start(controller) {
+            stream.on('data', (chunk) => {
+                controller.enqueue(chunk);
+            });
+            stream.on('end', () => {
+                controller.close();
+            });
+            stream.on('error', (err) => {
+                controller.error(err);
+            });
+        },
+        cancel() {
+            stream.destroy();
+        }
     });
 
-    return new Response(file);
+    // Return response with headers set early and streaming body
+    return new Response(webStream, {
+        headers: {
+            'Content-Type': contentType,
+            'Content-Length': fileInfo.size.toString(),
+            'Last-Modified': fileInfo.mtime.toUTCString(),
+            'Cache-Control': `public, max-age=${CACHE_MAX_AGE}, immutable`
+        }
+    });
 }) satisfies RequestHandler;

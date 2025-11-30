@@ -70,7 +70,7 @@
     href={admin ? `/admin/gallery/${data.id}` : `/customImages/gallery/${data.name}?format=jpeg`}
     target={admin ? undefined : '_blank'}
 >
-    <img class="h-auto w-full" src="/customImages/gallery/{data.name}?format=jpeg&scale=50" alt={data.alt} />
+    <img class="h-auto w-full" src="/customImages/gallery/{data.name}?format=jpeg&scale=50" alt={data.alt} loading="lazy" />
     <div class="flex flex-col p-2">
         <h2 class="font-ubuntu font-bold lg:text-xl xl:text-2xl">
             {data.alt}

@@ -21,3 +21,4 @@ yarn.lock
 #deploy
 script
 logs
+pnpm-workspace.yaml
