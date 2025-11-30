@@ -62,7 +62,7 @@ export const GET = (async ({ params, url }) => {
 
         if (!fs.existsSync(cachePath)) {
             // Use streaming to process the image
-            const image = sharp(filePath);
+            let image = sharp(filePath);
 
             const imageOptions: sharp.JpegOptions & sharp.PngOptions & sharp.WebpOptions & sharp.TiffOptions = {
                 quality: 75
@@ -71,16 +71,16 @@ export const GET = (async ({ params, url }) => {
             switch (fileExtension) {
                 case 'jpeg':
                 case 'jpg':
-                    image.jpeg(imageOptions);
+                    image = image.jpeg(imageOptions);
                     break;
                 case 'png':
-                    image.png(imageOptions);
+                    image = image.png(imageOptions);
                     break;
                 case 'webp':
-                    image.webp(imageOptions);
+                    image = image.webp(imageOptions);
                     break;
                 case 'tiff':
-                    image.tiff(imageOptions);
+                    image = image.tiff(imageOptions);
                     break;
             }
 
@@ -89,7 +89,7 @@ export const GET = (async ({ params, url }) => {
             const newWidth = meta.width ? Math.round(meta.width * (scale / 100)) : undefined;
             const newHeight = meta.height ? Math.round(meta.height * (scale / 100)) : undefined;
 
-            image.resize({
+            image = image.resize({
                 width: newWidth,
                 height: newHeight
             });
@@ -106,20 +106,36 @@ export const GET = (async ({ params, url }) => {
     // Create a readable stream for efficient memory usage
     const stream = fs.createReadStream(filePath);
 
+    // Track cleanup function for proper resource management
+    let cleanup: (() => void) | null = null;
+
     // Convert Node.js readable stream to web ReadableStream
-    const webStream = new ReadableStream({
+    const webStream = new ReadableStream<Buffer>({
         start(controller) {
-            stream.on('data', (chunk) => {
+            const onData = (chunk: Buffer) => {
                 controller.enqueue(chunk);
-            });
-            stream.on('end', () => {
+            };
+            const onEnd = () => {
+                if (cleanup) cleanup();
                 controller.close();
-            });
-            stream.on('error', (err) => {
+            };
+            const onError = (err: Error) => {
+                if (cleanup) cleanup();
                 controller.error(err);
-            });
+            };
+
+            cleanup = () => {
+                stream.off('data', onData);
+                stream.off('end', onEnd);
+                stream.off('error', onError);
+            };
+
+            stream.on('data', onData);
+            stream.on('end', onEnd);
+            stream.on('error', onError);
         },
         cancel() {
+            if (cleanup) cleanup();
             stream.destroy();
         }
     });
