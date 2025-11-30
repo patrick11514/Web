@@ -219,9 +219,13 @@ export const GET = (async ({ params, url, request }) => {
   const webStream = nodeStreamToWebStream(fileStream);
 
   // Read and cache the file in the background for future requests
-  fs.readFile(filePath).then((buffer) => {
-    memoryCache.set(filePath, buffer);
-  });
+  fs.readFile(filePath)
+    .then((buffer) => {
+      memoryCache.set(filePath, buffer);
+    })
+    .catch(() => {
+      // Silently ignore background caching errors - the file was already streamed successfully
+    });
 
   return new Response(webStream, {
     headers: getCacheHeaders(fileExtension, fileInfo.size, etag)
