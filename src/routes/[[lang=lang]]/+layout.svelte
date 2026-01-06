@@ -66,9 +66,12 @@
   });
 </script>
 
-<canvas bind:this={canvas} class="fixed inset-0 -z-10 h-full w-full overflow-hidden"></canvas>
+<canvas bind:this={canvas} class="fixed inset-0 -z-10 h-full w-full overflow-hidden"
+></canvas>
 
-<section class="text-text font-ubuntu flex h-full min-h-screen w-full min-w-screen flex-col text-lg lg:text-xl">
+<section
+  class="text-text font-ubuntu flex h-full min-h-screen w-full min-w-screen flex-col text-lg lg:text-xl"
+>
   <Navigation />
 
   <main class="flex flex-1 flex-col">

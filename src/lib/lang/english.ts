@@ -24,7 +24,8 @@ export default lang.parse({
     title: 'Error',
     message: 'Oops!',
     sub_message: "We don't know this page :(",
-    go_home: 'Back home'
+    go_home: 'Back home',
+    invalid_type_number: 'Please enter a valid number.'
   },
   main: {
     age: 'Age',
@@ -265,7 +266,11 @@ export default lang.parse({
     },
     article: {
       notFound: 'Article with this ID does not exist.',
-      noImages: 'Article must contain at least one image.'
+      noImages: 'Article must contain at least one image.',
+      noTitle: 'You need to enter article title.',
+      noDescrption: 'You need to enter article description.',
+      noContent: 'You need to enter article content.',
+      noAltText: 'You need to enter image description.'
     }
   },
   equipmentType: {

@@ -1,30 +1,35 @@
 <script lang="ts">
-  import FormItem from '$/components/form/FormItem.svelte';
-  import Input from '$/components/form/Input.svelte';
-  import TextArea from '$/components/form/TextArea.svelte';
-  import Card from '$/components/utility/Card.svelte';
-  import Icon from '$/components/utility/Icon.svelte';
-  import { getState } from '$/lib/state.svelte';
-  import type { PageProps, Snapshot } from './$types';
-  import Markdown from '$/components/utility/Markdown.svelte';
-  import Select from '$/components/form/Select.svelte';
-  import Button from '$/components/form/Button.svelte';
-  import { API } from '$/lib/api';
+  import {
+    Button as BaseButton,
+    Input as BaseInput,
+    DatePicker,
+    FormItem,
+    Select
+  } from '$/components/form';
+  import H1 from '$/components/headers/H1.svelte';
+  import {
+    Button,
+    Form,
+    ImageManager,
+    Input,
+    Markdown,
+    TextArea
+  } from '$/components/newForm';
+  import DataProvider from '$/components/newForm/DataProvider.svelte';
+  import type { FormAction } from '$/components/newForm/Form.svelte';
+  import LanguageSelector from '$/components/newForm/LanguageSelector.svelte';
+  import { Table, TBody, Td, Th, THead, Tr } from '$/components/table';
+  import { Card, Icon } from '$/components/utility';
   import { formatDate, SwalAlert } from '$/lib/functions';
   import { languages, resolveError, transformIntoLanguagable } from '$/lib/lang';
-  import Image from '$/components/utility/Image.svelte';
-  import DatePicker from '$/components/form/DatePicker.svelte';
-  import Table from '$/components/table/Table.svelte';
-  import Tr from '$/components/table/Tr.svelte';
-  import Th from '$/components/table/Th.svelte';
-  import Td from '$/components/table/Td.svelte';
-  import TBody from '$/components/table/TBody.svelte';
-  import THead from '$/components/table/THead.svelte';
-  import { goto } from '$app/navigation';
+  import { getState } from '$/lib/state.svelte';
+  import type { Exposure } from '$/types/database';
   import { articleSchema } from '$/types/schemes';
-  import H1 from '$/components/headers/H1.svelte';
-  import H3 from '$/components/headers/H3.svelte';
-  import TranslationAvailability from '$/components/utility/TranslationAvailability.svelte';
+  import { NROT } from '$/types/types';
+  import { goto } from '$app/navigation';
+  import { page } from '$app/state';
+  import type { Selectable } from 'kysely';
+  import type { PageProps, SubmitFunction } from './$types';
 
   const { data }: PageProps = $props();
   const { dynamicTranslations } = data;
@@ -32,134 +37,43 @@
   const _state = getState();
   const _lang = $derived(_state.lang.admin.article.form);
 
-  let selectedLang = $state(_state.selectedLang as keyof typeof languages);
+  const MultiLangKeys = NROT(['title', 'description', 'content_md', 'images'] as const);
 
-  const ArticleTranslates = $state(
-    transformIntoLanguagable(data.article, dynamicTranslations)
+  const articleData = $state(
+    transformIntoLanguagable(data.article, dynamicTranslations, MultiLangKeys)
   );
-  let article = $derived(ArticleTranslates[selectedLang]);
 
   const editing = $derived('id' in data.article);
   let showPreview = $state(false);
   let selectedEquipment = $state<null | number>(null);
 
+  let equipment = $state<number[]>([]);
+
   $effect(() => {
     if (selectedEquipment !== null) {
-      article.equipment.push(selectedEquipment);
+      equipment.push(selectedEquipment);
       selectedEquipment = null;
     }
   });
-
-  export const snapshot = {
-    capture: () => article,
-    restore: (data) => {
-      article = {
-        ...data,
-        created_at: data.created_at ? new Date(data.created_at) : undefined,
-        exposures: data.exposures.map((exposure) => ({
-          ...exposure,
-          date: new Date(exposure.date)
-        }))
-      };
-    }
-  } satisfies Snapshot<typeof data.article>;
-
-  let imageDescription = $state('');
-  let imageFiles = $state<FileList | null>(null);
-
-  const uploadImage = async () => {
-    if (imageDescription.trim() === '') {
-      SwalAlert({
-        title: _lang.images.alt,
-        icon: 'error'
-      });
-      return;
-    }
-
-    if (!imageFiles || imageFiles.length === 0) {
-      SwalAlert({
-        title: _lang.images.noImage,
-        icon: 'error'
-      });
-      return;
-    }
-
-    if (imageFiles.length > 1) {
-      SwalAlert({
-        title: _lang.images.multiple,
-        icon: 'error'
-      });
-      return;
-    }
-
-    const formData = new FormData();
-    formData.set('file', imageFiles[0]);
-    const response = await API.upload.POST(formData);
-
-    if (!response.status) {
-      SwalAlert({
-        title: resolveError(response.message, _state.lang),
-        icon: 'error'
-      });
-      return;
-    }
-
-    article.images.push({
-      id: -1,
-      name: response.data,
-      alt_text: imageDescription,
-      article_id: ''
-    });
-
-    imageDescription = '';
-  };
-
-  const deleteImage = async (image: string) => {
-    const confirm = await SwalAlert({
-      title: _lang.images.confirmDelete,
-      toast: false,
-      timer: 0,
-      position: 'center',
-      showCancelButton: true,
-      cancelButtonText: _state.lang.no,
-      showConfirmButton: true,
-      confirmButtonText: _state.lang.yes
-    });
-
-    if (!confirm.isConfirmed) {
-      return;
-    }
-
-    const response = await API.upload.DELETE(image);
-
-    if (!response.status) {
-      SwalAlert({
-        title: resolveError(response.message, _state.lang),
-        icon: 'error'
-      });
-      return;
-    }
-
-    article.images = article.images.filter((img) => img.name !== image);
-  };
 
   let exposureDate = $state<Date | undefined>(undefined);
   let exposureType = $state('light');
   let exposureCount = $state(1);
   let exposureDuration = $state(30);
+  let exposures = $state<Selectable<Exposure>[]>([]);
 
   const addExposure = () => {
-    article.exposures.push({
+    exposures.push({
       id: -1,
       type: exposureType,
       date: exposureDate ?? new Date(),
       count: exposureCount,
       exposure_time_s: exposureDuration,
-      article_id: article.id ?? ''
+      article_id: page.params.id ?? ''
     });
   };
 
-  const articleAdd = async () => {
+  /*const articleAdd = async () => {
     const response = await API.article.POST(article);
 
     if (!response.status) {
@@ -179,7 +93,9 @@
   };
 
   const articleEdit = async () => {
-    const parsed = articleSchema.required().safeParse(article);
+    const parsed = articleSchema(_state.selectedLang as keyof typeof languages)
+      .required()
+      .safeParse(article);
     if (!parsed.success) return;
     const response = await API.article.PUT(parsed.data);
 
@@ -197,7 +113,26 @@
     });
 
     goto(`/${_state.selectedLang}/admin/article`);
-  };
+  };*/
+
+  const action = (({ result }) => {
+    // @ts-expect-error dynamic result type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data = result.data as any;
+
+    if (result.type === 'success' && data?.status) {
+      SwalAlert({
+        title: editing ? _lang.updated : _lang.created,
+        icon: 'success'
+      });
+      goto(`/${_state.selectedLang}/admin/article`);
+    } else if (result.type === 'failure' || (data && !data.status)) {
+      SwalAlert({
+        title: resolveError(data?.message || 'error.unknown', _state.lang),
+        icon: 'error'
+      });
+    }
+  }) satisfies FormAction<SubmitFunction, ReturnType<typeof articleSchema>, true>;
 </script>
 
 {#snippet subTitle(text: string)}
@@ -205,7 +140,15 @@
 {/snippet}
 
 <section class="mx-auto flex w-full flex-1 p-4 lg:w-[90%] xl:w-[80%]">
-  <div class="border-text flex w-full flex-col items-start gap-4 rounded-md border-2 p-4">
+  <Form
+    schema={articleSchema(_state.selectedLang as keyof typeof languages)}
+    multiLang={true}
+    multiLangKeys={MultiLangKeys}
+    data={articleData}
+    class="border-text flex w-full flex-col items-start gap-4 rounded-md border-2 p-4"
+    action={editing ? '?/edit' : '?/create'}
+    onAction={action}
+  >
     <a href="/{_state.selectedLang}/admin/article">
       <Icon name="bi-chevron-left" />
       {_lang.back}
@@ -213,79 +156,69 @@
 
     <div class="flex w-full items-center justify-between">
       <H1 class="mb-4">{editing ? _lang.editTitle : _lang.createTitle}</H1>
-      <div class="flex items-center gap-2">
-        <H3 class="text-text-muted"
-          ><Icon name="bi-translate" /> {_state.lang.language}:</H3
-        >
-        {#each Object.entries(languages) as [lang, data] (lang)}
-          <Button onclick={() => (selectedLang = lang)}>
-            {data.flag}
-            {data.name}
-          </Button>
-        {/each}
-      </div>
+
+      <LanguageSelector />
     </div>
     <Card>
       {@render subTitle(_lang.details.title)}
-      <FormItem for="title" label={_lang.details.titleInput} variant="small">
-        <Input
-          id="title"
-          placeholder={_lang.details.titlePlaceholder}
-          bind:value={article.title}
-          max={56}
-        />
-        {#snippet right()}
-          <TranslationAvailability object={ArticleTranslates} path="title" />
-        {/snippet}
-      </FormItem>
-      <FormItem for="desc" label={_lang.details.description} variant="small">
-        <Input
-          id="desc"
-          placeholder={_lang.details.descriptionPlaceholder}
-          bind:value={article.description}
-          max={128}
-        />
-      </FormItem>
-      <FormItem for="content" label={_lang.details.content} variant="small">
-        {#snippet right()}
-          <div>
-            {showPreview ? _lang.details.previewContent : _lang.details.editContent}
-            <input type="checkbox" bind:checked={showPreview} />
-          </div>
-        {/snippet}
-
-        {#if !showPreview}
-          <TextArea
-            id="content"
-            rows={10}
-            placeholder={_lang.details.contentPlaceholder}
-            bind:value={article.content_md}
-          />
-        {:else}
-          <Markdown content={article.content_md} />
-        {/if}
-      </FormItem>
+      <Input
+        name="title"
+        label={_lang.details.titleInput}
+        placeholder={_lang.details.titlePlaceholder}
+        variant="small"
+      />
+      <Input
+        name="description"
+        label={_lang.details.description}
+        placeholder={_lang.details.descriptionPlaceholder}
+        variant="small"
+      />
+      {#if !showPreview}
+        <TextArea
+          name="content_md"
+          label={_lang.details.content}
+          rows={10}
+          placeholder={_lang.details.contentPlaceholder}
+        >
+          {#snippet right()}
+            <Icon
+              class="mr-auto ml-2"
+              name="bi-eye"
+              onclick={() => (showPreview = true)}
+            />
+          {/snippet}
+        </TextArea>
+      {:else}
+        <Markdown label={_lang.details.content} name="content_md">
+          {#snippet right()}
+            <Icon
+              class="mr-auto ml-2"
+              name="bi-pencil"
+              onclick={() => (showPreview = false)}
+            />
+          {/snippet}
+        </Markdown>
+      {/if}
     </Card>
     <Card>
       {@render subTitle(_lang.equipment.title)}
       <Select bind:value={selectedEquipment}>
         <option value={null} selected disabled>{_lang.equipment.select}</option>
-        {#each data.equipment.filter((item) => !article.equipment.includes(item.id)) as item (item.id)}
+        {#each data.equipment.filter((item) => !equipment.includes(item.id)) as item (item.id)}
           <option value={item.id}>{item.name}</option>
         {/each}
       </Select>
-      {#if article.equipment.length === 0}
+      <DataProvider name="equipment" bind:value={equipment} />
+      {#if equipment.length === 0}
         <h2 class="font-bold">{_lang.equipment.empty}</h2>
       {:else}
         <div class="flex flex-wrap gap-2">
-          {#each data.equipment.filter( (item) => article.equipment.includes(item.id) ) as item (item.id)}
+          {#each data.equipment.filter( (item) => equipment.includes(item.id) ) as item (item.id)}
             <div class="border-text rounded-md border-2 px-2 py-1 font-bold">
               {item.name}
               <Icon
                 onclick={() =>
-                  (article.equipment = article.equipment.filter(
-                    (_item) => _item !== item.id
-                  ))}
+                  (equipment = equipment.filter((_item) => _item !== item.id))}
                 name="bi-trash-fill"
                 class="cursor-pointer text-red-500"
               />
@@ -296,62 +229,7 @@
     </Card>
     <Card>
       {@render subTitle(_lang.images.title)}
-      <FormItem for="image" label={_lang.images.upload} class="gap-2" variant="small">
-        <div class="flex flex-row items-center justify-stretch gap-2">
-          <Input
-            type="text"
-            class="flex-1"
-            placeholder={_lang.images.descriptionPlaceholder}
-            bind:value={imageDescription}
-          />
-          <label
-            for="image"
-            class="border-secondary hover:border-primary font-roboto w-max cursor-pointer rounded-md border-2 px-4 py-1 text-xl font-bold transition-all duration-200 active:translate-y-0.5 disabled:grayscale lg:text-2xl"
-          >
-            <Icon name="bi-upload" />
-            {_lang.images.browse}
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            class="hidden"
-            id="image"
-            bind:files={imageFiles}
-          />
-        </div>
-        <Button
-          onclick={(ev) => {
-            ev.preventDefault();
-            uploadImage();
-          }}
-          class="w-full"><Icon name="bi-plus" /> {_lang.images.upload}</Button
-        >
-        {#if article.images.length === 0}
-          <h2 class="font-bold">{_lang.images.empty}</h2>
-        {:else}
-          <div class="flex flex-wrap gap-2">
-            {#each article.images as image (image.name)}
-              <div
-                class="border-text group relative flex max-w-[30%] flex-col rounded-md border-2 font-bold [&>picture]:m-auto"
-              >
-                <Image name={image.name} alt={image.alt_text} />
-                <span class="border-t-text border-t-2 p-1 font-bold"
-                  >{image.alt_text}</span
-                >
-                <div
-                  class="bg-background/75 absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                >
-                  <Icon
-                    onclick={() => deleteImage(image.name)}
-                    name="bi-trash-fill"
-                    class="cursor-pointer rounded-md border-2 border-red-600 bg-red-500 px-2 py-1"
-                  />
-                </div>
-              </div>
-            {/each}
-          </div>
-        {/if}
-      </FormItem>
+      <ImageManager label={_lang.images.upload} />
     </Card>
     <Card>
       {@render subTitle(_lang.exposures.title)}
@@ -373,7 +251,7 @@
           label={_lang.exposures.count}
           variant="small"
         >
-          <Input id="count" type="number" min={1} bind:value={exposureCount} />
+          <BaseInput id="count" type="number" min={1} bind:value={exposureCount} />
         </FormItem>
         <FormItem
           class="flex-1"
@@ -381,11 +259,11 @@
           label={_lang.exposures.seconds}
           variant="small"
         >
-          <Input id="duration" type="number" min={1} bind:value={exposureDuration} />
+          <BaseInput id="duration" type="number" min={1} bind:value={exposureDuration} />
         </FormItem>
       </div>
 
-      <Button
+      <BaseButton
         class="w-full"
         onclick={(ev) => {
           ev.preventDefault();
@@ -393,9 +271,10 @@
         }}
       >
         {_lang.exposures.button}
-      </Button>
+      </BaseButton>
 
       <div class="border-text rounded-md border-2 text-center">
+        <DataProvider name="exposures" bind:value={exposures} />
         <Table>
           <THead>
             <Tr>
@@ -408,12 +287,12 @@
             </Tr>
           </THead>
           <TBody>
-            {#if article.exposures.length === 0}
+            {#if exposures.length === 0}
               <Tr>
                 <Th colspan={6}>{_lang.exposures.empty}</Th>
               </Tr>
             {:else}
-              {#each article.exposures as exposure, idx (`${exposure.date.toISOString()}-${exposure.type}-${exposure.count}-${exposure.exposure_time_s}`)}
+              {#each exposures as exposure, idx (`${exposure.date.toISOString()}-${exposure.type}-${exposure.count}-${exposure.exposure_time_s}`)}
                 <Tr>
                   <Td>{formatDate(exposure.date, false)}</Td>
                   <Td>{exposure.type}</Td>
@@ -423,9 +302,7 @@
                   <Td>
                     <Icon
                       onclick={() =>
-                        (article.exposures = article.exposures.filter(
-                          (_, _idx) => _idx !== idx
-                        ))}
+                        (exposures = exposures.filter((_, _idx) => _idx !== idx))}
                       name="bi-trash-fill"
                       class="cursor-pointer text-2xl text-red-500"
                     />
@@ -444,7 +321,7 @@
               >{_state.lang.frames[type]} {_lang.exposures.frames}</span
             >
             <span class="text-2xl font-extrabold lg:text-3xl">
-              {article.exposures
+              {exposures
                 .filter((ex) => ex.type === type)
                 .reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0)}s
             </span>
@@ -453,12 +330,12 @@
       </div>
     </Card>
     <div class="flex w-full justify-end gap-2">
-      <Button onclick={() => goto(`/${_state.selectedLang}/admin/article`)}
-        >{_lang.cancel}</Button
-      >
-      <Button onclick={() => (editing ? articleEdit() : articleAdd())} class="bg-primary"
-        >{editing ? _lang.save : _lang.create}</Button
-      >
+      <BaseButton onclick={() => goto(`/${_state.selectedLang}/admin/article`)}>
+        {_lang.cancel}
+      </BaseButton>
+      <Button type="submit" class="bg-primary">
+        {editing ? _lang.save : _lang.create}
+      </Button>
     </div>
-  </div>
+  </Form>
 </section>

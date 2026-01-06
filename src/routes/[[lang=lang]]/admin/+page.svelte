@@ -16,12 +16,16 @@
   };
 
   //get all unique years
-  const years = new Set(data.weekGraph.filter((item) => item.YEAR).map((item) => item.YEAR));
+  const years = new Set(
+    data.weekGraph.filter((item) => item.YEAR).map((item) => item.YEAR)
+  );
 
   for (const year of years) {
     chartData.datasets.push({
       label: year.toString(),
-      data: data.weekGraph.filter((item) => item.YEAR === year).map((item) => ({ x: item.WEEK.toString(), y: item.COUNT }))
+      data: data.weekGraph
+        .filter((item) => item.YEAR === year)
+        .map((item) => ({ x: item.WEEK.toString(), y: item.COUNT }))
     });
   }
 </script>

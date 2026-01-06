@@ -1,3 +1,4 @@
+import type { DB, Translations } from '$/types/database';
 import {
   extensions,
   type DePromise,
@@ -5,16 +6,19 @@ import {
   type UserData,
   type UserState
 } from '$/types/types';
+import { FILE_FOLDER } from '$env/static/private';
 import type { Cookies } from '@sveltejs/kit';
-import { conn, jwt } from './variables';
 import { redirect as _redirect } from '@sveltejs/kit';
-import { getState } from '../state.svelte';
+import type { ControlledTransaction, Insertable } from 'kysely';
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import Path from 'node:path';
-import crypto from 'node:crypto';
 import { promisify } from 'node:util';
-import { FILE_FOLDER } from '$env/static/private';
+import { v4 } from 'uuid';
+import type z from 'zod';
 import { languages } from '../lang';
+import { getState } from '../state.svelte';
+import { conn, jwt } from './variables';
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -118,3 +122,84 @@ export const constructEmptyTranslations = () => {
 };
 
 export type GatheredTranslationsAll = DePromise<ReturnType<typeof gatherTranslationsAll>>;
+
+export const parseFormData = <$DataType>(
+  formData: FormData,
+  schema: z.ZodType<$DataType>
+) => {
+  const object = Object.fromEntries(formData.entries());
+  //parse objects/arrays
+  for (const key in object) {
+    const value = object[key];
+    if (
+      typeof value === 'string' &&
+      (value.startsWith('{') || value.startsWith('[') || value.startsWith('"'))
+    ) {
+      try {
+        object[key] = JSON.parse(value);
+      } catch {
+        // If parsing fails, keep the original string
+      }
+    }
+  }
+
+  //resolve languagable
+  //language:key = value
+
+  const groupped = {} as Record<string, Record<string, unknown>>;
+  const languagesKeys = Object.keys(languages);
+
+  for (const lang of languagesKeys) {
+    groupped[lang] = {};
+  }
+
+  for (const key in object) {
+    const [lang, subKey] = key.split(':');
+    if (lang && subKey && (languagesKeys as string[]).includes(lang)) {
+      groupped[lang as keyof typeof languages][subKey] = object[key];
+    } else {
+      for (const lang of languagesKeys) {
+        groupped[lang][key] = object[key];
+      }
+    }
+  }
+
+  //parse search sub-object
+  for (const lang in groupped) {
+    const subObject = groupped[lang];
+    const parsed = schema.parse(subObject);
+    groupped[lang] = parsed as Record<string, unknown>;
+  }
+
+  return groupped as Record<keyof typeof languages, $DataType>;
+};
+
+export const insertTranslations = async <
+  $Record extends Record<string, unknown>,
+  $Fields extends keyof $Record
+>(
+  trx: ControlledTransaction<DB>,
+  obj: Record<keyof typeof languages, $Record>,
+  fields: $Fields[]
+) => {
+  const result = {} as Record<$Fields, string>;
+
+  const toInsert = [] as Insertable<Translations>[];
+
+  const langs = Object.keys(obj);
+  for (const field of fields) {
+    const uuid = v4();
+    for (const lang of langs) {
+      toInsert.push({
+        key: uuid,
+        lang: lang,
+        text: obj[lang][field] as string
+      });
+      result[field] = uuid;
+    }
+  }
+
+  await trx.insertInto('translations').values(toInsert).execute();
+
+  return result;
+};

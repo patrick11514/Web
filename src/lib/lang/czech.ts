@@ -24,7 +24,8 @@ export default lang.parse({
     title: 'Chyba',
     message: 'Oops!',
     sub_message: 'Tuto stránku neznáme :(',
-    go_home: 'Zpátky domů'
+    go_home: 'Zpátky domů',
+    invalid_type_number: 'Zadejte platné číslo.'
   },
   main: {
     age: 'Věk',
@@ -265,7 +266,11 @@ export default lang.parse({
     },
     article: {
       notFound: 'Článek s tímto id neexistuje.',
-      noImages: 'Článek musí obsahovat alespoň jeden obrázek.'
+      noImages: 'Článek musí obsahovat alespoň jeden obrázek.',
+      noTitle: 'Musíš zadat název článku.',
+      noDescrption: 'Musíš zadat popisek článku.',
+      noContent: 'Musíš zadat obsah článku.',
+      noAltText: 'Musíš zadat popisek obrázku.'
     }
   },
   equipmentType: {

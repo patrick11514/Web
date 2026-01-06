@@ -25,7 +25,10 @@
 
   const { data }: PageProps = $props();
 
-  const createSubmitFunction = (successMessage: string, resetFn = () => {}): SubmitFunction => {
+  const createSubmitFunction = (
+    successMessage: string,
+    resetFn = () => {}
+  ): SubmitFunction => {
     return (() => {
       return async ({ update, result }) => {
         if (result.type === 'success') {
@@ -131,7 +134,9 @@
 {/snippet}
 
 {#snippet info(text: string)}
-  <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"><Icon name="bi-ban-fill" class="text-red-500" /> {text}</span>
+  <span class="font-poppins m-auto text-2xl font-bold lg:text-3xl"
+    ><Icon name="bi-ban-fill" class="text-red-500" /> {text}</span
+  >
 {/snippet}
 
 {#snippet _switch(text: string, name: typeof section)}
@@ -147,39 +152,84 @@
 
 <Dialog opened={typeEditing !== null} onClose={() => (typeEditing = null)}>
   {@render title(replacePlaceholders(_lang.types.edit.title, typeEditing!.id.toString()))}
-  <form class="flex flex-col items-center justify-center" method="POST" action="?/typeEdit" use:enhance={createSubmitFunction(_lang.types.editSuccess, () => (typeEditing = null))}>
+  <form
+    class="flex flex-col items-center justify-center"
+    method="POST"
+    action="?/typeEdit"
+    use:enhance={createSubmitFunction(
+      _lang.types.editSuccess,
+      () => (typeEditing = null)
+    )}
+  >
     <input type="hidden" name="id" value={typeEditing!.id} />
     <FormItem for="key" label={_lang.types.translateKey}>
-      <Input id="key" name="lang_key" type="text" placeholder={_lang.types.translateKey} value={typeEditing!.lang_key} max={64} required />
+      <Input
+        id="key"
+        name="lang_key"
+        type="text"
+        placeholder={_lang.types.translateKey}
+        value={typeEditing!.lang_key}
+        max={64}
+        required
+      />
     </FormItem>
     <FormItem for="priority" label={_lang.types.priority}>
-      <Input id="priority" name="priority" type="number" value={typeEditing!.priority} min={0} required />
+      <Input
+        id="priority"
+        name="priority"
+        type="number"
+        value={typeEditing!.priority}
+        min={0}
+        required
+      />
     </FormItem>
     <Button type="submit">{_lang.types.edit.button}</Button>
   </form>
 </Dialog>
 
 <Dialog opened={equipmentEditing !== null} onClose={() => (equipmentEditing = null)}>
-  {@render title(replacePlaceholders(_lang.equipment.edit.title, equipmentEditing!.id.toString()))}
+  {@render title(
+    replacePlaceholders(_lang.equipment.edit.title, equipmentEditing!.id.toString())
+  )}
   <form
     class="flex flex-col items-center justify-center"
     method="POST"
     action="?/equipmentEdit"
-    use:enhance={createSubmitFunction(_lang.equipment.editSuccess, () => (equipmentEditing = null))}
+    use:enhance={createSubmitFunction(
+      _lang.equipment.editSuccess,
+      () => (equipmentEditing = null)
+    )}
   >
     <input type="hidden" name="id" value={equipmentEditing!.id} />
     <FormItem for="name" label={_lang.equipment.name}>
-      <Input id="name" name="name" type="text" placeholder={_lang.equipment.name} value={equipmentEditing!.name} max={128} required />
+      <Input
+        id="name"
+        name="name"
+        type="text"
+        placeholder={_lang.equipment.name}
+        value={equipmentEditing!.name}
+        max={128}
+        required
+      />
     </FormItem>
     <FormItem for="type" label={_lang.equipment.type}>
       <Select id="type" name="type" value={equipmentEditing!.type_id} required>
         {#each data.types as type (type.id.toString())}
-          <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option>
+          <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option
+          >
         {/each}
       </Select>
     </FormItem>
     <FormItem for="link" label={_lang.equipment.link}>
-      <Input id="link" name="link" type="url" placeholder={_lang.equipment.link} value={equipmentEditing!.link} max={512} required />
+      <Input
+        id="link"
+        name="link"
+        type="url"
+        placeholder={_lang.equipment.link}
+        value={equipmentEditing!.link}
+        max={512}
+        required
+      />
     </FormItem>
     <Button type="submit">{_lang.equipment.edit.button}</Button>
   </form>
@@ -209,7 +259,10 @@
     class="border-text flex flex-col items-center justify-center rounded-md border-2 p-2"
     method="POST"
     action="?/equipmentAdd"
-    use:enhance={createSubmitFunction(_lang.equipment.success, () => (openEquipmentAdd = false))}
+    use:enhance={createSubmitFunction(
+      _lang.equipment.success,
+      () => (openEquipmentAdd = false)
+    )}
   >
     <FormItem for="name" label={_lang.equipment.name}>
       <Input id="name" name="name" type="text" max={128} required />
@@ -218,7 +271,8 @@
       <Select id="type" name="type" required>
         <option value={null} disabled selected></option>
         {#each data.types as type (type.id.toString())}
-          <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option>
+          <option value={type.id}>{resolveTranslation(type.lang_key, _state.lang)}</option
+          >
         {/each}
       </Select>
     </FormItem>
@@ -272,7 +326,11 @@
                       class="cursor-pointer"
                     />
 
-                    <Icon onclick={() => typeDelete(type.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                    <Icon
+                      onclick={() => typeDelete(type.id)}
+                      name="bi-trash-fill"
+                      class="cursor-pointer text-red-500"
+                    />
                   </Td>
                 </Tr>
               {/each}
@@ -285,7 +343,9 @@
     <div class="border-text flex w-full flex-col items-start rounded-md border-2 p-4">
       <div class="flex w-full items-center justify-between">
         {@render title(_lang.equipment.title)}
-        <Button onclick={() => (openEquipmentAdd = true)}>{_lang.equipment.addTitle}</Button>
+        <Button onclick={() => (openEquipmentAdd = true)}
+          >{_lang.equipment.addTitle}</Button
+        >
       </div>
       {#if data.equipment.length === 0}
         {@render info(_lang.equipment.empty)}
@@ -306,7 +366,12 @@
                 <Tr>
                   <Td class="font-bold">{equipment.id}</Td>
                   <Td>{equipment.name}</Td>
-                  <Td class="pr-2">{resolveTranslation(data.types.find((type) => type.id === equipment.type_id)!.lang_key, _state.lang)}</Td>
+                  <Td class="pr-2"
+                    >{resolveTranslation(
+                      data.types.find((type) => type.id === equipment.type_id)!.lang_key,
+                      _state.lang
+                    )}</Td
+                  >
                   <Td>{equipment.link}</Td>
                   <Td class="flex justify-center gap-2">
                     <Icon
@@ -322,7 +387,11 @@
                       class="cursor-pointer"
                     />
 
-                    <Icon onclick={() => equipmentDelete(equipment.id)} name="bi-trash-fill" class="cursor-pointer text-red-500" />
+                    <Icon
+                      onclick={() => equipmentDelete(equipment.id)}
+                      name="bi-trash-fill"
+                      class="cursor-pointer text-red-500"
+                    />
                   </Td>
                 </Tr>
               {/each}

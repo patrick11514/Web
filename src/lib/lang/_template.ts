@@ -46,7 +46,8 @@ export default o({
     title: _,
     message: _,
     sub_message: _,
-    go_home: _
+    go_home: _,
+    invalid_type_number: _
   }),
   main: o({
     age: _,
@@ -227,7 +228,11 @@ export default o({
     }),
     article: o({
       notFound: _,
-      noImages: _
+      noImages: _,
+      noTitle: _,
+      noDescrption: _,
+      noContent: _,
+      noAltText: _
     })
   }),
   equipmentType: o({

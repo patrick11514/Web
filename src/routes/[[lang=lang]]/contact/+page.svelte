@@ -86,12 +86,19 @@
         target="_blank"
         class="border-text bg-background group flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 p-4 transition-all duration-300 hover:scale-105 hover:bg-gray-900 sm:w-1/3 md:w-1/4"
       >
-        <Icon name={platform.icon} class="group-hover:text-text rounded-full bg-gray-900 px-4 py-3.5 text-5xl text-gray-400 transition-colors duration-300 " />
+        <Icon
+          name={platform.icon}
+          class="group-hover:text-text rounded-full bg-gray-900 px-4 py-3.5 text-5xl text-gray-400 transition-colors duration-300 "
+        />
         <h2 class="font-poppins text-xl font-semibold lg:text-2xl">{platform.name}</h2>
-        <div class="font-ubuntu rounded-full bg-gray-800 p-2 text-base font-medium text-gray-300 lg:text-lg">
+        <div
+          class="font-ubuntu rounded-full bg-gray-800 p-2 text-base font-medium text-gray-300 lg:text-lg"
+        >
           {platform.tag}
         </div>
-        <h3 class="text-text-muted text-center text-base lg:text-lg">{resolveTranslation(platform.descriptionKey, _state.lang)}</h3>
+        <h3 class="text-text-muted text-center text-base lg:text-lg">
+          {resolveTranslation(platform.descriptionKey, _state.lang)}
+        </h3>
       </a>
     {/each}
   </div>

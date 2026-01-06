@@ -1,12 +1,13 @@
-import { conn } from '$/lib/server/variables';
-import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import type { Insertable } from 'kysely';
-import type { Article, Exposure, GalleryImage } from '$/types/database';
 import {
   constructEmptyTranslations,
   gatherTranslationsAll
 } from '$/lib/server/functions';
+import { Server } from '$/lib/server/server';
+import { conn } from '$/lib/server/variables';
+import type { Article, Exposure, GalleryImage } from '$/types/database';
+import { redirect, type Actions } from '@sveltejs/kit';
+import type { Insertable } from 'kysely';
+import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params }) => {
   const equipmentData = await conn.selectFrom('equipment').selectAll().execute();
@@ -80,3 +81,8 @@ export const load = (async ({ params }) => {
     ])
   };
 }) satisfies PageServerLoad;
+
+export const actions = {
+  create: Server.actions.article.POST,
+  edit: Server.actions.article.PUT
+} satisfies Actions;

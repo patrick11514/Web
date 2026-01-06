@@ -22,7 +22,11 @@ export const load = (async () => {
     .selectFrom((eb) =>
       eb
         .selectFrom('visitors')
-        .select(['ip', sql<number>`WEEK(date, 1)`.as('WEEK'), sql<number>`YEAR(date)`.as('YEAR')])
+        .select([
+          'ip',
+          sql<number>`WEEK(date, 1)`.as('WEEK'),
+          sql<number>`YEAR(date)`.as('YEAR')
+        ])
         .groupBy([sql`WEEK(date, 1)`, sql`YEAR(date)`, 'ip'])
         .as('t')
     )

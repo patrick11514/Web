@@ -14,14 +14,21 @@
 </script>
 
 {#snippet badge(text: string)}
-  <div class="border-text font-poppins rounded-full border px-2 py-0.5 text-base font-medium">{text}</div>
+  <div
+    class="border-text font-poppins rounded-full border px-2 py-0.5 text-base font-medium"
+  >
+    {text}
+  </div>
 {/snippet}
 
 <section class="flex h-full flex-1 flex-col">
   <H1 class="mx-auto mb-8">{_lang.title}</H1>
   <div class="flex flex-wrap justify-center gap-4 p-4">
     {#each data.posts as post (post.id)}
-      <a href="/{_state.selectedLang}/gallery/{post.id}" class="group border-text flex aspect-[4/5] w-full flex-col rounded-md border-2 sm:w-[calc(50%_-_0.5rem)] lg:w-md xl:w-lg">
+      <a
+        href="/{_state.selectedLang}/gallery/{post.id}"
+        class="group border-text flex aspect-[4/5] w-full flex-col rounded-md border-2 sm:w-[calc(50%_-_0.5rem)] lg:w-md xl:w-lg"
+      >
         <div class="relative h-1/2 flex-1/2 overflow-hidden">
           <Image
             class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
@@ -31,7 +38,11 @@
           <div class="absolute top-0 left-0 flex w-full justify-end p-4">
             <div class="bg-background/75 rounded-full px-2 py-1 text-base font-medium">
               <Icon name="bi-clock" />
-              {sToHHMM(post.exposures.filter((ex) => ex.type === 'light').reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0))}
+              {sToHHMM(
+                post.exposures
+                  .filter((ex) => ex.type === 'light')
+                  .reduce((acc, ex) => acc + ex.count * ex.exposure_time_s, 0)
+              )}
             </div>
           </div>
         </div>
@@ -56,7 +67,9 @@
                 {formatDate(post.updated_at, false)}
               {/if}
             </div>
-            <button class="cursor-pointer font-medium">{_lang.readMore} <Icon name="bi-arrow-right" /></button>
+            <button class="cursor-pointer font-medium"
+              >{_lang.readMore} <Icon name="bi-arrow-right" /></button
+            >
           </div>
         </div>
       </a>

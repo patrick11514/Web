@@ -9,7 +9,12 @@ export const handle = (async ({ event, resolve }) => {
   const UA = event.request.headers.get('user-agent') || '';
   const isBot = /bot|crawl|spider|slurp/i.test(UA);
 
-  if (!isBot && response.status === 200 && !event.locals.is404 && !disallowedPaths.some((p) => path.startsWith(p))) {
+  if (
+    !isBot &&
+    response.status === 200 &&
+    !event.locals.is404 &&
+    !disallowedPaths.some((p) => path.startsWith(p))
+  ) {
     conn
       .insertInto('visitors')
       .values({

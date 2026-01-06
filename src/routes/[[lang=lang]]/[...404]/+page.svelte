@@ -15,7 +15,12 @@
 </svelte:head>
 
 <div class="m-auto">
-  <h1 class="text-4xl font-bold lg:text-5xl"><Icon name="bi-code-slash" /> {_state.lang.error.message}</h1>
+  <h1 class="text-4xl font-bold lg:text-5xl">
+    <Icon name="bi-code-slash" />
+    {_state.lang.error.message}
+  </h1>
   <h2 class="text-3xl font-bold lg:text-4xl">{_state.lang.error.sub_message}</h2>
-  <Link link="/{_state.selectedLang}" class="text-xl font-bold lg:text-2xl">{_state.lang.error.go_home}</Link>
+  <Link link="/{_state.selectedLang}" class="text-xl font-bold lg:text-2xl"
+    >{_state.lang.error.go_home}</Link
+  >
 </div>

@@ -29,7 +29,12 @@ export const load = (async ({ params, url, cookies }) => {
     api: Server.hydrateToClient(),
     lang: languages[lang].t,
     selectedLang: lang,
-    languageList: Object.fromEntries(Object.entries(languages).map(([code, lang]) => [code, { name: lang.name, flag: lang.flag }])),
+    languageList: Object.fromEntries(
+      Object.entries(languages).map(([code, lang]) => [
+        code,
+        { name: lang.name, flag: lang.flag }
+      ])
+    ),
     userState: getUserState(cookies)
   };
 }) satisfies LayoutServerLoad;

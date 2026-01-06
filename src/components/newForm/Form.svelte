@@ -106,6 +106,8 @@
   lang="ts"
   generics="FormDataType extends Record<string, unknown>, IsMultiLang extends boolean = false, MultiLangKeys extends IsMultiLang extends true ? keyof FormDataType : never = never"
 >
+  import { SwalAlert } from '$/lib/functions';
+  import { resolveError } from '$/lib/lang';
   import { getState } from '$/lib/state.svelte';
   import { enhance } from '$app/forms';
   import type { Awaitable } from '@patrick115/sveltekitapi';
@@ -245,15 +247,17 @@
   const processErrors = (
     result: z.ZodSafeParseResult<FormDataType>,
     forLanguage?: Language,
-    allErrors = false
+    reportError = false
   ) => {
     let count = 0;
 
     isValid = result.success;
-    if (!allErrors) resetErrors();
+    if (!reportError) resetErrors();
 
     if (result.error) {
       const zodErrors = result.error.issues;
+
+      let errorShown = false;
       for (const error of zodErrors) {
         const path = error.path[0] as string;
         const isDefaultValue =
@@ -263,23 +267,44 @@
           (isDefaultValue
             ? getValue(path, forLanguage) === getDefaultValue(path, forLanguage)
             : false) &&
-          allErrors === false &&
+          reportError === false &&
           !submited
         ) {
           continue;
         }
-        const message = error.code === 'invalid_type' ? _lang : error.message;
+        const message =
+          error.code === 'invalid_type'
+            ? _lang
+            : resolveError(error.message, _state.lang);
+
+        let finalMessage = message;
+        let isMultiLangError = false;
+
         if (multiLang) {
           if (multiLangKeys.includes(path as MultiLangKeys)) {
+            isMultiLangError = true;
+            // Include Language context in the error message
+            const langPrefix = languages[forLanguage ?? lang.selectedLanguage].name;
+            finalMessage = `${langPrefix}: ${message}`;
+
             (errors as Record<Language, Errors>)[forLanguage ?? lang.selectedLanguage][
               path
             ] = message;
-            ++count;
-            continue;
           }
         }
 
-        (errors as Errors)[path] = message;
+        if (!isMultiLangError) {
+          (errors as Errors)[path] = message;
+        }
+
+        if (!errorShown && reportError === true) {
+          SwalAlert({
+            title: finalMessage,
+            icon: 'error'
+          });
+          errorShown = true;
+        }
+
         ++count;
       }
     }
@@ -292,12 +317,29 @@
     let totalErrors = 0;
     if (multiLang) {
       totalErrors = langs
-        .map((lang) => data[lang])
+        .map((lang) => {
+          const merged = { ...(data as object) };
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const langData = (data as any)[lang];
+
+          for (const l of langs) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (merged as any)[l];
+          }
+
+          return { ...merged, ...langData };
+        })
+        .map((data) => {
+          // merge additional non-lang data back
+          // because deep merge or specific handling of arrays might be needed if they are not in multiLangKeys
+          // but for now, we just ensure simple properties are present
+          return data;
+        })
         .map((data) => schema.safeParse(data))
         .map((result, index) => processErrors(result, langs[index], reportError))
         .reduce((acc, count) => acc + count, 0);
     } else {
-      totalErrors = processErrors(schema.safeParse(data));
+      totalErrors = processErrors(schema.safeParse(data), undefined, reportError);
     }
     return totalErrors;
   };
@@ -322,7 +364,8 @@
   });
 
   const enhanceFunction = (({ formData, cancel }) => {
-    if (collectErrors(true) !== 0) {
+    const errorsCount = collectErrors(true);
+    if (errorsCount !== 0) {
       cancel();
       return;
     }

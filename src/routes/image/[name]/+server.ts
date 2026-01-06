@@ -41,8 +41,13 @@ class MemoryCache {
   }
 
   set(key: string, value: Buffer) {
-    if (this.getCacheSize() + value.length > this.maxSize || this.cache.size >= this.maxEntries) {
-      const oldest = [...this.cache.entries()].sort((a, b) => a[1].timestamp - b[1].timestamp)[0];
+    if (
+      this.getCacheSize() + value.length > this.maxSize ||
+      this.cache.size >= this.maxEntries
+    ) {
+      const oldest = [...this.cache.entries()].sort(
+        (a, b) => a[1].timestamp - b[1].timestamp
+      )[0];
       if (oldest) {
         this.cache.delete(oldest[0]);
       }
@@ -160,7 +165,10 @@ export const GET = (async ({ params, url, request }) => {
       const originalContent = await fs.readFile(filePath);
       let image = sharp(originalContent);
 
-      const imageOptions: sharp.JpegOptions & sharp.PngOptions & sharp.WebpOptions & sharp.TiffOptions = {
+      const imageOptions: sharp.JpegOptions &
+        sharp.PngOptions &
+        sharp.WebpOptions &
+        sharp.TiffOptions = {
         quality: DEFAULT_IMAGE_QUALITY
       };
 
