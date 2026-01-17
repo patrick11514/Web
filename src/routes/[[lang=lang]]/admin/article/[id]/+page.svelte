@@ -10,6 +10,7 @@
   import {
     Button,
     Form,
+    GeminiInput,
     ImageManager,
     Input,
     Markdown,
@@ -43,6 +44,21 @@
     transformIntoLanguagable(data.article, dynamicTranslations, MultiLangKeys)
   );
 
+  const currentArticleData = $derived(
+    articleData[_state.selectedLang as keyof typeof languages] as Record<string, unknown>
+  );
+  const sysPrompt = `Jsi astrofotograf a redaktor. Napiš krátký, poutavý a poetický popisek (max 150 znaků) pro článek s názvem '{{title}}'.
+
+Tón: Poetický, úderný, obdivující krásu vesmíru.
+Příklady stylu, který musíš dodržet:
+- Mlhovina Bublina: Vesmírná křehkost v záplavě hvězd.
+- Andromeda: Ostrost bez kompromisů.
+- Orlí mlhovina: Domov slavných Pilířů stvoření.
+- Spirální galaxie: Jehlicový klenot hlubokého vesmíru.
+
+Nyní napiš popisek pro tento obsah (pouze text, žádné uvozovky):
+{{content}}`;
+
   const editing = $derived('id' in data.article);
   let showPreview = $state(false);
   let selectedEquipment = $state<null | number>(null);
@@ -72,48 +88,6 @@
       article_id: page.params.id ?? ''
     });
   };
-
-  /*const articleAdd = async () => {
-    const response = await API.article.POST(article);
-
-    if (!response.status) {
-      SwalAlert({
-        title: resolveError(response.message, _state.lang),
-        icon: 'error'
-      });
-      return;
-    }
-
-    SwalAlert({
-      title: _lang.created,
-      icon: 'success'
-    });
-
-    goto(`/${_state.selectedLang}/admin/article`);
-  };
-
-  const articleEdit = async () => {
-    const parsed = articleSchema(_state.selectedLang as keyof typeof languages)
-      .required()
-      .safeParse(article);
-    if (!parsed.success) return;
-    const response = await API.article.PUT(parsed.data);
-
-    if (!response.status) {
-      SwalAlert({
-        title: resolveError(response.message, _state.lang),
-        icon: 'error'
-      });
-      return;
-    }
-
-    SwalAlert({
-      title: _lang.updated,
-      icon: 'success'
-    });
-
-    goto(`/${_state.selectedLang}/admin/article`);
-  };*/
 
   const action = (({ result }) => {
     // @ts-expect-error dynamic result type
@@ -167,11 +141,16 @@
         placeholder={_lang.details.titlePlaceholder}
         variant="small"
       />
-      <Input
+      <GeminiInput
         name="description"
         label={_lang.details.description}
         placeholder={_lang.details.descriptionPlaceholder}
         variant="small"
+        data={{
+          title: currentArticleData?.title,
+          content: currentArticleData?.content_md
+        }}
+        {sysPrompt}
       />
       {#if !showPreview}
         <TextArea

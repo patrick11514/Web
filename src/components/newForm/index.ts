@@ -3,6 +3,7 @@ export { default as DataProvider } from './DataProvider.svelte';
 export { default as DatePicker } from './DatePicker.svelte';
 export { default as Form } from './Form.svelte';
 export { default as FormItem } from './FormItem.svelte';
+export { default as GeminiInput } from './GeminiInput.svelte';
 export { default as ImageManager } from './ImageManager.svelte';
 export { default as Input } from './Input.svelte';
 export { default as LanguageSelector } from './LanguageSelector.svelte';

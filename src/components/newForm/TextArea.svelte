@@ -21,7 +21,8 @@
     class: cls = '',
     placeholder,
     variant,
-    right: _right
+    right: _right,
+    value = $bindable()
   }: TextAreaProps = $props();
 
   const context = getFormContext();
@@ -32,6 +33,18 @@
       ? (context.data[context.lang.selectedLanguage] as Record<string, unknown>)[name]
       : context.data[name]
   );
+
+  $effect(() => {
+    if (value !== undefined && value !== formValue) {
+      formValue = value;
+    }
+  });
+
+  $effect(() => {
+    if (formValue !== value) {
+      value = formValue as string | number | string[] | undefined;
+    }
+  });
 
   $effect(() => {
     if (context.multiLang) {
