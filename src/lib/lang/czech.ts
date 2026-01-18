@@ -13,7 +13,8 @@ export default lang.parse({
     admin: 'Administrace',
     login: 'Přihlášení',
     contact: 'Kontakt',
-    about: 'O mně'
+    about: 'O mně',
+    live: 'Astro Okénko'
   },
   adminNavigation: {
     home: 'Panel',
@@ -26,6 +27,26 @@ export default lang.parse({
     sub_message: 'Tuto stránku neznáme :(',
     go_home: 'Zpátky domů',
     invalid_type_number: 'Zadejte platné číslo.'
+  },
+  live_photo: {
+    title: 'Živé foto',
+    inactive: 'Focení neprobíhá',
+    stats: 'Statistiky',
+    current_status: 'Aktuální stav',
+    mount: 'Montáž',
+    image: 'Poslední obrázek',
+    labels: {
+      temp: 'Teplota',
+      exposure: 'Expozice',
+      ra: 'RA',
+      dec: 'DEC',
+      gain: 'Gain',
+      target: 'Cíl',
+      focal_length: 'Ohnisková vzdálenost',
+      telescope: 'Teleskop',
+      camera: 'Kamera',
+      date: 'Datum'
+    }
   },
   main: {
     age: 'Věk',
