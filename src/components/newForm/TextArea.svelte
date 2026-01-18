@@ -38,7 +38,9 @@
     const val = value;
 
     untrack(() => {
-      formValue = val;
+      if (val !== undefined && val !== null) {
+        formValue = val;
+      }
     });
   });
 
@@ -46,7 +48,9 @@
     const val = formValue;
 
     untrack(() => {
-      value = val as string | number | string[] | undefined;
+      if (val !== undefined && val !== null) {
+        value = val as string | number | string[] | undefined;
+      }
     });
   });
 

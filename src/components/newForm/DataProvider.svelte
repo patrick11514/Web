@@ -11,21 +11,6 @@
 
   const context = getFormContext();
 
-  // 1. Sync: External (Parent) -> Internal (Context)
-  $effect(() => {
-    // We want this to run when 'value' changes
-    const v = value;
-
-    // Use untrack on the read of context to ensure this effect ONLY runs
-    // when 'value' changes, not when context changes (prevents echo).
-    untrack(() => {
-      const currentCtxVal = getValue(context, name);
-      if (!Object.is(currentCtxVal, v)) {
-        setValue(context, name, v);
-      }
-    });
-  });
-
   // 2. Sync: Internal (Context) -> External (Parent)
   $effect(() => {
     // We want this to run when context value changes
@@ -39,6 +24,21 @@
 
       if (!Object.is(ctxVal, value)) {
         value = ctxVal;
+      }
+    });
+  });
+
+  // 1. Sync: External (Parent) -> Internal (Context)
+  $effect(() => {
+    // We want this to run when 'value' changes
+    const v = value;
+
+    // Use untrack on the read of context to ensure this effect ONLY runs
+    // when 'value' changes, not when context changes (prevents echo).
+    untrack(() => {
+      const currentCtxVal = getValue(context, name);
+      if (!Object.is(currentCtxVal, v)) {
+        setValue(context, name, v);
       }
     });
   });
