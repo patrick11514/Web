@@ -129,6 +129,7 @@ export class NinaClient {
 
     if (!isRunning) {
       this.cachedLiveStatus = { active: false };
+      this.cachedLiveImage = undefined;
       return this.cachedLiveStatus;
     }
 
