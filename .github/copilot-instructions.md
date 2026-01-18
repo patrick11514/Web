@@ -171,6 +171,20 @@ Do not declare `children?: Snippet` if it is already part of the extended HTML e
 
 ---
 
+### 🏁 Post-Implementation Steps
+
+After every implementation, run the following commands to ensure code quality:
+
+1. `pnpm check`
+2. `pnpm lint`
+
+If `pnpm lint` returns unformatted files, run:
+
+1. `pnpm format`
+2. `pnpm lint` (again)
+
+---
+
 # Project Architecture
 
 ## Overview

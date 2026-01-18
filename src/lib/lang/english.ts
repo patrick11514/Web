@@ -13,7 +13,8 @@ export default lang.parse({
     admin: 'Administration',
     login: 'Login',
     contact: 'Contact',
-    about: 'About Me'
+    about: 'About Me',
+    live: 'Astro Window'
   },
   adminNavigation: {
     home: 'Dashboard',
@@ -26,6 +27,26 @@ export default lang.parse({
     sub_message: "We don't know this page :(",
     go_home: 'Back home',
     invalid_type_number: 'Please enter a valid number.'
+  },
+  live_photo: {
+    title: 'Live Photo',
+    inactive: 'Imaging not active',
+    stats: 'Statistics',
+    current_status: 'Current Status',
+    mount: 'Mount',
+    image: 'Latest Image',
+    labels: {
+      temp: 'Temperature',
+      exposure: 'Exposure',
+      ra: 'RA',
+      dec: 'DEC',
+      gain: 'Gain',
+      target: 'Target',
+      focal_length: 'Focal Length',
+      telescope: 'Telescope',
+      camera: 'Camera',
+      date: 'Date'
+    }
   },
   main: {
     age: 'Age',

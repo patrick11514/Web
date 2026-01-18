@@ -35,7 +35,8 @@ export default o({
     admin: _,
     login: _,
     contact: _,
-    about: _
+    about: _,
+    live: _
   }),
   adminNavigation: o({
     home: _,
@@ -48,6 +49,26 @@ export default o({
     sub_message: _,
     go_home: _,
     invalid_type_number: _
+  }),
+  live_photo: o({
+    title: _,
+    inactive: _,
+    stats: _,
+    current_status: _,
+    mount: _,
+    image: _,
+    labels: o({
+      temp: _,
+      exposure: _,
+      ra: _,
+      dec: _,
+      gain: _,
+      target: _,
+      focal_length: _,
+      telescope: _,
+      camera: _,
+      date: _
+    })
   }),
   main: o({
     age: _,

@@ -37,9 +37,9 @@
       path: '/contact'
     },
     {
-      name: _state.lang.navigation.about,
-      icon: 'bi-info-circle-fill',
-      path: '/about'
+      name: _state.lang.navigation.live,
+      icon: 'bi-circle-fill',
+      path: '/live-photo'
     },
     {
       name: _state.lang.navigation.login,
