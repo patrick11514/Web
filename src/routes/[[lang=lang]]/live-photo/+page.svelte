@@ -12,7 +12,17 @@
 
   const refreshData = async () => {
     try {
+      const prevData = liveData;
+
       liveData = await API.telescope();
+
+      if (
+        liveData.active &&
+        prevData?.active != liveData.active &&
+        liveData?.imageInfo?.Date != prevData?.imageInfo?.Date
+      ) {
+        now = Date.now();
+      }
     } catch {
       liveData = { active: false };
     }
@@ -22,8 +32,7 @@
     refreshData();
     const interval = setInterval(() => {
       refreshData();
-      now = Date.now();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   });
