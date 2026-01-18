@@ -121,9 +121,6 @@
 
   let mobileOpened = $state(false);
 
-  const title = $derived.by(() => `${currentItem?.name} | ${page.url.host}`);
-  const description = $derived(_state.lang.default_desc);
-
   const filteredNavigation = $derived(
     Navigation.filter((item) => {
       const isLogged = _state.userState.logged;
@@ -151,18 +148,34 @@
     }
     return _state.path === item.path;
   };
+
+  const meta = $derived(page.data.meta ?? _state.meta);
+
+  const title = $derived.by(() => {
+    if (meta?.title) {
+      return `${meta.title} | ${page.url.host}`;
+    }
+    if (currentItem) {
+      return `${currentItem.name} | ${page.url.host}`;
+    }
+    return undefined;
+  });
+  const description = $derived(meta?.description ?? _state.lang.default_desc);
 </script>
 
 <svelte:head>
-  {#if currentItem}
+  {#if title}
     <title>{title}</title>
     <meta property="og:title" content={title} />
   {/if}
   <meta name="description" content={description} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={meta?.type ?? 'website'} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={page.url.toString()} />
-  <meta property="og:image" content="{page.url.origin}/images/PFP.jpg" />
+  <meta
+    property="og:image"
+    content={meta?.image ?? `${page.url.origin}/images/PFP.jpg`}
+  />
 </svelte:head>
 
 <nav class="font-poppins hidden w-full p-4 text-xl md:flex lg:text-2xl">

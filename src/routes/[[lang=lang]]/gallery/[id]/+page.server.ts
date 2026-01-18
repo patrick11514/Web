@@ -2,7 +2,7 @@ import { gatherTranslations, redirect } from '$/lib/server/functions';
 import { conn } from '$/lib/server/variables';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params, parent }) => {
+export const load = (async ({ params, parent, url }) => {
   const parentData = await parent();
 
   const post = await conn
@@ -34,6 +34,16 @@ export const load = (async ({ params, parent }) => {
     .where('article_id', '=', post.id)
     .execute();
 
+  const dynamicTranslations = await gatherTranslations(
+    [
+      post.title,
+      post.description,
+      post.content_md,
+      ...images.map((image) => image.alt_text)
+    ],
+    parentData.selectedLang
+  );
+
   return {
     post: {
       ...post,
@@ -41,14 +51,15 @@ export const load = (async ({ params, parent }) => {
       exposures,
       equipment
     },
-    dynamicTranslations: await gatherTranslations(
-      [
-        post.title,
-        post.description,
-        post.content_md,
-        ...images.map((image) => image.alt_text)
-      ],
-      parentData.selectedLang
-    )
+    dynamicTranslations,
+    meta: {
+      title: dynamicTranslations[post.title],
+      description: dynamicTranslations[post.description],
+      type: 'article',
+      image:
+        images.length > 0
+          ? `${url.origin}/image/${images[0].name}?format=jpg&quality=75`
+          : undefined
+    }
   };
 }) satisfies PageServerLoad;
