@@ -35,28 +35,36 @@
   );
 
   $effect(() => {
-    if (value !== undefined && value !== formValue) {
-      formValue = value;
-    }
+    const val = value;
+
+    untrack(() => {
+      formValue = val;
+    });
   });
 
   $effect(() => {
-    if (formValue !== value) {
-      value = formValue as string | number | string[] | undefined;
-    }
+    const val = formValue;
+
+    untrack(() => {
+      value = val as string | number | string[] | undefined;
+    });
   });
 
   $effect(() => {
-    if (context.multiLang) {
-      (
-        context.data[untrack(() => context.lang.selectedLanguage)] as Record<
-          string,
-          unknown
-        >
-      )[name] = formValue;
-    } else {
-      context.data[name] = formValue;
-    }
+    const value = formValue;
+
+    untrack(() => {
+      if (context.multiLang) {
+        (
+          context.data[untrack(() => context.lang.selectedLanguage)] as Record<
+            string,
+            unknown
+          >
+        )[name] = value;
+      } else {
+        context.data[name] = value;
+      }
+    });
   });
 
   $effect(() => {
