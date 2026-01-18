@@ -9,10 +9,12 @@ import Path from 'node:path';
 import { v4 } from 'uuid';
 import { z } from 'zod';
 import { loggedProcedure } from '../api';
-import { insertTranslations, parseFormData } from '../functions';
+import { insertTranslations, parseFormData, updateTranslations } from '../functions';
 import { conn } from '../variables';
 
 const articleSchema = _articleSchema('cs');
+
+const TRANSLATION_FIELDS = ['title', 'description', 'content_md'] as const;
 
 export default [
   loggedProcedure.POST.input(AnyFormDataInput).query(async ({ input: _input }) => {
@@ -22,11 +24,7 @@ export default [
     const trx = await conn.startTransaction().execute();
 
     try {
-      const translations = await insertTranslations(trx, parsed, [
-        'title',
-        'description',
-        'content_md'
-      ]);
+      const translations = await insertTranslations(trx, parsed, [...TRANSLATION_FIELDS]);
 
       const uuid = v4();
 
@@ -141,26 +139,14 @@ export default [
     const trx = await conn.startTransaction().execute();
 
     try {
-      let someChanged = false;
       const languagesKeys = Object.keys(languages);
 
-      // Update Translations (Title, Description, Content)
-      const fields = ['title', 'description', 'content_md'] as const;
-      for (const field of fields) {
-        const uuid = originalData[field];
-        for (const lang of languagesKeys) {
-          const newText = parsed[lang]?.[field];
-          if (newText) {
-            await trx
-              .updateTable('translations')
-              .set({ text: newText })
-              .where('key', '=', uuid)
-              .where('lang', '=', lang)
-              .execute();
-            someChanged = true;
-          }
-        }
-      }
+      let someChanged = await updateTranslations(
+        trx,
+        originalData,
+        parsed,
+        TRANSLATION_FIELDS
+      );
 
       //equipment
       const originalEquipment = await conn

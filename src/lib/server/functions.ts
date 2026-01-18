@@ -183,7 +183,6 @@ export const insertTranslations = async <
   fields: $Fields[]
 ) => {
   const result = {} as Record<$Fields, string>;
-
   const toInsert = [] as Insertable<Translations>[];
 
   const langs = Object.keys(obj);
@@ -202,4 +201,42 @@ export const insertTranslations = async <
   await trx.insertInto('translations').values(toInsert).execute();
 
   return result;
+};
+
+export const updateTranslations = async <
+  $Record extends Record<string, unknown>,
+  $Fields extends keyof $Record
+>(
+  trx: ControlledTransaction<DB>,
+  originalData: Partial<Record<$Fields, string | null>>,
+  parsed: Record<keyof typeof languages, $Record>,
+  fields: readonly $Fields[] | $Fields[]
+): Promise<boolean> => {
+  let somethingUpdated = false;
+  const languagesKeys = Object.keys(languages);
+
+  for (const field of fields) {
+    const uuid = originalData[field];
+    if (!uuid) continue;
+
+    for (const lang of languagesKeys) {
+      const newText = parsed[lang]?.[field];
+      if (newText && typeof newText === 'string') {
+        somethingUpdated = true;
+        await trx
+          .insertInto('translations')
+          .values({
+            key: uuid,
+            lang: lang,
+            text: newText
+          })
+          .onDuplicateKeyUpdate({
+            text: newText
+          })
+          .execute();
+      }
+    }
+  }
+
+  return somethingUpdated;
 };
