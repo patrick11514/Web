@@ -36,6 +36,17 @@ export type LiveStatus = {
   currentAction?: string;
 };
 
+function isNetworkError(e: unknown, code: string): boolean {
+  return (
+    e instanceof TypeError &&
+    !!e.cause &&
+    typeof e.cause === 'object' &&
+    'code' in e.cause &&
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (e.cause as any).code === code
+  );
+}
+
 export class NinaClient {
   private baseUrl: string;
   private updateThreshold: number;
@@ -56,6 +67,10 @@ export class NinaClient {
       if (!res.ok) return null;
       return await res.json();
     } catch (e) {
+      if (isNetworkError(e, 'ECONNREFUSED') || isNetworkError(e, 'EHOSTUNREACH')) {
+        // Host unreachable, likely Nina is offline => don't spam errors
+        return null;
+      }
       // eslint-disable-next-line no-console
       console.error(`Error fetching ${endpoint}:`, e);
       return null;
@@ -178,6 +193,10 @@ export class NinaClient {
       if (!res.ok) return;
       this.cachedLiveImage = Buffer.from(await res.arrayBuffer());
     } catch (e) {
+      if (isNetworkError(e, 'ECONNREFUSED') || isNetworkError(e, 'EHOSTUNREACH')) {
+        // Host unreachable, likely Nina is offline => don't spam errors
+        return;
+      }
       // eslint-disable-next-line no-console
       console.error('Error updating image buffer:', e);
     }

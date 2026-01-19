@@ -29,7 +29,9 @@ export default lang.parse({
     invalid_type_number: 'Zadejte platné číslo.'
   },
   live_photo: {
-    title: 'Živé foto',
+    title: 'Astro Okénko',
+    description:
+      'Pokud aktuálně probíhá focení, zde uvidíš aktuální snímek z kamery a statistiky z mého vybavení.',
     inactive: 'Focení neprobíhá',
     stats: 'Statistiky',
     current_status: 'Aktuální stav',

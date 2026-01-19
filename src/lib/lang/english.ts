@@ -29,7 +29,9 @@ export default lang.parse({
     invalid_type_number: 'Please enter a valid number.'
   },
   live_photo: {
-    title: 'Live Photo',
+    title: 'Astro Window',
+    description:
+      'If imaging is currently in progress, you will see the latest image from the camera and statistics from my equipment here.',
     inactive: 'Imaging not active',
     stats: 'Statistics',
     current_status: 'Current Status',

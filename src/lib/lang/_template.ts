@@ -52,6 +52,7 @@ export default o({
   }),
   live_photo: o({
     title: _,
+    description: _,
     inactive: _,
     stats: _,
     current_status: _,
