@@ -18,8 +18,8 @@
 
       if (
         liveData.active &&
-        prevData?.active != liveData.active &&
-        liveData?.imageInfo?.Date != prevData?.imageInfo?.Date
+        (prevData?.active != liveData.active ||
+          liveData?.imageInfo?.Date != prevData?.imageInfo?.Date)
       ) {
         now = Date.now();
       }
