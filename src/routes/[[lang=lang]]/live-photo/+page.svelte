@@ -46,7 +46,7 @@
 
   <div class="mt-8 grid grid-cols-1 gap-6 px-2 lg:grid-cols-3">
     <div class="lg:col-span-2">
-      {#if liveData?.active}
+      {#if liveData?.active && liveData?.showImage}
         <img
           src={`/api/live-image?t=${now}`}
           alt="Live view"
@@ -56,7 +56,9 @@
         <div
           class="flex aspect-video w-full items-center justify-center rounded-lg bg-black text-xl text-white shadow-lg"
         >
-          {appState.lang.live_photo.inactive}
+          {liveData?.active
+            ? liveData?.currentAction || appState.lang.live_photo.inactive
+            : appState.lang.live_photo.inactive}
         </div>
       {/if}
     </div>
