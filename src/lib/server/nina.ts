@@ -190,7 +190,7 @@ export class NinaClient {
       }
 
       // Update Buffer
-      this.updateImageBuffer();
+      await this.updateImageBuffer();
 
       this.lastUpdate = now;
     }
