@@ -190,7 +190,12 @@ export class NinaClient {
       }
 
       // Update Buffer
-      await this.updateImageBuffer();
+      if (
+        !this.cachedLiveImage ||
+        imageInfo?.Date !== this.cachedLiveStatus?.imageInfo?.Date
+      ) {
+        await this.updateImageBuffer();
+      }
 
       this.lastUpdate = now;
     }
