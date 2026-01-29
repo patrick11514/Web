@@ -1,3 +1,4 @@
+import { env } from '$/lib/server/env';
 import type { DB, Translations } from '$/types/database';
 import {
   extensions,
@@ -6,7 +7,6 @@ import {
   type UserData,
   type UserState
 } from '$/types/types';
-import { FILE_FOLDER } from '$env/static/private';
 import type { Cookies } from '@sveltejs/kit';
 import { redirect as _redirect } from '@sveltejs/kit';
 import type { ControlledTransaction, Insertable } from 'kysely';
@@ -19,6 +19,8 @@ import type z from 'zod';
 import { languages } from '../lang';
 import { getState } from '../state.svelte';
 import { conn, jwt } from './variables';
+
+const FILE_FOLDER = env.FILE_FOLDER;
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 

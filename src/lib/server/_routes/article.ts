@@ -1,7 +1,7 @@
 import { languages, type ErrorPath } from '$/lib/lang';
+import { env } from '$/lib/server/env';
 import { articleSchema as _articleSchema } from '$/types/schemes';
 import type { ActionsResponse, Response } from '$/types/types';
-import { FILE_FOLDER } from '$env/static/private';
 import { AnyFormDataInput, type ErrorApiResponse } from '@patrick115/sveltekitapi';
 import { fail } from '@sveltejs/kit';
 import fs from 'node:fs/promises';
@@ -11,6 +11,8 @@ import { z } from 'zod';
 import { loggedProcedure } from '../api';
 import { insertTranslations, parseFormData, updateTranslations } from '../functions';
 import { conn } from '../variables';
+
+const FILE_FOLDER = env.FILE_FOLDER;
 
 const articleSchema = _articleSchema('cs');
 

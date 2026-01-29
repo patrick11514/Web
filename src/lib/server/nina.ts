@@ -61,8 +61,8 @@ export class NinaClient {
   private cachedLiveImage: Buffer | undefined;
 
   constructor() {
-    this.baseUrl = NINA_BASE_URL ?? 'http://10.10.10.211:1888/';
-    this.updateThreshold = parseInt(UPDATE_THRESHOLD_COUNT || '30'); // Default 30 seconds
+    this.baseUrl = NINA_BASE_URL;
+    this.updateThreshold = UPDATE_THRESHOLD_COUNT;
   }
 
   private async fetch<T>(endpoint: string): Promise<T | null> {

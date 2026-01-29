@@ -1,12 +1,14 @@
-import { error, type RequestHandler } from '@sveltejs/kit';
-import Path from 'node:path';
-import fs from 'node:fs/promises';
-import { createReadStream } from 'node:fs';
-import { Readable } from 'node:stream';
-import { FILE_FOLDER } from '$env/static/private';
-import sharp from 'sharp';
+import { env } from '$/lib/server/env';
 import { isDirectory, isFile } from '$/lib/server/functions';
 import { extensions, type ImageExtension } from '$/types/types';
+import { error, type RequestHandler } from '@sveltejs/kit';
+import { createReadStream } from 'node:fs';
+import fs from 'node:fs/promises';
+import Path from 'node:path';
+import { Readable } from 'node:stream';
+import sharp from 'sharp';
+
+const FILE_FOLDER = env.FILE_FOLDER;
 
 const CACHE_FOLDER = '.cache';
 const DEFAULT_IMAGE_QUALITY = 75;

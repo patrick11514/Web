@@ -1,12 +1,14 @@
-import { FormDataInput, type ErrorApiResponse } from '@patrick115/sveltekitapi';
-import { loggedProcedure } from '../api';
 import type { ErrorPath } from '$/lib/lang';
-import { isFile, uploadFile } from '../functions';
+import { env } from '$/lib/server/env';
 import type { Response, ResponseWithData } from '$/types/types';
-import { z } from 'zod';
+import { FormDataInput, type ErrorApiResponse } from '@patrick115/sveltekitapi';
 import fs from 'node:fs/promises';
 import Path from 'node:path';
-import { FILE_FOLDER } from '$env/static/private';
+import { z } from 'zod';
+import { loggedProcedure } from '../api';
+import { isFile, uploadFile } from '../functions';
+
+const FILE_FOLDER = env.FILE_FOLDER;
 
 export default [
   loggedProcedure.POST.input(FormDataInput).query(async ({ input }) => {

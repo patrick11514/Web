@@ -1,10 +1,10 @@
-import { GEMINI_API_KEY } from '$env/static/private';
+import { env } from '$/lib/server/env';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { MiddleWareError } from '@patrick115/sveltekitapi';
 import { z } from 'zod';
 import { loggedProcedure } from '../api';
 
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
 export default {
