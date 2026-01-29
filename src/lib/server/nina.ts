@@ -255,6 +255,10 @@ export class NinaClient {
     }
     return this.cachedLiveImage;
   }
+
+  haveImage() {
+    return !!this.cachedLiveImage;
+  }
 }
 
 export const nina = new NinaClient();
