@@ -1,16 +1,17 @@
-import { FormDataInput } from '@patrick115/sveltekitapi';
-import { procedure } from '../api';
 import type { ErrorPath } from '$/lib/lang';
+import { env } from '$/lib/server/env';
 import type { ActionsResponse, Response } from '$/types/types';
+import { FormDataInput } from '@patrick115/sveltekitapi';
 import { fail } from '@sveltejs/kit';
-import { conn, jwt } from '../variables';
 import bcrypt from 'bcrypt';
-import { COOKIE_EXPIRE } from '$env/static/private';
+import { procedure } from '../api';
+import { conn, jwt } from '../variables';
 
 export default procedure.POST.input(FormDataInput).query(
   async ({ input, ev: { cookies } }) => {
     const username = input.get('username') as string | null;
     const password = input.get('password') as string | null;
+    const COOKIE_EXPIRE = env.COOKIE_EXPIRE;
 
     if (!username || !password) {
       return fail(401, {
@@ -48,7 +49,7 @@ export default procedure.POST.input(FormDataInput).query(
 
     cookies.set('session', session, {
       path: '/',
-      maxAge: parseInt(COOKIE_EXPIRE)
+      maxAge: COOKIE_EXPIRE
     });
 
     return {

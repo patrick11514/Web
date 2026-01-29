@@ -1,28 +1,20 @@
 import type { DB } from '$/types/database';
-import { env } from '$env/dynamic/private';
-import {
-  DATABASE_IP,
-  DATABASE_NAME,
-  DATABASE_PASSWORD,
-  DATABASE_PORT,
-  DATABASE_USER,
-  JWT_SECRET
-} from '$env/static/private';
 import { Kysely, MysqlDialect } from 'kysely';
 import { createPool } from 'mysql2';
 import { JWTCookies } from './cookies/main';
+import { env } from './env';
 
 export const NINA_BASE_URL = env.NINA_BASE_URL;
 export const UPDATE_THRESHOLD_COUNT = env.UPDATE_THRESHOLD_COUNT;
 
-export const jwt = new JWTCookies(JWT_SECRET);
+export const jwt = new JWTCookies(env.JWT_SECRET);
 const dialect = new MysqlDialect({
   pool: createPool({
-    host: DATABASE_IP,
-    port: parseInt(DATABASE_PORT),
-    user: DATABASE_USER,
-    password: DATABASE_PASSWORD,
-    database: DATABASE_NAME
+    host: env.DATABASE_IP,
+    port: env.DATABASE_PORT,
+    user: env.DATABASE_USER,
+    password: env.DATABASE_PASSWORD,
+    database: env.DATABASE_NAME
   })
 });
 
