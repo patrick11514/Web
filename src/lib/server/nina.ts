@@ -38,7 +38,6 @@ interface CameraInfo {
   IsExposing: boolean;
 }
 
-//{"Response":{"Connected":true,"Name":"PHD2","DisplayName":"PHD2","Description":"PHD2 Guider","DriverInfo":"PHD2 Guider","DriverVersion":"1.0","DeviceId":"PHD2_Single","CanClearCalibration":true,"CanSetShiftRate":true,"CanGetLockPosition":true,"SupportedActions":[],"RMSError":{"RA":{"Pixel":0.1670851110717076,"Arcseconds":0.5743968405867628},"Dec":{"Pixel":0.14570647415145718,"Arcseconds":0.5009024315141719},"Total":{"Pixel":0.22169305571328599,"Arcseconds":0.7621253022783488},"PeakRA":{"Pixel":0.52,"Arcseconds":1.78763},"PeakDec":{"Pixel":1.21,"Arcseconds":4.1596775}},"PixelScale":3.43775,"LastGuideStep":{"RADistanceRaw":0.12,"DECDistanceRaw":-0.088,"RADuration":1,"DECDuration":0},"State":"Guiding"},"Error":"","StatusCode":200,"Success":true,"Type":"API"}
 interface GuideResponse {
   RMSError: {
     RA: {
