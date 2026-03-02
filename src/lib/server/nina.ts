@@ -30,6 +30,12 @@ interface SequenceItem {
   Triggers?: SequenceItem[];
   TargetTime?: string;
   Delay?: number;
+  ExposureTime?: number;
+}
+
+interface CameraInfo {
+  ExposureEndTime: string;
+  IsExposing: boolean;
 }
 
 export type LiveStatus = {
@@ -83,7 +89,7 @@ export class NinaClient {
     }
   }
 
-  private mapRunningAction(item: SequenceItem): string {
+  private async mapRunningAction(item: SequenceItem): Promise<string> {
     const name = item.Name || '';
     const map: Record<string, string> = {
       'Meridian Flip_Trigger': 'Meridian flip',
@@ -109,6 +115,22 @@ export class NinaClient {
       }
     } else if (name === 'Wait for Time Span' && item.Delay) {
       action += ` for ${item.Delay}s`;
+    } else if (name === 'Smart Exposure' && item.ExposureTime) {
+      const time = item.ExposureTime;
+
+      //fetch camera end time:
+      const info = await this.fetch<NinaResponse<CameraInfo>>(
+        'api/equipment/camera/info'
+      );
+
+      //calculate XXs/XXs (calc/time)
+      if (info?.Success && info.Response.ExposureEndTime) {
+        const endTime = new Date(info.Response.ExposureEndTime).getTime();
+        const now = Date.now();
+        const elapsed = (now - (endTime - time * 1000)) / 1000;
+        const total = time;
+        action += ` (${elapsed.toFixed(0)}s/${total}s)`;
+      }
     }
 
     return action;
@@ -205,7 +227,7 @@ export class NinaClient {
       this.lastUpdate = now;
     }
 
-    const currentAction = this.mapRunningAction(deepestItem!);
+    const currentAction = await this.mapRunningAction(deepestItem!);
     const hiddenActions = [
       'Meridian flip',
       'Waiting',
