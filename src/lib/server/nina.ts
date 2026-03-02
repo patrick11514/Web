@@ -60,6 +60,8 @@ export class NinaClient {
 
   private cachedLiveImage: Buffer | undefined;
 
+  private imageDownloadPromise: Promise<void> | null = null;
+
   constructor() {
     this.baseUrl = NINA_BASE_URL;
     this.updateThreshold = UPDATE_THRESHOLD_COUNT;
@@ -194,7 +196,10 @@ export class NinaClient {
         !this.cachedLiveImage ||
         imageInfo?.Date !== this.cachedLiveStatus?.imageInfo?.Date
       ) {
-        await this.updateImageBuffer();
+        // Fire and forget! Do NOT await this here.
+        // This lets the JSON return to Svelte instantly.
+        // eslint-disable-next-line
+        this.updateImageBuffer().catch(console.error);
       }
 
       this.lastUpdate = now;
@@ -231,25 +236,42 @@ export class NinaClient {
   }
 
   async updateImageBuffer() {
-    try {
-      const res = await fetch(`${this.baseUrl}/v2/api/prepared-image`);
-      if (!res.ok) return;
-      const buffer = Buffer.from(await res.arrayBuffer());
+    // If a download is already happening, return that existing promise
+    if (this.imageDownloadPromise) return this.imageDownloadPromise;
 
-      this.cachedLiveImage = await sharp(buffer)
-        .jpeg({ quality: 80, mozjpeg: true })
-        .toBuffer();
-    } catch (e) {
-      if (isNetworkError(e, 'ECONNREFUSED') || isNetworkError(e, 'EHOSTUNREACH')) {
-        // Host unreachable, likely Nina is offline => don't spam errors
-        return;
+    // Otherwise, create the promise and assign it to the latch
+    this.imageDownloadPromise = (async () => {
+      try {
+        const res = await fetch(`${this.baseUrl}/v2/api/prepared-image`);
+        if (!res.ok) return;
+        const buffer = Buffer.from(await res.arrayBuffer());
+
+        this.cachedLiveImage = await sharp(buffer)
+          .jpeg({ quality: 80, mozjpeg: true })
+          .toBuffer();
+      } catch (e) {
+        if (isNetworkError(e, 'ECONNREFUSED') || isNetworkError(e, 'EHOSTUNREACH')) {
+          // Host unreachable, likely Nina is offline => don't spam errors
+          return;
+        }
+        // eslint-disable-next-line no-console
+        console.error('Error updating image buffer:', e);
+      } finally {
+        // Clear the latch when done (success or fail)
+        this.imageDownloadPromise = null;
       }
-      // eslint-disable-next-line no-console
-      console.error('Error updating image buffer:', e);
-    }
+    })();
+
+    return this.imageDownloadPromise;
   }
 
   async getLiveImage() {
+    // If the frontend requests the image while it's downloading,
+    // force this endpoint to wait for the latch to clear.
+    if (this.imageDownloadPromise) {
+      await this.imageDownloadPromise;
+    }
+
     if (!this.cachedLiveImage) {
       await this.updateImageBuffer();
     }
