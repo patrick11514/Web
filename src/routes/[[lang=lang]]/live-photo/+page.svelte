@@ -46,21 +46,22 @@
 
   <div class="mt-8 grid grid-cols-1 gap-6 px-2 lg:grid-cols-3">
     <div class="lg:col-span-2">
-      {#if liveData?.active && liveData?.showImage}
-        <img
-          src={`/api/live-image?t=${now}`}
-          alt="Live view"
-          class="w-full rounded-lg shadow-lg"
-        />
-      {:else}
-        <div
-          class="flex aspect-video w-full items-center justify-center rounded-lg bg-black text-xl text-white shadow-lg"
-        >
+      <div
+        class="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg bg-black text-xl text-white shadow-lg"
+      >
+        <span class="z-0 px-4 text-center">
           {liveData?.active
             ? liveData?.currentAction || appState.lang.live_photo.inactive
             : appState.lang.live_photo.inactive}
-        </div>
-      {/if}
+        </span>
+        {#if liveData?.active && liveData?.showImage}
+          <img
+            src={`/api/live-image?t=${now}`}
+            alt="Live view"
+            class="absolute inset-0 z-10 h-full w-full object-contain"
+          />
+        {/if}
+      </div>
     </div>
 
     <div
@@ -99,73 +100,101 @@
           </div>
         </div>
 
-        <!-- Image Info Section -->
+        <!-- Guide Section -->
         <div>
           <h3 class="mb-2 border-b border-zinc-300 pb-1 font-semibold">
-            {appState.lang.live_photo.image}
+            {appState.lang.live_photo.guide} (PHD2)
           </h3>
-          <div class="grid grid-cols-2 gap-2 text-sm">
-            <span class="text-secondary font-bold">
-              {appState.lang.live_photo.labels.target}:</span
-            >
-            <span class="truncate text-right" title={liveData?.imageInfo?.TargetName}>
-              {liveData?.imageInfo?.TargetName || 'No info'}</span
+          <div class="grid grid-cols-2 gap-2">
+            <span class="text-secondary font-bold"> RA Error:</span>
+            <span>
+              {liveData?.guideInfo ? `${liveData.guideInfo.ra.toFixed(2)}″"` : '-'}</span
             >
 
-            <span class="text-secondary font-bold">
-              {appState.lang.live_photo.labels.date}:</span
+            <span class="text-secondary font-bold"> Dec Error:</span>
+            <span>
+              {liveData?.guideInfo ? `${liveData.guideInfo.dec.toFixed(2)}″"` : '-'}</span
             >
-            <span class="text-right">
-              {liveData?.imageInfo?.Date
-                ? new Date(liveData.imageInfo.Date).toLocaleTimeString()
+
+            <span class="text-secondary font-bold"> Total Error:</span>
+            <span>
+              {liveData?.guideInfo
+                ? `${liveData.guideInfo.total.toFixed(2)}″"`
                 : '-'}</span
             >
+          </div>
 
-            <span class="text-secondary font-bold">
-              {appState.lang.live_photo.labels.exposure}:</span
-            >
-            <span class="text-right">
-              {liveData?.imageInfo?.ExposureTime
-                ? `${liveData.imageInfo.ExposureTime}s`
-                : '-'}</span
-            >
+          <!-- Image Info Section -->
+          <div>
+            <h3 class="mb-2 border-b border-zinc-300 pb-1 font-semibold">
+              {appState.lang.live_photo.image}
+            </h3>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <span class="text-secondary font-bold">
+                {appState.lang.live_photo.labels.target}:</span
+              >
+              <span class="truncate text-right" title={liveData?.imageInfo?.TargetName}>
+                {liveData?.imageInfo?.TargetName || 'No info'}</span
+              >
 
-            <span class="text-secondary font-bold">
-              {appState.lang.live_photo.labels.temp}:</span
-            >
-            <span class="text-right">
-              {liveData?.imageInfo?.Temperature
-                ? `${liveData.imageInfo.Temperature}°C`
-                : '-'}</span
-            >
+              <span class="text-secondary font-bold">
+                {appState.lang.live_photo.labels.date}:</span
+              >
+              <span class="text-right">
+                {liveData?.imageInfo?.Date
+                  ? new Date(liveData.imageInfo.Date).toLocaleTimeString()
+                  : '-'}</span
+              >
 
-            <span class="text-secondary font-bold">
-              {appState.lang.live_photo.labels.gain}:</span
-            >
-            <span class="text-right"> {liveData?.imageInfo?.Gain ?? '-'}</span>
+              <span class="text-secondary font-bold">
+                {appState.lang.live_photo.labels.exposure}:</span
+              >
+              <span class="text-right">
+                {liveData?.imageInfo?.ExposureTime
+                  ? `${liveData.imageInfo.ExposureTime}s`
+                  : '-'}</span
+              >
 
-            <span class="text-secondary font-bold">
-              {appState.lang.live_photo.labels.focal_length}:</span
-            >
-            <span class="text-right">
-              {liveData?.imageInfo?.FocalLength
-                ? `${liveData.imageInfo.FocalLength}mm`
-                : '-'}</span
-            >
+              <span class="text-secondary font-bold">
+                {appState.lang.live_photo.labels.temp}:</span
+              >
+              <span class="text-right">
+                {liveData?.imageInfo?.Temperature
+                  ? `${liveData.imageInfo.Temperature}°C`
+                  : '-'}</span
+              >
 
-            <span class="text-secondary col-span-2 font-bold">
-              {appState.lang.live_photo.labels.telescope}:</span
-            >
-            <span class="col-span-2 truncate" title={liveData?.imageInfo?.TelescopeName}>
-              {liveData?.imageInfo?.TelescopeName || 'No info'}</span
-            >
+              <span class="text-secondary font-bold">
+                {appState.lang.live_photo.labels.gain}:</span
+              >
+              <span class="text-right"> {liveData?.imageInfo?.Gain ?? '-'}</span>
 
-            <span class="text-secondary col-span-2 font-bold">
-              {appState.lang.live_photo.labels.camera}:</span
-            >
-            <span class="col-span-2 truncate" title={liveData?.imageInfo?.CameraName}>
-              {liveData?.imageInfo?.CameraName || 'No info'}</span
-            >
+              <span class="text-secondary font-bold">
+                {appState.lang.live_photo.labels.focal_length}:</span
+              >
+              <span class="text-right">
+                {liveData?.imageInfo?.FocalLength
+                  ? `${liveData.imageInfo.FocalLength}mm`
+                  : '-'}</span
+              >
+
+              <span class="text-secondary col-span-2 font-bold">
+                {appState.lang.live_photo.labels.telescope}:</span
+              >
+              <span
+                class="col-span-2 truncate"
+                title={liveData?.imageInfo?.TelescopeName}
+              >
+                {liveData?.imageInfo?.TelescopeName || 'No info'}</span
+              >
+
+              <span class="text-secondary col-span-2 font-bold">
+                {appState.lang.live_photo.labels.camera}:</span
+              >
+              <span class="col-span-2 truncate" title={liveData?.imageInfo?.CameraName}>
+                {liveData?.imageInfo?.CameraName || 'No info'}</span
+              >
+            </div>
           </div>
         </div>
       </div>
