@@ -37,6 +37,7 @@ export default lang.parse({
     current_status: 'Current Status',
     mount: 'Mount',
     image: 'Latest Image',
+    guide: 'Guiding',
     labels: {
       temp: 'Temperature',
       exposure: 'Exposure',

@@ -37,6 +37,7 @@ export default lang.parse({
     current_status: 'Aktuální stav',
     mount: 'Montáž',
     image: 'Poslední obrázek',
+    guide: 'Navádění',
     labels: {
       temp: 'Teplota',
       exposure: 'Expozice',

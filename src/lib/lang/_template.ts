@@ -58,6 +58,7 @@ export default o({
     current_status: _,
     mount: _,
     image: _,
+    guide: _,
     labels: o({
       temp: _,
       exposure: _,
