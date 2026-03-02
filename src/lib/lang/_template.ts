@@ -69,8 +69,11 @@ export default o({
       focal_length: _,
       telescope: _,
       camera: _,
-      date: _
-    })
+      date: _,
+      error: _,
+      total: _
+    }),
+    last_frame: _
   }),
   main: o({
     age: _,

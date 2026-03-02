@@ -48,13 +48,17 @@ export default lang.parse({
       focal_length: 'Focal Length',
       telescope: 'Telescope',
       camera: 'Camera',
-      date: 'Date'
-    }
+      date: 'Date',
+      error: 'Error',
+      total: 'Total'
+    },
+    last_frame:
+      '*last frame (for example from previous exposure, or auto-guiding, re-centering, etc... therefore it may not always be a quality image)'
   },
   main: {
     age: 'Age',
     text: [
-      '🎓 I am currently studying at ',
+      '🎓 I am currently studying Masters degree at ',
       {
         text: 'VŠB – Technical University of Ostrava',
         link: 'https://www.vsb.cz/'

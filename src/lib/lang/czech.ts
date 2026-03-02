@@ -48,13 +48,17 @@ export default lang.parse({
       focal_length: 'Ohnisková vzdálenost',
       telescope: 'Teleskop',
       camera: 'Kamera',
-      date: 'Datum'
-    }
+      date: 'Datum',
+      error: 'Chyba',
+      total: 'Celková'
+    },
+    last_frame:
+      '*poslední snímek (například z předchozí expozice, nebo automatického ostření, re-centerování, atd... proto se nemusí vždy jednat o kvalitní snímek)'
   },
   main: {
     age: 'Věk',
     text: [
-      '🎓 Aktuálně studuji na ',
+      '🎓 Aktuálně studuji Inženýra na ',
       {
         text: 'Vysoké škole báňské – Technické univerzitě Ostrava',
         link: 'https://www.vsb.cz/'

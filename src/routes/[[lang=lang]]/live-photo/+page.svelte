@@ -106,20 +106,27 @@
             {appState.lang.live_photo.guide} (PHD2)
           </h3>
           <div class="grid grid-cols-2 gap-2">
-            <span class="text-secondary font-bold"> RA Error:</span>
+            <span class="text-secondary font-bold">
+              RA {appState.lang.live_photo.labels.error}:</span
+            >
             <span>
-              {liveData?.guideInfo ? `${liveData.guideInfo.ra.toFixed(2)}″"` : '-'}</span
+              {liveData?.guideInfo ? `${liveData.guideInfo.ra.toFixed(2)}″` : '-'}</span
             >
 
-            <span class="text-secondary font-bold"> Dec Error:</span>
+            <span class="text-secondary font-bold">
+              Dec {appState.lang.live_photo.labels.error}:</span
+            >
             <span>
-              {liveData?.guideInfo ? `${liveData.guideInfo.dec.toFixed(2)}″"` : '-'}</span
+              {liveData?.guideInfo ? `${liveData.guideInfo.dec.toFixed(2)}″` : '-'}</span
             >
 
-            <span class="text-secondary font-bold"> Total Error:</span>
+            <span class="text-secondary font-bold">
+              {appState.lang.live_photo.labels.total}
+              {appState.lang.live_photo.labels.error}:</span
+            >
             <span>
               {liveData?.guideInfo
-                ? `${liveData.guideInfo.total.toFixed(2)}″"`
+                ? `${liveData.guideInfo.total.toFixed(2)}″`
                 : '-'}</span
             >
           </div>
