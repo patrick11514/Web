@@ -9,6 +9,7 @@
 
   let liveData = $state<LiveStatus | null>(null);
   let now = $state(Date.now());
+  let handler = $state<ReturnType<typeof setTimeout> | null>(null);
 
   const refreshData = async () => {
     try {
@@ -28,13 +29,17 @@
     }
   };
 
-  onMount(() => {
-    refreshData();
-    const interval = setInterval(() => {
-      refreshData();
-    }, 10000);
+  const scheduleRefresh = async () => {
+    await refreshData();
+    handler = setTimeout(scheduleRefresh, 10000);
+  };
 
-    return () => clearInterval(interval);
+  onMount(() => {
+    scheduleRefresh();
+
+    return () => {
+      if (handler) clearTimeout(handler);
+    };
   });
 </script>
 
